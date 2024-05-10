@@ -12,9 +12,9 @@ Zustand 是 React 的众多状态管理库之一。
 每个库都有自己的优点和缺点，
 我们将比较每个库之间的关键差异和相似之处。
 
-## Redux
+## Redux {#redux}
 
-### 状态模型（与 Redux 的比较）
+### 状态模型（与 Redux 的比较） {#状态模型（与-redux-的比较）}
 
 从概念上讲，Zustand 和 Redux 非常相似，
 它们都基于不可变的状态模型。
@@ -126,7 +126,7 @@ const countSlice = createSlice({
 const countStore = configureStore({ reducer: countSlice.reducer })
 ```
 
-### Render Optimization (vs Redux)
+### Render Optimization (vs Redux) {#render-optimization-(vs-redux)}
 
 When it comes to render optimizations within your app,
 there are no major differences in approach between Zustand and Redux.
@@ -230,9 +230,9 @@ const Component = () => {
 }
 ```
 
-## Valtio
+## Valtio {#valtio}
 
-### State Model (vs Valtio)
+### State Model (vs Valtio) {#state-model-(vs-valtio)}
 
 Zustand and Valtio approach state management
 in a fundamentally different way.
@@ -263,7 +263,7 @@ const state = proxy({ obj: { count: 0 } })
 state.obj.count += 1
 ```
 
-### Render Optimization (vs Valtio)
+### Render Optimization (vs Valtio) {#render-optimization-(vs-valtio)}
 
 The other difference between Zustand and Valtio
 is Valtio makes render optimizations through property access.
@@ -304,9 +304,9 @@ const Component = () => {
 }
 ```
 
-## Jotai
+## Jotai {#jotai}
 
-### State Model (vs Jotai)
+### State Model (vs Jotai) {#state-model-(vs-jotai)}
 
 There are two major differences between Zustand and Jotai.
 Firstly, Zustand is a single store,
@@ -345,7 +345,7 @@ import { atom } from 'jotai'
 const countAtom = atom<number>(0)
 ```
 
-### Render Optimization (vs Jotai)
+### Render Optimization (vs Jotai) {#render-optimization-(vs-jotai)}
 
 Jotai achieves render optimizations through atom dependency.
 However, with Zustand it is recommended that
@@ -392,9 +392,9 @@ const Component = () => {
 }
 ```
 
-## Recoil
+## Recoil {#recoil}
 
-### State Model (vs Recoil)
+### State Model (vs Recoil) {#state-model-(vs-recoil)}
 
 The difference between Zustand and Recoil
 is similar to that between Zustand and Jotai.
@@ -433,7 +433,7 @@ const count = atom({
 })
 ```
 
-### Render Optimization (vs Recoil)
+### Render Optimization (vs Recoil) {#render-optimization-(vs-recoil)}
 
 Similar to previous optimization comparisons,
 Recoil makes render optimizations through atom dependency.
@@ -482,6 +482,6 @@ const Component = () => {
 }
 ```
 
-## Npm Downloads Trend
+## Npm Downloads Trend {#npm-downloads-trend}
 
 - [Npm Downloads Trend of State Management Libraries for React](https://npm-compare.com/@reduxjs/toolkit,zustand,recoil,jotai,valtio/#timeRange=THREE_YEARS)

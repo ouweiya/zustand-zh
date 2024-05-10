@@ -4,7 +4,7 @@ const sidebars: SidebarsConfig = {
     tutorialSidebar: [
         {
             type: 'category',
-            label: '入门指南',
+            label: '入门',
             collapsed: false,
             items: ['getting-started/introduction', 'getting-started/comparison'],
         },

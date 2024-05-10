@@ -36,10 +36,7 @@ const config: Config = {
             {
                 docs: {
                     sidebarPath: './sidebars.ts',
-                    // Please change this to your repo.
-                    // Remove this to remove the "edit this page" links.
                     editUrl: 'https://github.com/ouweiya/zustand-zh/blob/master/',
-                    // editUrl: 'https://github.com/ouweiya/zustand-zh',
                 },
                 theme: {
                     customCss: './src/css/custom.css',
@@ -61,6 +58,21 @@ const config: Config = {
                     sidebarId: 'tutorialSidebar',
                     position: 'left',
                     label: '文档',
+                },
+                {
+                    to: 'docs/getting-started/introduction',
+                    label: '入门',
+                    position: 'right',
+                },
+                {
+                    to: 'docs/guides/updating-state',
+                    label: '指南',
+                    position: 'right',
+                },
+                {
+                    to: 'docs/integrations/immer-middleware',
+                    label: '集成',
+                    position: 'right',
                 },
                 {
                     href: 'https://github.com/ouweiya/zustand-zh',
