@@ -19,7 +19,7 @@ nav: 5
 
 如果你有一个大型应用，Zustand 支持[将存储分割成切片](./slices-pattern.md)。
 
-### 使用 `set` / `setState` 更新存储 {#use-`set`-/-`setstate`-to-update-the-store}
+### 使用 `set` / `setState` 更新存储 {#use-set-setstate-to-update-the-store}
 
 始终使用 `set`（或 `setState`）来更新你的存储。
 `set`（和 `setState`）确保所描述的更新被正确地合并，监听器被适当地通知。

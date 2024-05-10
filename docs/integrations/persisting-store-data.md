@@ -29,12 +29,12 @@ export const useBearStore = create(
 
 ## 选项 {#options}
 
-### `name` {#`name`}
+### `name` {#name}
 
 这是唯一需要的选项。
 给定的名称将用作存储您的 Zustand 状态的键，因此它必须是唯一的。
 
-### `storage` {#`storage`}
+### `storage` {#storage}
 
 > 类型：`() => StateStorage`
 
@@ -66,7 +66,7 @@ export const useBoundStore = create(
 )
 ```
 
-### `partialize` {#`partialize`}
+### `partialize` {#partialize}
 
 > 类型：`(state: Object) => Object`
 
@@ -111,7 +111,7 @@ export const useBoundStore = create(
 )
 ```
 
-### `onRehydrateStorage` {#`onrehydratestorage`}
+### `onRehydrateStorage` {#onrehydratestorage}
 
 > 类型：`(state: Object) => ((state?: Object, error?: Error) => void) | void`
 
@@ -144,7 +144,7 @@ export const useBoundStore = create(
 )
 ```
 
-### `version` {#`version`}
+### `version` {#version}
 
 > 类型：`number`
 
@@ -152,7 +152,7 @@ export const useBoundStore = create(
 
 如果您想在存储中引入破坏性更改（例如，重命名字段），您可以指定一个新的版本号。默认情况下，如果存储中的版本与代码中的版本不匹配，则不会使用存储的值。您可以使用下面的 [migrate](#migrate) 函数来处理破坏性更改，以便持久化以前存储的数据。
 
-### `migrate` {#`migrate`}
+### `migrate` {#migrate}
 
 > 类型：`(persistedState: Object, version: number) => Object | Promise<Object>`
 
@@ -187,7 +187,7 @@ export const useBoundStore = create(
 )
 ```
 
-### `merge` {#`merge`}
+### `merge` {#merge}
 
 > 类型：`(persistedState: Object, currentState: Object) => Object`
 
@@ -240,7 +240,7 @@ export const useBoundStore = create(
 )
 ```
 
-### `skipHydration` {#`skiphydration`}
+### `skipHydration` {#skiphydration}
 
 > 类型：`boolean | undefined`
 
@@ -291,7 +291,7 @@ export function StoreConsumer() {
 Persist API 使您能够与 Persist 中间件进行多种交互
 无论是在 React 组件内部还是外部。
 
-### `getOptions` {#`getoptions`}
+### `getOptions` {#getoptions}
 
 > 类型：`() => Partial<PersistOptions>`
 
@@ -303,7 +303,7 @@ Persist API 使您能够与 Persist 中间件进行多种交互
 useBoundStore.persist.getOptions().name
 ```
 
-### `setOptions` {#`setoptions`}
+### `setOptions` {#setoptions}
 
 > 类型：`(newOptions: Partial<PersistOptions>) => void`
 
@@ -326,7 +326,7 @@ useBoundStore.persist.setOptions({
 })
 ```
 
-### `clearStorage` {#`clearstorage`}
+### `clearStorage` {#clearstorage}
 
 > 类型：`() => void`
 
@@ -336,7 +336,7 @@ useBoundStore.persist.setOptions({
 useBoundStore.persist.clearStorage()
 ```
 
-### `rehydrate` {#`rehydrate`}
+### `rehydrate` {#rehydrate}
 
 > 类型：`() => Promise<void>`
 
@@ -347,7 +347,7 @@ useBoundStore.persist.clearStorage()
 await useBoundStore.persist.rehydrate()
 ```
 
-### `hasHydrated` {#`hashydrated`}
+### `hasHydrated` {#hashydrated}
 
 > 类型：`() => boolean`
 
@@ -359,7 +359,7 @@ await useBoundStore.persist.rehydrate()
 useBoundStore.persist.hasHydrated()
 ```
 
-### `onHydrate` {#`onhydrate`}
+### `onHydrate` {#onhydrate}
 
 > 类型：`(listener: (state) => void) => () => void`
 
@@ -376,7 +376,7 @@ const unsub = useBoundStore.persist.onHydrate((state) => {
 unsub()
 ```
 
-### `onFinishHydration` {#`onfinishhydration`}
+### `onFinishHydration` {#onfinishhydration}
 
 > 类型：`(listener: (state) => void) => () => void`
 
@@ -393,7 +393,7 @@ const unsub = useBoundStore.persist.onFinishHydration((state) => {
 unsub()
 ```
 
-### `createJSONStorage` {#`createjsonstorage`}
+### `createJSONStorage` {#createjsonstorage}
 
 > 类型：`(getStorage: () => StateStorage, options?: JsonStorageOptions) => StateStorage`
 

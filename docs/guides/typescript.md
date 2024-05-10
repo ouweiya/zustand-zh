@@ -337,7 +337,7 @@ const useBearStore = create(foo(() => ({ bears: 0 }), 'hello'))
 console.log(useBearStore.foo.toUpperCase())
 ```
 
-### 不使用柯里化解决方案的 `create` {#`create`-without-curried-workaround}
+### 不使用柯里化解决方案的 `create` {#create-without-curried-workaround}
 
 推荐的使用 `create` 的方式是使用柯里化解决方案，如：`create<T>()(...)`。这是因为它可以推断出存储类型。但是，如果出于某种原因你不想使用这种解决方案，你可以像下面这样传递类型参数。请注意，在某些情况下，这作为断言而不是注解，所以我们不推荐这种方式。
 
@@ -430,7 +430,7 @@ const useBoundStore = create<BearSlice & FishSlice & SharedSlice>()((...a) => ({
 
 如果你有一些中间件，那么用 `StateCreator<MyState, Mutators, [], MySlice>` 替换 `StateCreator<MyState, [], [], MySlice>`。例如，如果你正在使用 `devtools`，那么它将是 `StateCreator<MyState, [["zustand/devtools", never]], [], MySlice>`。请参阅["中间件及其变异器引用"](#middlewares-and-their-mutators-reference)部分，查看所有变异器的列表。
 
-### 为 vanilla 存储限定 `useStore` 钩子 {#bounded-`usestore`-hook-for-vanilla-stores}
+### 为 vanilla 存储限定 `useStore` 钩子 {#bounded-usestore-hook-for-vanilla-stores}
 
 ```ts
 import { useStore } from 'zustand'

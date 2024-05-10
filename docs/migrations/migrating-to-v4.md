@@ -17,7 +17,7 @@ nav: 19
 [差异](https://github.com/pmndrs/zustand/compare/v3.7.2...v4.0.0?short_path=37e5b4c#diff-c21e24854115b390eccde717da83f91feb2d5927a76c1485e5f0fdd0135c2afa)
 在Zustand仓库中，从v3到v4的测试文件的差异。
 
-## `create` {#`create`}
+## `create` {#create}
 
 **适用的导入**
 
@@ -82,7 +82,7 @@ import type { StateCreator } from 'zustand/vanilla'
 
 如果你正在使用 `StateCreator`，你可能正在编写一个中间件或使用 "slices" 模式。对此，请查看 TypeScript 指南中的 [编写中间件和高级用法](../guides/typescript.md#authoring-middlewares-and-advanced-usage) 和 [常见配方](../guides/typescript.md#common-recipes) 部分。
 
-## `PartialState` {#`partialstate`}
+## `PartialState` {#partialstate}
 
 **适用的导入**
 
@@ -122,7 +122,7 @@ import type { PartialState } from 'zustand/vanilla'
 
 我们不再使用这个技巧来禁止 `{ foo: undefined }` 被赋值给 `Partial<{ foo: string }>`。相反，我们依赖用户开启 `exactOptionalPropertyTypes`。
 
-## `useStore` {#`usestore`}
+## `useStore` {#usestore}
 
 **适用的导入**
 
@@ -157,7 +157,7 @@ import { useStore } from 'zustand/react'
 
 如果你有，建议移除所有类型参数，或者将 **store** 类型而不是 **state** 类型作为第一个参数传递。
 
-## `UseBoundStore` {#`useboundstore`}
+## `UseBoundStore` {#useboundstore}
 
 **适用的导入**
 
@@ -193,7 +193,7 @@ import type { UseBoundStore } from 'zustand/react'
 
 将 `UseBoundStore<T>` 替换为 `UseBoundStore<StoreApi<T>>`，将 `UseBoundStore<T, S>` 替换为 `UseBoundStore<S>`。
 
-## `UseContextStore` {#`usecontextstore`}
+## `UseContextStore` {#usecontextstore}
 
 **适用的导入**
 
@@ -211,7 +211,7 @@ import type { UseContextStore } from 'zustand/context'
 
 使用 `typeof MyContext.useStore` 替代。
 
-## `createContext` {#`createcontext`}
+## `createContext` {#createcontext}
 
 **适用的导入**
 
@@ -232,7 +232,7 @@ import createContext from 'zustand/context'
 Replace `createContext<T>()` with `createContext<StoreApi<T>>()`,
 and `createContext<T, S>()` with `createContext<S>()`.
 
-## `combine`, `devtools`, `subscribeWithSelector` {#`combine`,-`devtools`,-`subscribewithselector`}
+## `combine`, `devtools`, `subscribeWithSelector` {#combine-devtools-subscribewithselector}
 
 **适用的导入**
 
@@ -267,7 +267,7 @@ import { subscribeWithSelector } from 'zustand/middleware'
 
 如果你有，移除所有类型参数，因为它们会被自动推断。
 
-## `persist` {#`persist`}
+## `persist` {#persist}
 
 **适用的导入**
 
@@ -298,7 +298,7 @@ import { persist } from 'zustand/middleware'
 
 运行时行为没有改变，只是现在的类型更准确了。
 
-## `redux` {#`redux`}
+## `redux` {#redux}
 
 **适用的导入**
 

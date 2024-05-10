@@ -11,7 +11,7 @@ const bears = useBearStore((state) => state.bears)
 
 然而，编写这些可能会很繁琐。如果你也有这种感觉，你可以自动生成你的选择器。
 
-## 创建以下函数：`createSelectors` {#create-the-following-function:-`createselectors`}
+## 创建以下函数：`createSelectors` {#create-the-following-function:-createselectors}
 
 ```typescript
 import { StoreApi, UseBoundStore } from 'zustand'

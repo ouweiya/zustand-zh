@@ -5,7 +5,7 @@ nav: 14
 
 在需要[依赖注入](https://zh.wikipedia.org/wiki/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5)的情况下，例如当一个存储应该用组件的 props 进行初始化时，推荐的方法是使用带有 React.context 的原生存储。
 
-## 使用 `createStore` 的存储创建器 {#store-creator-with-`createstore`}
+## 使用 `createStore` 的存储创建器 {#store-creator-with-createstore}
 
 ```ts
 import { createStore } from 'zustand'
@@ -32,7 +32,7 @@ const createBearStore = (initProps?: Partial<BearProps>) => {
 }
 ```
 
-## 使用 `React.createContext` 创建上下文 {#creating-a-context-with-`react.createcontext`}
+## 使用 `React.createContext` 创建上下文 {#creating-a-context-with-react.createcontext}
 
 ```ts
 import { createContext } from 'react'
