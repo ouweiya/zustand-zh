@@ -1,7 +1,7 @@
 .demo {
     position: absolute;
-    left: 50%;
     transform: translateX(-60%);
+    left: 50%;
     padding-top: 40px;
 
     display: flex;
@@ -10,8 +10,14 @@
     gap: 24px;
 }
 
+@media (max-width: 900px) {
+    .demo {
+        display: none;
+    }
+}
+
 .code {
-    width: 650px;
+    width: 620px;
 }
 
 .preview {
@@ -34,6 +40,7 @@
     border-radius: 8px;
     padding: 4px 8px;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 .preview button:hover {

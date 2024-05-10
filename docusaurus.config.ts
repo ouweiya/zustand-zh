@@ -49,7 +49,7 @@ const config: Config = {
         navbar: {
             title: 'Zustand',
             logo: {
-                alt: 'My Site Logo',
+                alt: 'zustand-icon.png',
                 src: 'img/zustand-icon.png',
             },
             items: [
