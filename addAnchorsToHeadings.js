@@ -21,3 +21,6 @@ files.forEach((file) => {
   // 将更新后的数据写回文件
   writeFileSync(file, updatedData);
 });
+
+// \{#`(.+?)`\}
+// {#$1}
