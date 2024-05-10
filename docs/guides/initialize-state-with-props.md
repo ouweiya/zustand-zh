@@ -5,7 +5,7 @@ nav: 14
 
 In cases where [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection) is needed, such as when a store should be initialized with props from a component, the recommended approach is to use a vanilla store with React.context.
 
-## Store creator with `createStore`
+## Store creator with `createStore` {#store-creator-with-`createstore`}
 
 ```ts
 import { createStore } from 'zustand'
@@ -32,7 +32,7 @@ const createBearStore = (initProps?: Partial<BearProps>) => {
 }
 ```
 
-## Creating a context with `React.createContext`
+## Creating a context with `React.createContext` {#creating-a-context-with-`react.createcontext`}
 
 ```ts
 import { createContext } from 'react'
@@ -40,7 +40,7 @@ import { createContext } from 'react'
 export const BearContext = createContext<BearStore | null>(null)
 ```
 
-## Basic component usage
+## Basic component usage {#basic-component-usage}
 
 ```tsx
 // Provider implementation
@@ -75,9 +75,9 @@ function BasicConsumer() {
 }
 ```
 
-## Common patterns
+## Common patterns {#common-patterns}
 
-### Wrapping the context provider
+### Wrapping the context provider {#wrapping-the-context-provider}
 
 ```tsx
 // Provider wrapper
@@ -98,7 +98,7 @@ function BearProvider({ children, ...props }: BearProviderProps) {
 }
 ```
 
-### Extracting context logic into a custom hook
+### Extracting context logic into a custom hook {#extracting-context-logic-into-a-custom-hook}
 
 ```tsx
 // Mimic the hook returned by `create`
@@ -126,7 +126,7 @@ function CommonConsumer() {
 }
 ```
 
-### Optionally allow using a custom equality function
+### Optionally allow using a custom equality function {#optionally-allow-using-a-custom-equality-function}
 
 ```tsx
 // Allow custom equality function by using useStoreWithEqualityFn instead of useStore
@@ -143,7 +143,7 @@ function useBearContext<T>(
 }
 ```
 
-### Complete example
+### Complete example {#complete-example}
 
 ```tsx
 // Provider wrapper & custom hook consumer

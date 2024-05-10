@@ -3,7 +3,7 @@ title: Slices Pattern
 nav: 15
 ---
 
-## Slicing the store into smaller stores
+## Slicing the store into smaller stores {#slicing-the-store-into-smaller-stores}
 
 Your store can become bigger and bigger and tougher to maintain as you add more features.
 
@@ -41,7 +41,7 @@ export const useBoundStore = create((...a) => ({
 }))
 ```
 
-### Usage in a React component
+### Usage in a React component {#usage-in-a-react-component}
 
 ```jsx
 import { useBoundStore } from './stores/useBoundStore'
@@ -62,7 +62,7 @@ function App() {
 export default App
 ```
 
-### Updating multiple stores
+### Updating multiple stores {#updating-multiple-stores}
 
 You can update multiple stores, at the same time, in a single function.
 
@@ -90,7 +90,7 @@ export const useBoundStore = create((...a) => ({
 }))
 ```
 
-## Adding middlewares
+## Adding middlewares {#adding-middlewares}
 
 Adding middlewares to a combined store is the same as with other normal stores.
 
@@ -115,6 +115,6 @@ export const useBoundStore = create(
 
 Please keep in mind you should only apply middlewares in the combined store. Applying them inside individual slices can lead to unexpected issues.
 
-## Usage with TypeScript
+## Usage with TypeScript {#usage-with-typescript}
 
 A detailed guide on how to use the slice pattern in Zustand with TypeScript can be found [here](./typescript.md#slices-pattern).

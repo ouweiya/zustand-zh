@@ -15,7 +15,7 @@ but using an asynchronous storage does come with a cost.
 See [Hydration and asynchronous storages](#hydration-and-asynchronous-storages)
 for more details.
 
-## Simple example
+## Simple example {#simple-example}
 
 ```ts
 import { create } from 'zustand'
@@ -35,16 +35,16 @@ export const useBearStore = create(
 )
 ```
 
-## Options
+## Options {#options}
 
-### `name`
+### `name` {#`name`}
 
 This is the only required option.
 The given name is going to be the key
 used to store your Zustand state in the storage,
 so it must be unique.
 
-### `storage`
+### `storage` {#`storage`}
 
 > Type: `() => StateStorage`
 
@@ -76,7 +76,7 @@ export const useBoundStore = create(
 )
 ```
 
-### `partialize`
+### `partialize` {#`partialize`}
 
 > Type: `(state: Object) => Object`
 
@@ -121,7 +121,7 @@ export const useBoundStore = create(
 )
 ```
 
-### `onRehydrateStorage`
+### `onRehydrateStorage` {#`onrehydratestorage`}
 
 > Type: `(state: Object) => ((state?: Object, error?: Error) => void) | void`
 
@@ -155,7 +155,7 @@ export const useBoundStore = create(
 )
 ```
 
-### `version`
+### `version` {#`version`}
 
 > Type: `number`
 
@@ -169,7 +169,7 @@ the stored value won't be used.
 You can use the [migrate](#migrate) function (see below)
 to handle breaking changes in order to persist previously stored data.
 
-### `migrate`
+### `migrate` {#`migrate`}
 
 > Type: `(persistedState: Object, version: number) => Object | Promise<Object>`
 
@@ -206,7 +206,7 @@ export const useBoundStore = create(
 )
 ```
 
-### `merge`
+### `merge` {#`merge`}
 
 > Type: `(persistedState: Object, currentState: Object) => Object`
 
@@ -260,7 +260,7 @@ export const useBoundStore = create(
 )
 ```
 
-### `skipHydration`
+### `skipHydration` {#`skiphydration`}
 
 > Type: `boolean | undefined`
 
@@ -304,7 +304,7 @@ export function StoreConsumer() {
 }
 ```
 
-## API
+## API {#api}
 
 > Version: >=3.6.3
 
@@ -312,7 +312,7 @@ The Persist API enables you to do a number of interactions
 with the Persist middleware
 from inside or outside of a React component.
 
-### `getOptions`
+### `getOptions` {#`getoptions`}
 
 > Type: `() => Partial<PersistOptions>`
 
@@ -324,7 +324,7 @@ For example, it can be used to obtain the storage name:
 useBoundStore.persist.getOptions().name
 ```
 
-### `setOptions`
+### `setOptions` {#`setoptions`}
 
 > Type: `(newOptions: Partial<PersistOptions>) => void`
 
@@ -347,7 +347,7 @@ useBoundStore.persist.setOptions({
 })
 ```
 
-### `clearStorage`
+### `clearStorage` {#`clearstorage`}
 
 > Type: `() => void`
 
@@ -357,7 +357,7 @@ Clears everything stored under the [name](#name) key.
 useBoundStore.persist.clearStorage()
 ```
 
-### `rehydrate`
+### `rehydrate` {#`rehydrate`}
 
 > Type: `() => Promise<void>`
 
@@ -368,7 +368,7 @@ This can be done by calling the `rehydrate` method.
 await useBoundStore.persist.rehydrate()
 ```
 
-### `hasHydrated`
+### `hasHydrated` {#`hashydrated`}
 
 > Type: `() => boolean`
 
@@ -380,7 +380,7 @@ if the storage has been hydrated
 useBoundStore.persist.hasHydrated()
 ```
 
-### `onHydrate`
+### `onHydrate` {#`onhydrate`}
 
 > Type: `(listener: (state) => void) => () => void`
 
@@ -397,7 +397,7 @@ const unsub = useBoundStore.persist.onHydrate((state) => {
 unsub()
 ```
 
-### `onFinishHydration`
+### `onFinishHydration` {#`onfinishhydration`}
 
 > Type: `(listener: (state) => void) => () => void`
 
@@ -414,7 +414,7 @@ const unsub = useBoundStore.persist.onFinishHydration((state) => {
 unsub()
 ```
 
-### `createJSONStorage`
+### `createJSONStorage` {#`createjsonstorage`}
 
 > Type: `(getStorage: () => StateStorage, options?: JsonStorageOptions) => StateStorage`
 
@@ -445,7 +445,7 @@ const storage = createJSONStorage(() => sessionStorage, {
 })
 ```
 
-## Hydration and asynchronous storages
+## Hydration and asynchronous storages {#hydration-and-asynchronous-storages}
 
 To explain what is the "cost" of asynchronous storages,
 you need to understand what is hydration.
@@ -482,7 +482,7 @@ If your app does depends on the persisted state at page load,
 see [_How can I check if my store has been hydrated_](#how-can-i-check-if-my-store-has-been-hydrated)
 in the [FAQ](#faq) section below.
 
-### Usage in Next.js
+### Usage in Next.js {#usage-in-next.js}
 
 NextJS uses Server Side Rendering, and it will compare the rendered component on the server with the one rendered on client.
 But since you are using data from browser to change your component, the two renders will differ and Next will throw a warning at you.
@@ -551,9 +551,9 @@ const bears = useStore(useBearStore, (state) => state.bears)
 
 Credits: [This reply to an issue](https://github.com/pmndrs/zustand/issues/938#issuecomment-1481801942), which points to [this blog post](https://dev.to/abdulsamad/how-to-use-zustands-persist-middleware-in-nextjs-4lb5).
 
-## FAQ
+## FAQ {#faq}
 
-### How can I check if my store has been hydrated
+### How can I check if my store has been hydrated {#how-can-i-check-if-my-store-has-been-hydrated}
 
 There are a few different ways to do this.
 
@@ -621,7 +621,7 @@ const useHydration = () => {
 }
 ```
 
-### How can I use a custom storage engine
+### How can I use a custom storage engine {#how-can-i-use-a-custom-storage-engine}
 
 If the storage you want to use does not match the expected API, you can create your own storage:
 
@@ -708,7 +708,7 @@ export const useBearStore = create<BearState>()(
 )
 ```
 
-### How can I rehydrate on storage event
+### How can I rehydrate on storage event {#how-can-i-rehydrate-on-storage-event}
 
 You can use the Persist API to create your own implementation,
 similar to the example below:
@@ -734,7 +734,7 @@ const useBoundStore = create(persist(...))
 withStorageDOMEvents(useBoundStore)
 ```
 
-### How do I use it with TypeScript
+### How do I use it with TypeScript {#how-do-i-use-it-with-typescript}
 
 Basic typescript usage doesn't require anything special
 except for writing `create<State>()(...)` instead of `create(...)`.
@@ -763,7 +763,7 @@ export const useBearStore = create<MyState>()(
 )
 ```
 
-### How do I use it with Map and Set
+### How do I use it with Map and Set {#how-do-i-use-it-with-map-and-set}
 
 In order to persist object types such as `Map` and `Set`, they will need to be converted to JSON-serializable types such as an `Array` which can be done by defining a custom `storage` engine.
 

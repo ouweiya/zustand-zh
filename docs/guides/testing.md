@@ -4,9 +4,9 @@ description: Writing Tests
 nav: 9
 ---
 
-## Setting Up a Test Environment
+## Setting Up a Test Environment {#setting-up-a-test-environment}
 
-### Test Runners
+### Test Runners {#test-runners}
 
 Usually, your test runner needs to be configured to run JavaScript/TypeScript syntax. If you're
 going to be testing UI components, you will likely need to configure the test runner to use JSDOM
@@ -21,7 +21,7 @@ See these resources for test runner configuration instructions:
   - [Vitest: Getting Started](https://vitest.dev/guide)
   - [Vitest: Configuration - Test Environment](https://vitest.dev/config/#environment)
 
-### UI and Network Testing Tools
+### UI and Network Testing Tools {#ui-and-network-testing-tools}
 
 **We recommend using [React Testing Library (RTL)](https://testing-library.com/docs/react-testing-library/intro)
 to test out React components that connect to Zustand**. RTL is a simple and complete React DOM
@@ -50,14 +50,14 @@ this means your application logic does not need to be changed or mocked when wri
   - [MSW: Setting up mock requests](https://mswjs.io/docs/getting-started/mocks/rest-api)
   - [MSW: Mock server configuration for Node](https://mswjs.io/docs/getting-started/integrate/node)
 
-## Setting Up Zustand for testing
+## Setting Up Zustand for testing {#setting-up-zustand-for-testing}
 
 > **Note**: Since Jest and Vitest have slight differences, like Vitest using **ES modules** and Jest using
 > **CommonJS modules**, you need to keep that in mind if you are using Vitest instead of Jest.
 
 The mock provided below will enable the relevant test runner to reset the zustand stores after each test.
 
-### Shared code just for testing purposes
+### Shared code just for testing purposes {#shared-code-just-for-testing-purposes}
 
 This shared code was added to avoid code duplication in our demo since we use the same counter store
 creator for both implementations, with and without `Context` API — `createStore` and `create`, respectively.
@@ -77,7 +77,7 @@ export const counterStoreCreator: StateCreator<CounterStore> = (set) => ({
 })
 ```
 
-### Jest
+### Jest {#jest}
 
 In the next steps we are going to setup our Jest environment in order to mock Zustand.
 
@@ -160,7 +160,7 @@ export default config
 
 > **Note**: to use TypeScript we need to install two packages `ts-jest` and `ts-node`.
 
-### Vitest
+### Vitest {#vitest}
 
 In the next steps we are going to setup our Vitest environment in order to mock Zustand.
 
@@ -268,7 +268,7 @@ export default mergeConfig(
 )
 ```
 
-### Testing components
+### Testing components {#testing-components}
 
 In the next examples we are going to use `useCounterStore`
 
@@ -496,7 +496,7 @@ const renderCounterWithContext = () => {
 - Jest Demo: https://stackblitz.com/edit/jest-zustand
 - Vitest Demo: https://stackblitz.com/edit/vitest-zustand
 
-## References
+## References {#references}
 
 - **React Testing Library**: [React Testing Library (RTL)](https://testing-library.com/docs/react-testing-library/intro)
   is a very lightweight solution for testing React components. It provides utility functions on top

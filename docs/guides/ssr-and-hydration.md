@@ -3,13 +3,13 @@ title: SSR and Hydration
 nav: 20
 ---
 
-## Server-side Rendering (SSR)
+## Server-side Rendering (SSR) {#server-side-rendering-(ssr)}
 
 Server-side Rendering (SSR) is a technique that helps us render our components into
 HTML strings on the server, send them directly to the browser, and finally "hydrate" the
 static markup into a fully interactive app on the client.
 
-### React
+### React {#react}
 
 Let's say we want to render a stateless app using React. In order to do that, we need
 to use `express`, `react` and `react-dom/server`. We don't need `react-dom/client`
@@ -88,12 +88,12 @@ tsc --build
 node server.js
 ```
 
-## Hydration
+## Hydration {#hydration}
 
 Hydration turns the initial HTML snapshot from the server into a fully interactive app
 that runs in the browser. The right way to "hydrate" a component is by using `hydrateRoot`.
 
-### React
+### React {#react}
 
 Let's say we want to render a stateful app using React. In order to do that we need to
 use `express`, `react`, `react-dom/server` and `react-dom/client`.

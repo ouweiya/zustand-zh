@@ -131,7 +131,7 @@ const useBoundStore = create<BearSlice & FishSlice>()((...a) => ({
 export default useBoundStore
 ```
 
-## CodeSandbox Demo
+## CodeSandbox Demo {#codesandbox-demo}
 
 - Basic: https://codesandbox.io/s/zustand-how-to-reset-state-basic-demo-rrqyon
 - Advanced: https://codesandbox.io/s/zustand-how-to-reset-state-advanced-demo-gtu0qe

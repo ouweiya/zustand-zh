@@ -12,9 +12,9 @@ Zustand 是 React 的众多状态管理库之一。
 每个库都有自己的优点和缺点，
 我们将比较每个库之间的关键差异和相似之处。
 
-## Redux
+## Redux {#redux}
 
-### 状态模型（与 Redux 的比较）
+### 状态模型（与 Redux 的比较） {#状态模型（与-redux-的比较）}
 
 从概念上讲，Zustand 和 Redux 非常相似，
 它们都基于不可变的状态模型。
@@ -113,8 +113,8 @@ const countSlice = createSlice({
   initialState: { value: 0 },
   reducers: {
     incremented: (state, qty: number) => {
-      // Redux Toolkit does not mutate the state, it uses the Immer library
-      // behind scenes, allowing us to have something called "draft state".
+      // Redux Toolkit 不会改变状态，它在幕后使用 Immer 库，
+      // 允许我们拥有所谓的 "草稿状态"。
       state.value += qty
     },
     decremented: (state, qty: number) => {
@@ -126,12 +126,11 @@ const countSlice = createSlice({
 const countStore = configureStore({ reducer: countSlice.reducer })
 ```
 
-### Render Optimization (vs Redux)
+### 渲染优化（与 Redux 的比较）
 
-When it comes to render optimizations within your app,
-there are no major differences in approach between Zustand and Redux.
-In both libraries it is recommended
-that you manually apply render optimizations by using selectors.
+在你的应用程序内进行渲染优化时，
+Zustand 和 Redux 之间在方法上没有主要的差异。
+在这两个库中，都建议你通过使用选择器手动应用渲染优化。
 
 **Zustand**
 
@@ -206,8 +205,8 @@ const countSlice = createSlice({
   initialState: { value: 0 },
   reducers: {
     incremented: (state, qty: number) => {
-      // Redux Toolkit does not mutate the state, it uses the Immer library
-      // behind scenes, allowing us to have something called "draft state".
+      // Redux Toolkit 不会改变状态，它在幕后使用 Immer 库，
+      // 允许我们拥有所谓的 "草稿状态"。
       state.value += qty
     },
     decremented: (state, qty: number) => {
@@ -230,14 +229,14 @@ const Component = () => {
 }
 ```
 
-## Valtio
+## Valtio {#valtio}
 
-### State Model (vs Valtio)
+### 状态模型（与 Valtio 的比较）
 
-Zustand and Valtio approach state management
-in a fundamentally different way.
-Zustand is based on the **immutable** state model,
-while Valtio is based on the **mutable** state model.
+Zustand 和 Valtio 在状态管理上的方法
+有着根本的不同。
+Zustand 基于**不可变**的状态模型，
+而 Valtio 基于**可变**的状态模型。
 
 **Zustand**
 
@@ -263,12 +262,12 @@ const state = proxy({ obj: { count: 0 } })
 state.obj.count += 1
 ```
 
-### Render Optimization (vs Valtio)
+### 渲染优化（与 Valtio 的比较）
 
-The other difference between Zustand and Valtio
-is Valtio makes render optimizations through property access.
-However, with Zustand, it is recommended that
-you manually apply render optimizations by using selectors.
+Zustand 和 Valtio 的另一个区别是
+Valtio 通过属性访问进行渲染优化。
+然而，对于 Zustand，建议你
+通过使用选择器手动应用渲染优化。
 
 **Zustand**
 
@@ -304,16 +303,15 @@ const Component = () => {
 }
 ```
 
-## Jotai
+## Jotai {#jotai}
 
-### State Model (vs Jotai)
+### 状态模型（与 Jotai 的比较）
 
-There are two major differences between Zustand and Jotai.
-Firstly, Zustand is a single store,
-while Jotai consists of primitive atoms
-that can be composed together.
-Secondly, a Zustand store is an external store,
-making it more suitable when access outside of React is required.
+Zustand 和 Jotai 之间有两个主要的区别。
+首先，Zustand 是一个单一的存储，
+而 Jotai 由可以组合在一起的原子组成。
+其次，Zustand 存储是一个外部存储，
+当需要在 React 外部访问时，它更适合。
 
 **Zustand**
 
@@ -345,11 +343,11 @@ import { atom } from 'jotai'
 const countAtom = atom<number>(0)
 ```
 
-### Render Optimization (vs Jotai)
+### 渲染优化（与 Jotai 的比较）
 
-Jotai achieves render optimizations through atom dependency.
-However, with Zustand it is recommended that
-you manually apply render optimizations by using selectors.
+Jotai 通过原子依赖实现渲染优化。
+然而，对于 Zustand，建议你
+通过使用选择器手动应用渲染优化。
 
 **Zustand**
 
@@ -392,15 +390,15 @@ const Component = () => {
 }
 ```
 
-## Recoil
+## Recoil {#recoil}
 
-### State Model (vs Recoil)
+### 状态模型（与 Recoil 的比较）
 
-The difference between Zustand and Recoil
-is similar to that between Zustand and Jotai.
-Recoil depends on atom string keys
-instead of atom object referential identities.
-Additionally, Recoil needs to wrap your app in a context provider.
+Zustand 和 Recoil 之间的差异
+与 Zustand 和 Jotai 之间的差异类似。
+Recoil 依赖于原子字符串键，
+而不是原子对象的引用身份。
+此外，Recoil 需要将你的应用包裹在上下文提供者中。
 
 **Zustand**
 
@@ -433,12 +431,12 @@ const count = atom({
 })
 ```
 
-### Render Optimization (vs Recoil)
+### 渲染优化（与 Recoil 的比较）
 
-Similar to previous optimization comparisons,
-Recoil makes render optimizations through atom dependency.
-Whereas with Zustand, it is recommended that
-you manually apply render optimizations by using selectors.
+与之前的优化比较类似，
+Recoil 通过原子依赖进行渲染优化。
+然而，对于 Zustand，建议你
+通过使用选择器手动应用渲染优化。
 
 **Zustand**
 
@@ -482,6 +480,6 @@ const Component = () => {
 }
 ```
 
-## Npm Downloads Trend
+## Npm 下载趋势 {#npm-downloads-trend}
 
-- [Npm Downloads Trend of State Management Libraries for React](https://npm-compare.com/@reduxjs/toolkit,zustand,recoil,jotai,valtio/#timeRange=THREE_YEARS)
+- [React 状态管理库的 Npm 下载趋势](https://npm-compare.com/@reduxjs/toolkit,zustand,recoil,jotai,valtio/#timeRange=THREE_YEARS)

@@ -3,7 +3,7 @@ title: TypeScript Guide
 nav: 8
 ---
 
-## Basic usage
+## Basic usage {#basic-usage}
 
 The difference when using TypeScript is that instead of writing `create(...)`, you have to write `create<T>()(...)` (notice the extra parentheses `()` too along with the type parameter) where `T` is the type of the state to annotate it. For example:
 
@@ -161,7 +161,7 @@ It isn't really a lie because `{ bears: number }` is still a subtype of `{ bears
 
 Note that we don't use the curried version when using `combine` because `combine` "creates" the state. When using a middleware that creates the state, it isn't necessary to use the curried version because the state now can be inferred. Another middleware that creates state is `redux`. So when using `combine`, `redux`, or any other custom middleware that creates the state, we don't recommend using the curried version.
 
-## Using middlewares
+## Using middlewares {#using-middlewares}
 
 You do not have to do anything special to use middlewares in TypeScript.
 
@@ -210,7 +210,7 @@ const useBearStore = create<BearState>()(
 
 Also, we recommend using `devtools` middleware as last as possible. For example, when you use it with `immer` as a middleware, it should be `immer(devtools(...))` and not `devtools(immer(...))`. This is because`devtools` mutates the `setState` and adds a type parameter on it, which could get lost if other middlewares (like `immer`) also mutate `setState` before `devtools`. Hence using `devtools` at the end makes sure that no middlewares mutate `setState` before it.
 
-## Authoring middlewares and advanced usage
+## Authoring middlewares and advanced usage {#authoring-middlewares-and-advanced-usage}
 
 Imagine you had to write this hypothetical middleware.
 
@@ -232,9 +232,9 @@ For a usual statically typed language, this is impossible. But thanks to TypeScr
 
 If you are eager to know what the answer is to this particular problem then you can [see it here](#middleware-that-changes-the-store-type).
 
-## Common recipes
+## Common recipes {#common-recipes}
 
-### Middleware that doesn't change the store type
+### Middleware that doesn't change the store type {#middleware-that-doesn't-change-the-store-type}
 
 ```ts
 import { create, State, StateCreator, StoreMutatorIdentifier } from 'zustand'
@@ -283,7 +283,7 @@ const useBearStore = create<BearState>()(
 )
 ```
 
-### Middleware that changes the store type
+### Middleware that changes the store type {#middleware-that-changes-the-store-type}
 
 ```ts
 import {
@@ -337,7 +337,7 @@ const useBearStore = create(foo(() => ({ bears: 0 }), 'hello'))
 console.log(useBearStore.foo.toUpperCase())
 ```
 
-### `create` without curried workaround
+### `create` without curried workaround {#`create`-without-curried-workaround}
 
 The recommended way to use `create` is using the curried workaround like so: `create<T>()(...)`. This is because it enables you to infer the store type. But if for some reason you do not want to use the workaround, you can pass the type parameters like the following. Note that in some cases, this acts as an assertion instead of annotation, so we don't recommend it.
 
@@ -361,7 +361,7 @@ const useBearStore = create<
 }), { name: 'bearStore' }))
 ```
 
-### Slices pattern
+### Slices pattern {#slices-pattern}
 
 ```ts
 import { create, StateCreator } from 'zustand'
@@ -430,7 +430,7 @@ A detailed explanation on the slices pattern can be found [here](./slices-patter
 
 If you have some middlewares then replace `StateCreator<MyState, [], [], MySlice>` with `StateCreator<MyState, Mutators, [], MySlice>`. For example, if you are using `devtools` then it will be `StateCreator<MyState, [["zustand/devtools", never]], [], MySlice>`. See the ["Middlewares and their mutators reference"](#middlewares-and-their-mutators-reference) section for a list of all mutators.
 
-### Bounded `useStore` hook for vanilla stores
+### Bounded `useStore` hook for vanilla stores {#bounded-`usestore`-hook-for-vanilla-stores}
 
 ```ts
 import { useStore } from 'zustand'
@@ -483,7 +483,7 @@ type ExtractState<S> = S extends { getState: () => infer X } ? X : never
 const useBearStore = createBoundedUseStore(bearStore)
 ```
 
-## Middlewares and their mutators reference
+## Middlewares and their mutators reference {#middlewares-and-their-mutators-reference}
 
 - `devtools` — `["zustand/devtools", never]`
 - `persist` — `["zustand/persist", YourPersistedState]`<br/>

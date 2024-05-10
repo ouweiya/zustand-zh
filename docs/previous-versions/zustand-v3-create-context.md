@@ -29,7 +29,7 @@ const Component = () => {
 }
 ```
 
-## createContext usage in real components
+## createContext usage in real components {#createcontext-usage-in-real-components}
 
 ```jsx
 import create from "zustand";
@@ -81,7 +81,7 @@ export default function App() {
 }
 ```
 
-## createContext usage with initialization from props
+## createContext usage with initialization from props {#createcontext-usage-with-initialization-from-props}
 
 ```tsx
 import create from 'zustand'
@@ -105,7 +105,7 @@ export default function App({ initialBears }) {
 }
 ```
 
-## Migration
+## Migration {#migration}
 
 Discussion: https://github.com/pmndrs/zustand/discussions/1276
 

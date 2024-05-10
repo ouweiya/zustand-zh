@@ -30,7 +30,7 @@ we can skip the `...state` part:
 set((state) => ({ count: state.count + 1 }))
 ```
 
-## Nested objects
+## Nested objects {#nested-objects}
 
 The `set` function merges state at only one level.
 If you have a nested object, you need to merge them explicitly. You will use the spread operator pattern like so:
@@ -50,7 +50,7 @@ const useCountStore = create((set) => ({
 For complex use cases, consider using some libraries that help with immutable updates.
 You can refer to [Updating nested state object values](./updating-state.md#deeply-nested-object).
 
-## Replace flag
+## Replace flag {#replace-flag}
 
 To disable the merging behavior, you can specify a `replace` boolean value for `set` like so:
 

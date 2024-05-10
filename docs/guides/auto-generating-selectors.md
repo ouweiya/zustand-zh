@@ -11,7 +11,7 @@ const bears = useBearStore((state) => state.bears)
 
 However, writing these could be tedious. If that is the case for you, you can auto-generate your selectors.
 
-## create the following function: `createSelectors`
+## create the following function: `createSelectors` {#create-the-following-function:-`createselectors`}
 
 ```typescript
 import { StoreApi, UseBoundStore } from 'zustand'
@@ -65,7 +65,7 @@ const bears = useBearStore.use.bears()
 const increment = useBearStore.use.increment()
 ```
 
-## Vanilla Store
+## Vanilla Store {#vanilla-store}
 
 If you are using a vanilla store, use the following `createSelectors` function:
 
@@ -122,11 +122,11 @@ const bears = useBearStore.use.bears()
 const increment = useBearStore.use.increment()
 ```
 
-## Live Demo
+## Live Demo {#live-demo}
 
 For a working example of this, see the [Code Sandbox](https://codesandbox.io/s/zustand-auto-generate-selectors-forked-rl8v5e?file=/src/selectors.ts).
 
-## Third-party Libraries
+## Third-party Libraries {#third-party-libraries}
 
 - [auto-zustand-selectors-hook](https://github.com/Albert-Gao/auto-zustand-selectors-hook)
 - [react-hooks-global-state](https://github.com/dai-shi/react-hooks-global-state)

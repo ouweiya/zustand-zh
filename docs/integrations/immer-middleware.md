@@ -8,7 +8,7 @@ to use immutable state in a more convenient way.
 Also, with Immer, you can simplify handling
 immutable data structures in Zustand.
 
-## Installation
+## Installation {#installation}
 
 In order to use the Immer middleware in Zustand,
 you will need to install Immer as a direct dependency.
@@ -17,7 +17,7 @@ you will need to install Immer as a direct dependency.
 npm install immer
 ```
 
-## Usage
+## Usage {#usage}
 
 (Notice the extra parentheses after the type parameter as mentioned in the [Typescript Guide](../guides/typescript.md)).
 
@@ -103,12 +103,12 @@ export const useTodoStore = create<State & Actions>()(
 )
 ```
 
-## Gotchas
+## Gotchas {#gotchas}
 
 In this section you will find some things
 that you need to keep in mind when using Zustand with Immer.
 
-### My subscriptions aren't being called
+### My subscriptions aren't being called {#my-subscriptions-aren't-being-called}
 
 If you are using Immer,
 make sure you are actually following
@@ -123,7 +123,7 @@ so since both the current state and the next state are
 equal (if you don't do it correctly),
 Zustand will skip calling the subscriptions.
 
-## CodeSandbox Demo
+## CodeSandbox Demo {#codesandbox-demo}
 
 - [Basic](https://codesandbox.io/p/sandbox/zustand-updating-draft-states-basic-demo-forked-96mkdw),
 - [Advanced](https://codesandbox.io/p/sandbox/zustand-updating-draft-states-advanced-demo-forked-phkzzg).

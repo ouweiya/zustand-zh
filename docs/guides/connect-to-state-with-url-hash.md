@@ -3,7 +3,7 @@ title: Connect to state with URL
 nav: 12
 ---
 
-## Connect State with URL Hash
+## Connect State with URL Hash {#connect-state-with-url-hash}
 
 If you want to connect state of a store to URL hash, you can create your own hash storage.
 
@@ -43,11 +43,11 @@ export const useBoundStore = create(
 )
 ```
 
-### CodeSandbox Demo
+### CodeSandbox Demo {#codesandbox-demo}
 
 https://codesandbox.io/s/zustand-state-with-url-hash-demo-f29b88?file=/src/store/index.ts
 
-## Persist and Connect State with URL Parameters (Example: URL Query Parameters)
+## Persist and Connect State with URL Parameters (Example: URL Query Parameters) {#persist-and-connect-state-with-url-parameters-(example:-url-query-parameters)}
 
 There are times when you want to conditionally connect the state to the URL.
 This example depicts usage of the URL query parameters

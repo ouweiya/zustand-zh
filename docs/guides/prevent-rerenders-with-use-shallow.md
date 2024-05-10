@@ -11,7 +11,7 @@ The computed selector will cause a rererender if the output has changed accordin
 In this case you might want to use `useShallow` to avoid a rerender if the computed value is always shallow
 equal the previous one.
 
-## Example
+## Example {#example}
 
 We have a store that associates to each bear a meal and we want to render their names.
 

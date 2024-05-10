@@ -18,7 +18,7 @@ you can also check the
 [diff](https://github.com/pmndrs/zustand/compare/v3.7.2...v4.0.0?short_path=37e5b4c#diff-c21e24854115b390eccde717da83f91feb2d5927a76c1485e5f0fdd0135c2afa)
 of the test files in the Zustand repository from v3 to v4.
 
-## `create`
+## `create` {#`create`}
 
 **Applicable imports**
 
@@ -53,7 +53,7 @@ remove all type parameters from `create`.
 
 Else, replace `create<T, ...>(...)` with `create<T>()(...)`.
 
-## `StateCreator`
+## `StateCreator` {#`statecreator`}
 
 **Applicable imports**
 
@@ -91,7 +91,7 @@ For that check the
 and [Common recipes](../guides/typescript.md#common-recipes)
 sections of the TypeScript Guide.
 
-## `PartialState`
+## `PartialState` {#`partialstate`}
 
 **Applicable imports**
 
@@ -135,7 +135,7 @@ We're no longer using the trick to disallow `{ foo: undefined }`
 to be assigned to `Partial<{ foo: string }>`.
 Instead, we're relying on the users to turn on `exactOptionalPropertyTypes`.
 
-## `useStore`
+## `useStore` {#`usestore`}
 
 **Applicable imports**
 
@@ -173,7 +173,7 @@ If you are,
 it's recommended to remove all the type parameters,
 or pass the **store** type instead of the **state** type as the first parameter.
 
-## `UseBoundStore`
+## `UseBoundStore` {#`useboundstore`}
 
 **Applicable imports**
 
@@ -210,7 +210,7 @@ import type { UseBoundStore } from 'zustand/react'
 Replace `UseBoundStore<T>` with `UseBoundStore<StoreApi<T>>`,
 and `UseBoundStore<T, S>` with `UseBoundStore<S>`
 
-## `UseContextStore`
+## `UseContextStore` {#`usecontextstore`}
 
 **Applicable imports**
 
@@ -228,7 +228,7 @@ import type { UseContextStore } from 'zustand/context'
 
 Use `typeof MyContext.useStore` instead
 
-## `createContext`
+## `createContext` {#`createcontext`}
 
 **Applicable imports**
 
@@ -249,7 +249,7 @@ import createContext from 'zustand/context'
 Replace `createContext<T>()` with `createContext<StoreApi<T>>()`,
 and `createContext<T, S>()` with `createContext<S>()`.
 
-## `combine`, `devtools`, `subscribeWithSelector`
+## `combine`, `devtools`, `subscribeWithSelector` {#`combine`,-`devtools`,-`subscribewithselector`}
 
 **Applicable imports**
 
@@ -288,7 +288,7 @@ If you are,
 remove all the type parameters,
 as they are inferred automatically.
 
-## `persist`
+## `persist` {#`persist`}
 
 **Applicable imports**
 
@@ -333,7 +333,7 @@ you should not encounter any bugs.
 The runtime behavior has not changed,
 only the types are now correct.
 
-## `redux`
+## `redux` {#`redux`}
 
 **Applicable imports**
 

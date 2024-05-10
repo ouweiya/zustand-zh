@@ -31,7 +31,7 @@ We have these general recommendations for the appropriate use of Zustand:
   meant to be stateful. Having an RSC read from or write values to a global store violates the
   architecture of Next.js.
 
-### Creating a store per request
+### Creating a store per request {#creating-a-store-per-request}
 
 Let's write our store factory function that will create a new store for each
 request.
@@ -98,7 +98,7 @@ export const createCounterStore = (
 }
 ```
 
-### Providing the store
+### Providing the store {#providing-the-store}
 
 Let's use the `createCounterStore` in our component and share it using a context provider.
 
@@ -155,7 +155,7 @@ export const useCounterStore = <T,>(
 > there are stateful client components located above this component in the tree, or if this component
 > also contains other mutable state that causes a re-render.
 
-### Initializing the store
+### Initializing the store {#initializing-the-store}
 
 ```ts
 // src/stores/counter-store.ts
@@ -242,14 +242,14 @@ export const useCounterStore = <T,>(
 }
 ```
 
-### Using the store with different architectures
+### Using the store with different architectures {#using-the-store-with-different-architectures}
 
 There are two architectures for a Next.js application: the
 [Pages Router](https://nextjs.org/docs/pages/building-your-application/routing) and the
 [App Router](https://nextjs.org/docs/app/building-your-application/routing). The usage of Zustand on
 both architectures should be the same with slight differences related to each architecture.
 
-#### Pages Router
+#### Pages Router {#pages-router}
 
 ```tsx
 // src/components/pages/home-page.tsx
@@ -317,7 +317,7 @@ export default function Home() {
 }
 ```
 
-#### App Router
+#### App Router {#app-router}
 
 ```tsx
 // src/components/pages/home-page.tsx

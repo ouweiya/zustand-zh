@@ -11,20 +11,20 @@ so if you are coming from another library, you should feel right at home.
 However, Zustand does differ in some fundamental ways,
 so some terminology may not perfectly align to other libraries.
 
-## Recommended patterns
+## Recommended patterns {#recommended-patterns}
 
-### Single store
+### Single store {#single-store}
 
 Your applications global state should be located in a single Zustand store.
 
 If you have a large application, Zustand supports [splitting the store into slices](./slices-pattern.md).
 
-### Use `set` / `setState` to update the store
+### Use `set` / `setState` to update the store {#use-`set`-/-`setstate`-to-update-the-store}
 
 Always use `set` (or `setState`) to perform updates to your store.
 `set` (and `setState`) ensures the described update is correctly merged and listeners are appropriately notified.
 
-### Colocate store actions
+### Colocate store actions {#colocate-store-actions}
 
 In Zustand, state can be updated without the use of dispatched actions and reducers found in other Flux libraries.
 These store actions can be added directly to the store as shown below.
@@ -41,7 +41,7 @@ const useBoundStore = create((set) => ({
 }))
 ```
 
-## Redux-like patterns
+## Redux-like patterns {#redux-like-patterns}
 
 If you can't live without Redux-like reducers, you can define a `dispatch` function on the root level of the store:
 

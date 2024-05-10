@@ -3,7 +3,7 @@ title: Updating state
 nav: 3
 ---
 
-## Flat updates
+## Flat updates {#flat-updates}
 
 Updating state with Zustand is simple! Call the provided `set` function with
 the new state, and it will be shallowly merged with the existing state in the
@@ -56,7 +56,7 @@ function App() {
 }
 ```
 
-## Deeply nested object
+## Deeply nested object {#deeply-nested-object}
 
 If you have a deep state object like this:
 
@@ -73,7 +73,7 @@ type State = {
 Updating nested state requires some effort to ensure the process is completed
 immutably.
 
-### Normal approach
+### Normal approach {#normal-approach}
 
 Similar to React or Redux, the normal approach is to copy each level of the
 state object. This is done with the spread operator `...`, and by manually
@@ -98,7 +98,7 @@ merging that in with the new state values. Like so:
 This is very long! Let's explore some alternatives that will make your life
 easier.
 
-### With Immer
+### With Immer {#with-immer}
 
 Many people use [Immer](https://github.com/immerjs/immer) to update nested
 values. Immer can be used anytime you need to update nested state such as in
@@ -114,7 +114,7 @@ take a look at an example:
 
 What a reduction! Please take note of the [gotchas listed here](../integrations/immer-middleware.md).
 
-### With optics-ts
+### With optics-ts {#with-optics-ts}
 
 There is another option with [optics-ts](https://github.com/akheron/optics-ts/):
 
@@ -125,7 +125,7 @@ There is another option with [optics-ts](https://github.com/akheron/optics-ts/):
 
 Unlike Immer, optics-ts doesn't use proxies or mutation syntax.
 
-### With Ramda
+### With Ramda {#with-ramda}
 
 You can also use [Ramda](https://ramdajs.com/):
 
@@ -136,6 +136,6 @@ You can also use [Ramda](https://ramdajs.com/):
 
 Both ramda and optics-ts also work with types.
 
-### CodeSandbox Demo
+### CodeSandbox Demo {#codesandbox-demo}
 
 https://codesandbox.io/s/zustand-normal-immer-optics-ramda-updating-ynn3o?file=/src/App.tsx
