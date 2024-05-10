@@ -1,57 +1,53 @@
 ---
-title: SSR and Hydration
+title: 服务器端渲染和注水
 nav: 20
 ---
 
-## Server-side Rendering (SSR) {#server-side-rendering-(ssr)}
+## 服务器端渲染 (SSR) {#server-side-rendering-(ssr)}
 
-Server-side Rendering (SSR) is a technique that helps us render our components into
-HTML strings on the server, send them directly to the browser, and finally "hydrate" the
-static markup into a fully interactive app on the client.
+服务器端渲染 (SSR) 是一种技术，它帮助我们在服务器上将组件渲染成 HTML 字符串，直接发送到浏览器，最后在客户端将静态标记"注水"成一个完全交互式的应用。
 
 ### React {#react}
 
-Let's say we want to render a stateless app using React. In order to do that, we need
-to use `express`, `react` and `react-dom/server`. We don't need `react-dom/client`
-since it's a stateless app.
+假设我们想要使用 React 渲染一个无状态的应用。为了做到这一点，我们需要使用 `express`，`react` 和 `react-dom/server`。由于它是一个无状态的应用，我们不需要 `react-dom/client`。
 
-Let's dive into that:
+让我们深入了解一下：
 
-- `express` helps us build a web app that we can run using Node,
-- `react` helps us build the UI components that we use in our app,
-- `react-dom/server` helps us render our components on a server.
+- `express` 帮助我们构建一个可以使用 Node 运行的 web 应用，
+- `react` 帮助我们构建应用中使用的 UI 组件，
+- `react-dom/server` 帮助我们在服务器上渲染组件。
 
 ```json
 // tsconfig.json
 {
-  "compilerOptions": {
-    "noImplicitAny": false,
-    "noEmitOnError": true,
-    "removeComments": false,
-    "sourceMap": true,
-    "target": "esnext"
-  },
-  "include": ["**/*"]
+    "compilerOptions": {
+        "noImplicitAny": false,
+        "noEmitOnError": true,
+        "removeComments": false,
+        "sourceMap": true,
+        "target": "esnext"
+    },
+    "include": ["**/*"]
 }
 ```
 
-> **Note:** do not forget to remove all comments from your `tsconfig.json` file.
+> **注意：**不要忘记从你的 `tsconfig.json` 文件中删除所有注释。
 
 ```tsx
 // app.tsx
 export const App = () => {
-  return (
-    <html>
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Static Server-side-rendered App</title>
-      </head>
-      <body>
-        <div>Hello World!</div>
-      </body>
-    </html>
-  )
+    return (
+        <html>
+            <head>
+                <meta charSet="utf-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <title>静态服务器端渲染应用</title>
+            </head>
+            <body>
+                <div>你好，世界！</div>
+            </body>
+        </html>
+    )
 }
 ```
 
@@ -67,16 +63,16 @@ const port = Number.parseInt(process.env.PORT || '3000', 10)
 const app = express()
 
 app.get('/', (_, res) => {
-  const { pipe } = ReactDOMServer.renderToPipeableStream(<App />, {
-    onShellReady() {
-      res.setHeader('content-type', 'text/html')
-      pipe(res)
-    },
-  })
+    const { pipe } = ReactDOMServer.renderToPipeableStream(<App />, {
+        onShellReady() {
+            res.setHeader('content-type', 'text/html')
+            pipe(res)
+        },
+    })
 })
 
 app.listen(port, () => {
-  console.log(`Server is listening at ${port}`)
+    console.log(`服务器正在监听 ${port} 端口`)
 })
 ```
 
@@ -88,25 +84,22 @@ tsc --build
 node server.js
 ```
 
-## Hydration {#hydration}
+## 注水 {#hydration}
 
-Hydration turns the initial HTML snapshot from the server into a fully interactive app
-that runs in the browser. The right way to "hydrate" a component is by using `hydrateRoot`.
+注水将服务器的初始 HTML 快照转换为在浏览器中运行的完全交互式应用。"注水"组件的正确方式是使用 `hydrateRoot`。
 
 ### React {#react}
 
-Let's say we want to render a stateful app using React. In order to do that we need to
-use `express`, `react`, `react-dom/server` and `react-dom/client`.
+假设我们想要使用 React 渲染一个有状态的应用。为了做到这一点，我们需要使用 `express`，`react`，`react-dom/server` 和 `react-dom/client`。
 
-Let's dive into that:
+让我们深入了解一下：
 
-- `express` helps us build a web app that we can run using Node,
-- `react` helps us build the UI components that we use in our app,
-- `react-dom/server` helps us render our components on a server,
-- `react-dom/client` helps us hydrate our components on a client.
+- `express` 帮助我们构建一个可以使用 Node 运行的 web 应用，
+- `react` 帮助我们构建应用中使用的 UI 组件，
+- `react-dom/server` 帮助我们在服务器上渲染组件，
+- `react-dom/client` 帮助我们在客户端注水我们的组件。
 
-> **Note:** Do not forget that even if we can render our components on a server, it is
-> important to "hydrate" them on a client to make them interactive.
+> **注意：**即使我们可以在服务器上渲染我们的组件，但是在客户端"注水"它们以使它们交互式是非常重要的。
 
 ```json
 // tsconfig.json
@@ -122,7 +115,7 @@ Let's dive into that:
 }
 ```
 
-> **Note:** do not forget to remove all comments in your `tsconfig.json` file.
+> **注意：**不要忘记从你的 `tsconfig.json` 文件中删除所有注释。
 
 ```tsx
 // app.tsx
@@ -185,14 +178,14 @@ tsc --build
 node server.js
 ```
 
-> **Warning:** The React tree you pass to `hydrateRoot` needs to produce the same output as it did on the server.
-> The most common causes leading to hydration errors include:
+> **警告：**你传递给 `hydrateRoot` 的 React 树需要产生与服务器上相同的输出。
+> 导致注水错误的最常见原因包括：
 >
-> - Extra whitespace (like newlines) around the React-generated HTML inside the root node.
-> - Using checks like typeof window !== 'undefined' in your rendering logic.
-> - Using browser-only APIs like `window.matchMedia` in your rendering logic.
-> - Rendering different data on the server and the client.
+> - 根节点内部 React 生成的 HTML 周围有额外的空白（如换行）。
+> - 在你的渲染逻辑中使用诸如 typeof window !== 'undefined' 的检查。
+> - 在你的渲染逻辑中使用仅浏览器可用的 API，如 `window.matchMedia`。
+> - 在服务器和客户端上渲染不同的数据。
 >
-> React recovers from some hydration errors, but you must fix them like other bugs. In the best case, they’ll lead to a slowdown; in the worst case, event handlers can get attached to the wrong elements.
+> React 可以从一些注水错误中恢复，但你必须像处理其他 bug 一样修复它们。在最好的情况下，它们会导致速度变慢；在最坏的情况下，事件处理器可能会附加到错误的元素上。
 
-You can read more about the caveats and pitfalls here: [hydrateRoot](https://react.dev/reference/react-dom/client/hydrateRoot)
+你可以在这里阅读更多关于注意事项和陷阱的信息：[hydrateRoot](https://react.dev/reference/react-dom/client/hydrateRoot)

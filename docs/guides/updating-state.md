@@ -1,13 +1,11 @@
 ---
-title: Updating state
+title: 更新状态
 nav: 3
 ---
 
-## Flat updates {#flat-updates}
+## 平面更新 {#flat-updates}
 
-Updating state with Zustand is simple! Call the provided `set` function with
-the new state, and it will be shallowly merged with the existing state in the
-store. **Note** See next section for nested state.
+使用 Zustand 更新状态非常简单！调用提供的 `set` 函数并传入新的状态，它将与存储中的现有状态浅层合并。**注意** 有关嵌套状态，请参阅下一节。
 
 ```tsx
 import { create } from 'zustand'
@@ -22,7 +20,7 @@ type Action = {
   updateLastName: (lastName: State['lastName']) => void
 }
 
-// Create your store, which includes both state and (optionally) actions
+// 创建你的存储，它包括状态和（可选的）操作
 const usePersonStore = create<State & Action>((set) => ({
   firstName: '',
   lastName: '',
@@ -30,35 +28,34 @@ const usePersonStore = create<State & Action>((set) => ({
   updateLastName: (lastName) => set(() => ({ lastName: lastName })),
 }))
 
-// In consuming app
+// 在消费应用中
 function App() {
-  // "select" the needed state and actions, in this case, the firstName value
-  // and the action updateFirstName
+  // "选择"所需的状态和操作，在这种情况下，是 firstName 的值和 updateFirstName 操作
   const firstName = usePersonStore((state) => state.firstName)
   const updateFirstName = usePersonStore((state) => state.updateFirstName)
 
   return (
     <main>
       <label>
-        First name
+        名字
         <input
-          // Update the "firstName" state
+          // 更新 "firstName" 状态
           onChange={(e) => updateFirstName(e.currentTarget.value)}
           value={firstName}
         />
       </label>
 
       <p>
-        Hello, <strong>{firstName}!</strong>
+        你好，<strong>{firstName}!</strong>
       </p>
     </main>
   )
 }
 ```
 
-## Deeply nested object {#deeply-nested-object}
+## 深度嵌套对象 {#deeply-nested-object}
 
-If you have a deep state object like this:
+如果你有一个像这样的深度状态对象：
 
 ```ts
 type State = {
@@ -70,14 +67,11 @@ type State = {
 }
 ```
 
-Updating nested state requires some effort to ensure the process is completed
-immutably.
+更新嵌套状态需要一些努力，以确保过程是不可变的。
 
-### Normal approach {#normal-approach}
+### 正常方法 {#normal-approach}
 
-Similar to React or Redux, the normal approach is to copy each level of the
-state object. This is done with the spread operator `...`, and by manually
-merging that in with the new state values. Like so:
+类似于 React 或 Redux，正常的方法是复制状态对象的每一级。这是通过扩展运算符 `...` 和手动合并新的状态值来完成的。像这样：
 
 ```ts
   normalInc: () =>
@@ -95,47 +89,43 @@ merging that in with the new state values. Like so:
     })),
 ```
 
-This is very long! Let's explore some alternatives that will make your life
-easier.
+这太长了！让我们探索一些可以让你的生活更轻松的替代方案。
 
-### With Immer {#with-immer}
+### 使用 Immer {#with-immer}
 
-Many people use [Immer](https://github.com/immerjs/immer) to update nested
-values. Immer can be used anytime you need to update nested state such as in
-React, Redux and of course, Zustand!
+许多人使用 [Immer](https://github.com/immerjs/immer) 来更新嵌套值。你可以在任何需要更新嵌套状态的地方使用 Immer，如 React，Redux 和当然，Zustand！
 
-You can use Immer to shorten your state updates for deeply nested object. Let's
-take a look at an example:
+你可以使用 Immer 来缩短你的深度嵌套对象的状态更新。让我们看一个例子：
 
 ```ts
   immerInc: () =>
     set(produce((state: State) => { ++state.deep.nested.obj.count })),
 ```
 
-What a reduction! Please take note of the [gotchas listed here](../integrations/immer-middleware.md).
+多么大的减少！请注意这里列出的[注意事项](../integrations/immer-middleware.md)。
 
-### With optics-ts {#with-optics-ts}
+### 使用 optics-ts {#with-optics-ts}
 
-There is another option with [optics-ts](https://github.com/akheron/optics-ts/):
+还有另一个选项是 [optics-ts](https://github.com/akheron/optics-ts/)：
 
 ```ts
   opticsInc: () =>
     set(O.modify(O.optic<State>().path("deep.nested.obj.count"))((c) => c + 1)),
 ```
 
-Unlike Immer, optics-ts doesn't use proxies or mutation syntax.
+与 Immer 不同，optics-ts 不使用代理或突变语法。
 
-### With Ramda {#with-ramda}
+### 使用 Ramda {#with-ramda}
 
-You can also use [Ramda](https://ramdajs.com/):
+你也可以使用 [Ramda](https://ramdajs.com/)：
 
 ```ts
   ramdaInc: () =>
     set(R.modifyPath(["deep", "nested", "obj", "count"], (c) => c + 1)),
 ```
 
-Both ramda and optics-ts also work with types.
+ramda 和 optics-ts 也支持类型。
 
-### CodeSandbox Demo {#codesandbox-demo}
+### CodeSandbox 演示 {#codesandbox-demo}
 
 https://codesandbox.io/s/zustand-normal-immer-optics-ramda-updating-ynn3o?file=/src/App.tsx

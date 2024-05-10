@@ -1,5 +1,5 @@
 ---
-title: Setup with Next.js
+title: 与 Next.js 的设置
 nav: 21
 ---
 

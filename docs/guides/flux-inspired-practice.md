@@ -1,72 +1,72 @@
 ---
-title: Flux inspired practice
+title: 受Flux启发的实践
 nav: 5
 ---
 
-Although Zustand is an unopinionated library, we do recommend a few patterns.
-These are inspired by practices originally found in [Flux](https://github.com/facebookarchive/flux),
-and more recently [Redux](https://redux.js.org/understanding/thinking-in-redux/three-principles),
-so if you are coming from another library, you should feel right at home.
+尽管 Zustand 是一个无偏见的库，但我们确实推荐一些模式。
+这些模式受到最初在 [Flux](https://github.com/facebookarchive/flux) 中发现的实践的启发，
+以及最近的 [Redux](https://redux.js.org/understanding/thinking-in-redux/three-principles)，
+所以如果你来自其他库，你应该感到非常熟悉。
 
-However, Zustand does differ in some fundamental ways,
-so some terminology may not perfectly align to other libraries.
+然而，Zustand 在一些基本方式上确实有所不同，
+所以一些术语可能不会完全对应其他库。
 
-## Recommended patterns {#recommended-patterns}
+## 推荐的模式 {#recommended-patterns}
 
-### Single store {#single-store}
+### 单一存储 {#single-store}
 
-Your applications global state should be located in a single Zustand store.
+你的应用全局状态应该位于单一的 Zustand 存储中。
 
-If you have a large application, Zustand supports [splitting the store into slices](./slices-pattern.md).
+如果你有一个大型应用，Zustand 支持[将存储分割成切片](./slices-pattern.md)。
 
-### Use `set` / `setState` to update the store {#use-`set`-/-`setstate`-to-update-the-store}
+### 使用 `set` / `setState` 更新存储 {#use-`set`-/-`setstate`-to-update-the-store}
 
-Always use `set` (or `setState`) to perform updates to your store.
-`set` (and `setState`) ensures the described update is correctly merged and listeners are appropriately notified.
+始终使用 `set`（或 `setState`）来更新你的存储。
+`set`（和 `setState`）确保所描述的更新被正确地合并，监听器被适当地通知。
 
-### Colocate store actions {#colocate-store-actions}
+### 将存储操作放在一起 {#colocate-store-actions}
 
-In Zustand, state can be updated without the use of dispatched actions and reducers found in other Flux libraries.
-These store actions can be added directly to the store as shown below.
+在 Zustand 中，状态可以在没有 Flux 库中找到的分派操作和 reducer 的情况下更新。
+这些存储操作可以直接添加到存储中，如下所示。
 
-Optionally, by using `setState` they can be [located external to the store](./practice-with-no-store-actions.md)
+可选地，通过使用 `setState`，它们可以[位于存储外部](./practice-with-no-store-actions.md)
 
 ```js
 const useBoundStore = create((set) => ({
-  storeSliceA: ...,
-  storeSliceB: ...,
-  storeSliceC: ...,
-  updateX: () => set(...),
-  updateY: () => set(...),
+    storeSliceA: ...,
+    storeSliceB: ...,
+    storeSliceC: ...,
+    updateX: () => set(...),
+    updateY: () => set(...),
 }))
 ```
 
-## Redux-like patterns {#redux-like-patterns}
+## 类 Redux 模式 {#redux-like-patterns}
 
-If you can't live without Redux-like reducers, you can define a `dispatch` function on the root level of the store:
+如果你不能没有类 Redux 的 reducer，你可以在存储的根级别定义一个 `dispatch` 函数：
 
 ```typescript
 const types = { increase: 'INCREASE', decrease: 'DECREASE' }
 
 const reducer = (state, { type, by = 1 }) => {
-  switch (type) {
-    case types.increase:
-      return { grumpiness: state.grumpiness + by }
-    case types.decrease:
-      return { grumpiness: state.grumpiness - by }
-  }
+    switch (type) {
+        case types.increase:
+            return { grumpiness: state.grumpiness + by }
+        case types.decrease:
+            return { grumpiness: state.grumpiness - by }
+    }
 }
 
 const useGrumpyStore = create((set) => ({
-  grumpiness: 0,
-  dispatch: (args) => set((state) => reducer(state, args)),
+    grumpiness: 0,
+    dispatch: (args) => set((state) => reducer(state, args)),
 }))
 
 const dispatch = useGrumpyStore((state) => state.dispatch)
 dispatch({ type: types.increase, by: 2 })
 ```
 
-You could also use our redux-middleware. It wires up your main reducer, sets initial state, and adds a dispatch function to the state itself and the vanilla api.
+你也可以使用我们的 redux-middleware。它连接你的主 reducer，设置初始状态，并将 dispatch 函数添加到状态本身和 vanilla api。
 
 ```typescript
 import { redux } from 'zustand/middleware'
@@ -74,4 +74,4 @@ import { redux } from 'zustand/middleware'
 const useReduxStore = create(redux(reducer, initialState))
 ```
 
-Another way to update the store could be through functions wrapping the state functions. These could also handle side-effects of actions. For example, with HTTP-calls. To use Zustand in a non-reactive way, see [the readme](https://github.com/pmndrs/zustand#readingwriting-state-and-reacting-to-changes-outside-of-components).
+更新存储的另一种方式可能是通过包装状态函数的函数。这些也可以处理操作的副作用。例如，使用 HTTP 调用。要以非反应方式使用 Zustand，请参阅[自述文件](https://github.com/pmndrs/zustand#readingwriting-state-and-reacting-to-changes-outside-of-components)。

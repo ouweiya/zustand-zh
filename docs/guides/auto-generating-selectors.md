@@ -1,17 +1,17 @@
 ---
-title: Auto Generating Selectors
+title: 自动生成选择器
 nav: 6
 ---
 
-We recommend using selectors when using either the properties or actions from the store. You can access values from the store like so:
+我们建议在使用存储的属性或操作时使用选择器。你可以像这样从存储中获取值：
 
 ```typescript
 const bears = useBearStore((state) => state.bears)
 ```
 
-However, writing these could be tedious. If that is the case for you, you can auto-generate your selectors.
+然而，编写这些可能会很繁琐。如果你也有这种感觉，你可以自动生成你的选择器。
 
-## create the following function: `createSelectors` {#create-the-following-function:-`createselectors`}
+## 创建以下函数：`createSelectors` {#create-the-following-function:-`createselectors`}
 
 ```typescript
 import { StoreApi, UseBoundStore } from 'zustand'
@@ -33,7 +33,7 @@ const createSelectors = <S extends UseBoundStore<StoreApi<object>>>(
 }
 ```
 
-If you have a store like this:
+如果你有一个像这样的存储：
 
 ```typescript
 interface BearState {
@@ -49,25 +49,25 @@ const useBearStoreBase = create<BearState>()((set) => ({
 }))
 ```
 
-Apply that function to your store:
+将该函数应用到你的存储：
 
 ```typescript
 const useBearStore = createSelectors(useBearStoreBase)
 ```
 
-Now the selectors are auto generated and you can access them directly:
+现在选择器已经自动生成，你可以直接访问它们：
 
 ```typescript
-// get the property
+// 获取属性
 const bears = useBearStore.use.bears()
 
-// get the action
+// 获取操作
 const increment = useBearStore.use.increment()
 ```
 
 ## Vanilla Store {#vanilla-store}
 
-If you are using a vanilla store, use the following `createSelectors` function:
+如果你正在使用一个普通的存储，使用以下的 `createSelectors` 函数：
 
 ```typescript
 import { StoreApi, useStore } from 'zustand'
@@ -88,7 +88,7 @@ const createSelectors = <S extends StoreApi<object>>(_store: S) => {
 }
 ```
 
-The usage is the same as a React store. If you have a store like this:
+使用方式与 React 存储相同。如果你有一个像这样的存储：
 
 ```typescript
 import { createStore } from 'zustand'
@@ -106,27 +106,27 @@ const store = createStore<BearState>((set) => ({
 }))
 ```
 
-Apply that function to your store:
+将该函数应用到你的存储：
 
 ```typescript
 const useBearStore = createSelectors(store)
 ```
 
-Now the selectors are auto generated and you can access them directly:
+现在选择器已经自动生成，你可以直接访问它们：
 
 ```typescript
-// get the property
+// 获取属性
 const bears = useBearStore.use.bears()
 
-// get the action
+// 获取操作
 const increment = useBearStore.use.increment()
 ```
 
-## Live Demo {#live-demo}
+## 实时演示 {#live-demo}
 
-For a working example of this, see the [Code Sandbox](https://codesandbox.io/s/zustand-auto-generate-selectors-forked-rl8v5e?file=/src/selectors.ts).
+有关此的工作示例，请参见 [Code Sandbox](https://codesandbox.io/s/zustand-auto-generate-selectors-forked-rl8v5e?file=/src/selectors.ts)。
 
-## Third-party Libraries {#third-party-libraries}
+## 第三方库 {#third-party-libraries}
 
 - [auto-zustand-selectors-hook](https://github.com/Albert-Gao/auto-zustand-selectors-hook)
 - [react-hooks-global-state](https://github.com/dai-shi/react-hooks-global-state)

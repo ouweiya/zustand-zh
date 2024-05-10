@@ -1,27 +1,24 @@
 ---
-title: Immer middleware
+title: Immer 中间件
 nav: 16
 ---
 
-The [Immer](https://github.com/immerjs/immer) middleware enables you
-to use immutable state in a more convenient way.
-Also, with Immer, you can simplify handling
-immutable data structures in Zustand.
+[Immer](https://github.com/immerjs/immer) 中间件使您能够以更方便的方式使用不可变状态。
+此外，使用 Immer，您可以简化在 Zustand 中处理不可变数据结构的方式。
 
-## Installation {#installation}
+## 安装 {#installation}
 
-In order to use the Immer middleware in Zustand,
-you will need to install Immer as a direct dependency.
+为了在 Zustand 中使用 Immer 中间件，您需要将 Immer 安装为直接依赖。
 
 ```bash
 npm install immer
 ```
 
-## Usage {#usage}
+## 使用 {#usage}
 
-(Notice the extra parentheses after the type parameter as mentioned in the [Typescript Guide](../guides/typescript.md)).
+（注意类型参数后的额外括号，如[Typescript 指南](../guides/typescript.md)中所述）。
 
-Updating simple states
+更新简单状态
 
 ```ts
 import { create } from 'zustand'
@@ -51,7 +48,7 @@ export const useCountStore = create<State & Actions>()(
 )
 ```
 
-Updating complex states
+更新复杂状态
 
 ```ts
 import { create } from 'zustand'
@@ -103,27 +100,17 @@ export const useTodoStore = create<State & Actions>()(
 )
 ```
 
-## Gotchas {#gotchas}
+## 注意事项 {#gotchas}
 
-In this section you will find some things
-that you need to keep in mind when using Zustand with Immer.
+在这个部分，你会发现一些在使用 Zustand 和 Immer 时需要记住的事情。
 
-### My subscriptions aren't being called {#my-subscriptions-aren't-being-called}
+### 我的订阅没有被调用 {#my-subscriptions-aren't-being-called}
 
-If you are using Immer,
-make sure you are actually following
-[the rules of Immer](https://immerjs.github.io/immer/pitfalls).
+如果你正在使用 Immer，确保你实际上遵循了 [Immer 的规则](https://immerjs.github.io/immer/pitfalls)。
 
-For example, you have to add `[immerable] = true` for
-[class objects](https://immerjs.github.io/immer/complex-objects) to work.
-If you don't do this, Immer will still mutate the object,
-but not as a proxy, so it will also update the current state.
-Zustand checks if the state has actually changed,
-so since both the current state and the next state are
-equal (if you don't do it correctly),
-Zustand will skip calling the subscriptions.
+例如，你必须为 [类对象](https://immerjs.github.io/immer/complex-objects) 添加 `[immerable] = true` 才能使其工作。如果你不这样做，Immer 仍然会改变对象，但不是作为一个代理，所以它也会更新当前的状态。Zustand 检查状态是否真的发生了改变，所以由于当前状态和下一个状态是相等的（如果你没有正确操作），Zustand 将跳过调用订阅。
 
-## CodeSandbox Demo {#codesandbox-demo}
+## CodeSandbox 演示 {#codesandbox-demo}
 
-- [Basic](https://codesandbox.io/p/sandbox/zustand-updating-draft-states-basic-demo-forked-96mkdw),
-- [Advanced](https://codesandbox.io/p/sandbox/zustand-updating-draft-states-advanced-demo-forked-phkzzg).
+- [基础](https://codesandbox.io/p/sandbox/zustand-updating-draft-states-basic-demo-forked-96mkdw)
+- [高级](https://codesandbox.io/p/sandbox/zustand-updating-draft-states-advanced-demo-forked-phkzzg)

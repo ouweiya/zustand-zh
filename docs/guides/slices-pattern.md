@@ -1,34 +1,34 @@
 ---
-title: Slices Pattern
+title: 切片模式
 nav: 15
 ---
 
-## Slicing the store into smaller stores {#slicing-the-store-into-smaller-stores}
+## 将存储切分为更小的存储 {#slicing-the-store-into-smaller-stores}
 
-Your store can become bigger and bigger and tougher to maintain as you add more features.
+随着你添加更多的功能，你的存储可能会变得越来越大，越来越难以维护。
 
-You can divide your main store into smaller individual stores to achieve modularity. This is simple to accomplish in Zustand!
+你可以将你的主存储切分为更小的个体存储，以实现模块化。在 Zustand 中实现这一点非常简单！
 
-The first individual store:
+第一个个体存储：
 
 ```js
 export const createFishSlice = (set) => ({
-  fishes: 0,
-  addFish: () => set((state) => ({ fishes: state.fishes + 1 })),
+    fishes: 0,
+    addFish: () => set((state) => ({ fishes: state.fishes + 1 })),
 })
 ```
 
-Another individual store:
+另一个个体存储：
 
 ```js
 export const createBearSlice = (set) => ({
-  bears: 0,
-  addBear: () => set((state) => ({ bears: state.bears + 1 })),
-  eatFish: () => set((state) => ({ fishes: state.fishes - 1 })),
+    bears: 0,
+    addBear: () => set((state) => ({ bears: state.bears + 1 })),
+    eatFish: () => set((state) => ({ fishes: state.fishes - 1 })),
 })
 ```
 
-You can now combine both the stores into **one bounded store**:
+你现在可以将这两个存储合并为**一个有边界的存储**：
 
 ```js
 import { create } from 'zustand'
@@ -36,46 +36,46 @@ import { createBearSlice } from './bearSlice'
 import { createFishSlice } from './fishSlice'
 
 export const useBoundStore = create((...a) => ({
-  ...createBearSlice(...a),
-  ...createFishSlice(...a),
+    ...createBearSlice(...a),
+    ...createFishSlice(...a),
 }))
 ```
 
-### Usage in a React component {#usage-in-a-react-component}
+### 在 React 组件中的使用 {#usage-in-a-react-component}
 
 ```jsx
 import { useBoundStore } from './stores/useBoundStore'
 
 function App() {
-  const bears = useBoundStore((state) => state.bears)
-  const fishes = useBoundStore((state) => state.fishes)
-  const addBear = useBoundStore((state) => state.addBear)
-  return (
-    <div>
-      <h2>Number of bears: {bears}</h2>
-      <h2>Number of fishes: {fishes}</h2>
-      <button onClick={() => addBear()}>Add a bear</button>
-    </div>
-  )
+    const bears = useBoundStore((state) => state.bears)
+    const fishes = useBoundStore((state) => state.fishes)
+    const addBear = useBoundStore((state) => state.addBear)
+    return (
+        <div>
+            <h2>熊的数量：{bears}</h2>
+            <h2>鱼的数量：{fishes}</h2>
+            <button onClick={() => addBear()}>添加一只熊</button>
+        </div>
+    )
 }
 
 export default App
 ```
 
-### Updating multiple stores {#updating-multiple-stores}
+### 更新多个存储 {#updating-multiple-stores}
 
-You can update multiple stores, at the same time, in a single function.
+你可以在一个函数中同时更新多个存储。
 
 ```js
 export const createBearFishSlice = (set, get) => ({
-  addBearAndFish: () => {
-    get().addBear()
-    get().addFish()
-  },
+    addBearAndFish: () => {
+        get().addBear()
+        get().addFish()
+    },
 })
 ```
 
-Combining all the stores together is the same as before.
+将所有的存储组合在一起的方式与之前相同。
 
 ```js
 import { create } from 'zustand'
@@ -84,17 +84,17 @@ import { createFishSlice } from './fishSlice'
 import { createBearFishSlice } from './createBearFishSlice'
 
 export const useBoundStore = create((...a) => ({
-  ...createBearSlice(...a),
-  ...createFishSlice(...a),
-  ...createBearFishSlice(...a),
+    ...createBearSlice(...a),
+    ...createFishSlice(...a),
+    ...createBearFishSlice(...a),
 }))
 ```
 
-## Adding middlewares {#adding-middlewares}
+## 添加中间件 {#adding-middlewares}
 
-Adding middlewares to a combined store is the same as with other normal stores.
+向组合存储添加中间件与向其他普通存储添加中间件相同。
 
-Adding `persist` middleware to our `useBoundStore`:
+向我们的 `useBoundStore` 添加 `persist` 中间件：
 
 ```js
 import { create } from 'zustand'
@@ -103,18 +103,18 @@ import { createFishSlice } from './fishSlice'
 import { persist } from 'zustand/middleware'
 
 export const useBoundStore = create(
-  persist(
-    (...a) => ({
-      ...createBearSlice(...a),
-      ...createFishSlice(...a),
-    }),
-    { name: 'bound-store' },
-  ),
+    persist(
+        (...a) => ({
+            ...createBearSlice(...a),
+            ...createFishSlice(...a),
+        }),
+        { name: 'bound-store' },
+    ),
 )
 ```
 
-Please keep in mind you should only apply middlewares in the combined store. Applying them inside individual slices can lead to unexpected issues.
+请记住，你应该只在组合存储中应用中间件。在个体切片内部应用它们可能会导致意外的问题。
 
-## Usage with TypeScript {#usage-with-typescript}
+## 与 TypeScript 的使用 {#usage-with-typescript}
 
-A detailed guide on how to use the slice pattern in Zustand with TypeScript can be found [here](./typescript.md#slices-pattern).
+关于如何在 Zustand 中使用 TypeScript 使用切片模式的详细指南可以在[这里](./typescript.md#slices-pattern)找到。

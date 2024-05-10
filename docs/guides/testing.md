@@ -1,85 +1,76 @@
 ---
-title: Testing
+title: 测试
 description: Writing Tests
 nav: 9
 ---
 
-## Setting Up a Test Environment {#setting-up-a-test-environment}
+## 设置测试环境 {#setting-up-a-test-environment}
 
-### Test Runners {#test-runners}
+### 测试运行器 {#test-runners}
 
-Usually, your test runner needs to be configured to run JavaScript/TypeScript syntax. If you're
-going to be testing UI components, you will likely need to configure the test runner to use JSDOM
-to provide a mock DOM environment.
+通常，你的测试运行器需要配置为运行 JavaScript/TypeScript 语法。如果你要测试 UI 组件，你可能需要配置测试运行器使用 JSDOM 提供一个模拟的 DOM 环境。
 
-See these resources for test runner configuration instructions:
+参见以下资源以获取测试运行器配置指南：
 
 - **Jest**
-  - [Jest: Getting Started](https://jestjs.io/docs/getting-started)
-  - [Jest: Configuration - Test Environment](https://jestjs.io/docs/configuration#testenvironment-string)
+    - [Jest: 入门](https://jestjs.io/docs/getting-started)
+    - [Jest: 配置 - 测试环境](https://jestjs.io/docs/configuration#testenvironment-string)
 - **Vitest**
-  - [Vitest: Getting Started](https://vitest.dev/guide)
-  - [Vitest: Configuration - Test Environment](https://vitest.dev/config/#environment)
+    - [Vitest: 入门](https://vitest.dev/guide)
+    - [Vitest: 配置 - 测试环境](https://vitest.dev/config/#environment)
 
-### UI and Network Testing Tools {#ui-and-network-testing-tools}
+### UI 和网络测试工具 {#ui-and-network-testing-tools}
 
-**We recommend using [React Testing Library (RTL)](https://testing-library.com/docs/react-testing-library/intro)
-to test out React components that connect to Zustand**. RTL is a simple and complete React DOM
-testing utility that encourages good testing practices. It uses ReactDOM's `render` function and
-`act` from `react-dom/tests-utils`. Futhermore, [Native Testing Library (RNTL)](https://testing-library.com/docs/react-native-testing-library/intro)
-is the alternative to RTL to test out React Native components. The [Testing Library](https://testing-library.com/)
-family of tools also includes adapters for many other popular frameworks.
+**我们推荐使用 [React 测试库 (RTL)](https://testing-library.com/docs/react-testing-library/intro) 来测试连接到 Zustand 的 React 组件**。RTL 是一个简单且完整的 React DOM 测试工具，它鼓励良好的测试实践。它使用 ReactDOM 的 `render` 函数和 `react-dom/tests-utils` 的 `act`。此外，[原生测试库 (RNTL)](https://testing-library.com/docs/react-native-testing-library/intro) 是测试 React Native 组件的 RTL 替代品。[测试库](https://testing-library.com/) 的工具家族还包括许多其他流行框架的适配器。
 
-We also recommend using [Mock Service Worker (MSW)](https://mswjs.io/) to mock network requests, as
-this means your application logic does not need to be changed or mocked when writing tests.
+我们还推荐使用 [Mock Service Worker (MSW)](https://mswjs.io/) 来模拟网络请求，因为这意味着在编写测试时不需要更改或模拟你的应用程序逻辑。
 
-- **React Testing Library (DOM)**
-  - [DOM Testing Library: Setup](https://testing-library.com/docs/dom-testing-library/setup)
-  - [React Testing Library: Setup](https://testing-library.com/docs/react-testing-library/setup)
-  - [Testing Library Jest-DOM Matchers](https://testing-library.com/docs/ecosystem-jest-dom)
-- **Native Testing Library (React Native)**
-  - [Native Testing Library: Setup](https://testing-library.com/docs/react-native-testing-library/setup)
-- **User Event Testing Library (DOM)**
-  - [User Event Testing Library: Setup](https://testing-library.com/docs/user-event/setup)
-- **TypeScript for Jest**
-  - [TypeScript for Jest: Setup](https://kulshekhar.github.io/ts-jest/docs/getting-started/installation)
-- **TypeScript for Node**
-  - [TypeScript for Node: Setup](https://typestrong.org/ts-node/docs/installation)
+- **React 测试库 (DOM)**
+    - [DOM 测试库: 设置](https://testing-library.com/docs/dom-testing-library/setup)
+    - [React 测试库: 设置](https://testing-library.com/docs/react-testing-library/setup)
+    - [测试库 Jest-DOM 匹配器](https://testing-library.com/docs/ecosystem-jest-dom)
+- **原生测试库 (React Native)**
+    - [原生测试库: 设置](https://testing-library.com/docs/react-native-testing-library/setup)
+- **用户事件测试库 (DOM)**
+    - [用户事件测试库: 设置](https://testing-library.com/docs/user-event/setup)
+- **Jest 的 TypeScript**
+    - [Jest 的 TypeScript: 设置](https://kulshekhar.github.io/ts-jest/docs/getting-started/installation)
+- **Node 的 TypeScript**
+    - [Node 的 TypeScript: 设置](https://typestrong.org/ts-node/docs/installation)
 - **Mock Service Worker**
-  - [MSW: Installation](https://mswjs.io/docs/getting-started/install)
-  - [MSW: Setting up mock requests](https://mswjs.io/docs/getting-started/mocks/rest-api)
-  - [MSW: Mock server configuration for Node](https://mswjs.io/docs/getting-started/integrate/node)
+    - [MSW: 安装](https://mswjs.io/docs/getting-started/install)
+    - [MSW: 设置模拟请求](https://mswjs.io/docs/getting-started/mocks/rest-api)
+    - [MSW: Node 的模拟服务器配置](https://mswjs.io/docs/getting-started/integrate/node)
 
-## Setting Up Zustand for testing {#setting-up-zustand-for-testing}
+## 为测试设置 Zustand {#setting-up-zustand-for-testing}
 
-> **Note**: Since Jest and Vitest have slight differences, like Vitest using **ES modules** and Jest using
-> **CommonJS modules**, you need to keep that in mind if you are using Vitest instead of Jest.
+> **注意**：由于 Jest 和 Vitest 有细微的差别，比如 Vitest 使用 **ES 模块** 而 Jest 使用
+> **CommonJS 模块**，如果你使用 Vitest 而不是 Jest，你需要记住这一点。
 
-The mock provided below will enable the relevant test runner to reset the zustand stores after each test.
+下面提供的模拟将使相关的测试运行器在每次测试后重置 zustand 存储。
 
-### Shared code just for testing purposes {#shared-code-just-for-testing-purposes}
+### 仅用于测试目的的共享代码 {#shared-code-just-for-testing-purposes}
 
-This shared code was added to avoid code duplication in our demo since we use the same counter store
-creator for both implementations, with and without `Context` API — `createStore` and `create`, respectively.
+这段共享代码是为了避免在我们的演示中代码重复，因为我们对两种实现都使用相同的计数器存储创建器，分别是带有 `Context` API 和不带 `Context` API 的 `createStore` 和 `create`。
 
 ```ts
 // shared/counter-store-creator.ts
 import { type StateCreator } from 'zustand'
 
 export type CounterStore = {
-  count: number
-  inc: () => void
+    count: number
+    inc: () => void
 }
 
 export const counterStoreCreator: StateCreator<CounterStore> = (set) => ({
-  count: 1,
-  inc: () => set((state) => ({ count: state.count + 1 })),
+    count: 1,
+    inc: () => set((state) => ({ count: state.count + 1 })),
 })
 ```
 
 ### Jest {#jest}
 
-In the next steps we are going to setup our Jest environment in order to mock Zustand.
+在接下来的步骤中，我们将设置我们的 Jest 环境以便模拟 Zustand。
 
 ```ts
 // __mocks__/zustand.ts
@@ -89,7 +80,7 @@ import { act } from '@testing-library/react'
 const { create: actualCreate, createStore: actualCreateStore } =
   jest.requireActual<typeof zustand>('zustand')
 
-// a variable to hold reset functions for all stores declared in the app
+// 一个变量用于保存应用中声明的所有存储的重置函数
 export const storeResetFns = new Set<() => void>()
 
 const createUncurried = <T>(stateCreator: zustand.StateCreator<T>) => {
@@ -101,11 +92,11 @@ const createUncurried = <T>(stateCreator: zustand.StateCreator<T>) => {
   return store
 }
 
-// when creating a store, we get its initial state, create a reset function and add it in the set
+// 当创建一个存储时，我们获取其初始状态，创建一个重置函数并将其添加到集合中
 export const create = (<T>(stateCreator: zustand.StateCreator<T>) => {
   console.log('zustand create mock')
 
-  // to support curried version of create
+  // 为了支持 create 的柯里化版本
   return typeof stateCreator === 'function'
     ? createUncurried(stateCreator)
     : createUncurried
@@ -120,17 +111,17 @@ const createStoreUncurried = <T>(stateCreator: zustand.StateCreator<T>) => {
   return store
 }
 
-// when creating a store, we get its initial state, create a reset function and add it in the set
+// 当创建一个存储时，我们获取其初始状态，创建一个重置函数并将其添加到集合中
 export const createStore = (<T>(stateCreator: zustand.StateCreator<T>) => {
   console.log('zustand createStore mock')
 
-  // to support curried version of createStore
+  // 为了支持 createStore 的柯里化版本
   return typeof stateCreator === 'function'
     ? createStoreUncurried(stateCreator)
     : createStoreUncurried
 }) as typeof zustand.createStore
 
-// reset all stores after each test run
+// 在每次测试运行后重置所有存储
 afterEach(() => {
   act(() => {
     storeResetFns.forEach((resetFn) => {
@@ -158,17 +149,17 @@ const config: JestConfigWithTsJest = {
 export default config
 ```
 
-> **Note**: to use TypeScript we need to install two packages `ts-jest` and `ts-node`.
+> **注意**：要使用 TypeScript，我们需要安装两个包 `ts-jest` 和 `ts-node`。
 
 ### Vitest {#vitest}
 
-In the next steps we are going to setup our Vitest environment in order to mock Zustand.
+在接下来的步骤中，我们将设置我们的 Vitest 环境以便模拟 Zustand。
 
-> **Warning:** In Vitest you can change the [root](https://vitest.dev/config/#root).
-> Due to that, you need make sure that you are creating your `__mocks__` directory in the right place.
-> Let's say that you change the **root** to `./src`, that means you need to create a `__mocks__`
-> directory under `./src`. The end result would be `./src/__mocks__`, rather than `./__mocks__`.
-> Creating `__mocks__` directory in the wrong place can lead to issues when using Vitest.
+> **警告：** 在 Vitest 中你可以更改 [root](https://vitest.dev/config/#root)。
+> 因此，你需要确保你在正确的地方创建你的 `__mocks__` 目录。
+> 假设你将 **root** 更改为 `./src`，那就意味着你需要在 `./src` 下创建一个 `__mocks__`
+> 目录。最终结果将是 `./src/__mocks__`，而不是 `./__mocks__`。
+> 在错误的地方创建 `__mocks__` 目录可能会在使用 Vitest 时导致问题。
 
 ```ts
 // __mocks__/zustand.ts
@@ -176,61 +167,61 @@ import * as zustand from 'zustand'
 import { act } from '@testing-library/react'
 
 const { create: actualCreate, createStore: actualCreateStore } =
-  await vi.importActual<typeof zustand>('zustand')
+    await vi.importActual<typeof zustand>('zustand')
 
-// a variable to hold reset functions for all stores declared in the app
+// 一个变量用于保存应用中声明的所有存储的重置函数
 export const storeResetFns = new Set<() => void>()
 
 const createUncurried = <T>(stateCreator: zustand.StateCreator<T>) => {
-  const store = actualCreate(stateCreator)
-  const initialState = store.getInitialState()
-  storeResetFns.add(() => {
-    store.setState(initialState, true)
-  })
-  return store
+    const store = actualCreate(stateCreator)
+    const initialState = store.getInitialState()
+    storeResetFns.add(() => {
+        store.setState(initialState, true)
+    })
+    return store
 }
 
-// when creating a store, we get its initial state, create a reset function and add it in the set
+// 当创建一个存储时，我们获取其初始状态，创建一个重置函数并将其添加到集合中
 export const create = (<T>(stateCreator: zustand.StateCreator<T>) => {
-  console.log('zustand create mock')
+    console.log('zustand create mock')
 
-  // to support curried version of create
-  return typeof stateCreator === 'function'
-    ? createUncurried(stateCreator)
-    : createUncurried
+    // 为了支持 create 的柯里化版本
+    return typeof stateCreator === 'function'
+        ? createUncurried(stateCreator)
+        : createUncurried
 }) as typeof zustand.create
 
 const createStoreUncurried = <T>(stateCreator: zustand.StateCreator<T>) => {
-  const store = actualCreateStore(stateCreator)
-  const initialState = store.getInitialState()
-  storeResetFns.add(() => {
-    store.setState(initialState, true)
-  })
-  return store
+    const store = actualCreateStore(stateCreator)
+    const initialState = store.getInitialState()
+    storeResetFns.add(() => {
+        store.setState(initialState, true)
+    })
+    return store
 }
 
-// when creating a store, we get its initial state, create a reset function and add it in the set
+// 当创建一个存储时，我们获取其初始状态，创建一个重置函数并将其添加到集合中
 export const createStore = (<T>(stateCreator: zustand.StateCreator<T>) => {
-  console.log('zustand createStore mock')
+    console.log('zustand createStore mock')
 
-  // to support curried version of createStore
-  return typeof stateCreator === 'function'
-    ? createStoreUncurried(stateCreator)
-    : createStoreUncurried
+    // 为了支持 createStore 的柯里化版本
+    return typeof stateCreator === 'function'
+        ? createStoreUncurried(stateCreator)
+        : createStoreUncurried
 }) as typeof zustand.createStore
 
-// reset all stores after each test run
+// 在每次测试运行后重置所有存储
 afterEach(() => {
-  act(() => {
-    storeResetFns.forEach((resetFn) => {
-      resetFn()
+    act(() => {
+        storeResetFns.forEach((resetFn) => {
+            resetFn()
+        })
     })
-  })
 })
 ```
 
-> **Note**: without [globals configuration](https://vitest.dev/config/#globals) enabled, we need
-> to add `import { afterEach, vi } from 'vitest'` at the top.
+> **注意**：如果没有启用 [全局配置](https://vitest.dev/config/#globals)，我们需要
+> 在顶部添加 `import { afterEach, vi } from 'vitest'`。
 
 ```ts
 // global.d.ts
@@ -238,18 +229,18 @@ afterEach(() => {
 /// <reference types="vitest/globals" />
 ```
 
-> **Note**: without [globals configuration](https://vitest.dev/config/#globals) enabled, we do
-> need to remove `/// <reference types="vitest/globals" />`.
+> **注意**：如果没有启用 [全局配置](https://vitest.dev/config/#globals)，我们需要
+> 移除 `/// <reference types="vitest/globals" />`。
 
 ```ts
 // setup-vitest.ts
 import '@testing-library/jest-dom'
 
-vi.mock('zustand') // to make it work like Jest (auto-mocking)
+vi.mock('zustand') // 使其像 Jest 一样工作（自动模拟）
 ```
 
-> **Note**: without [globals configuration](https://vitest.dev/config/#globals) enabled, we need
-> to add `import { vi } from 'vitest'` at the top.
+> **注意**：如果没有启用 [全局配置](https://vitest.dev/config/#globals)，我们需要
+> 在顶部添加 `import { vi } from 'vitest'`。
 
 ```ts
 // vitest.config.ts
@@ -257,22 +248,22 @@ import { defineConfig, mergeConfig } from 'vitest/config'
 import viteConfig from './vite.config'
 
 export default mergeConfig(
-  viteConfig,
-  defineConfig({
-    test: {
-      globals: true,
-      environment: 'jsdom',
-      setupFiles: ['./setup-vitest.ts'],
-    },
-  }),
+    viteConfig,
+    defineConfig({
+        test: {
+            globals: true,
+            environment: 'jsdom',
+            setupFiles: ['./setup-vitest.ts'],
+        },
+    }),
 )
 ```
 
-### Testing components {#testing-components}
+### 测试组件 {#testing-components}
 
-In the next examples we are going to use `useCounterStore`
+在接下来的示例中，我们将使用 `useCounterStore`
 
-> **Note**: all of these examples are written using TypeScript.
+> **注意**：所有这些示例都是使用 TypeScript 编写的。
 
 ```ts
 // stores/counter-store-creator.ts
@@ -488,23 +479,15 @@ const renderCounterWithContext = () => {
 }
 ```
 
-> **Note**: without [globals configuration](https://vitest.dev/config/#globals) enabled, we need
-> to add `import { describe, test, expect } from 'vitest'` at the top of each test file.
+> **注意**：如果没有启用 [全局配置](https://vitest.dev/config/#globals)，我们需要在每个测试文件的顶部添加 `import { describe, test, expect } from 'vitest'`。
 
-**CodeSandbox Demos**
+**CodeSandbox 演示**
 
-- Jest Demo: https://stackblitz.com/edit/jest-zustand
-- Vitest Demo: https://stackblitz.com/edit/vitest-zustand
+- Jest 演示：https://stackblitz.com/edit/jest-zustand
+- Vitest 演示：https://stackblitz.com/edit/vitest-zustand
 
-## References {#references}
+## 参考资料 {#references}
 
-- **React Testing Library**: [React Testing Library (RTL)](https://testing-library.com/docs/react-testing-library/intro)
-  is a very lightweight solution for testing React components. It provides utility functions on top
-  of `react-dom` and `react-dom/test-utils`, in a way that encourages better testing practices. Its
-  primary guiding principle is: "The more your tests resemble the way your software is used, the
-  more confidence they can give you."
-- **Native Testing Library**: [Native Testing Library (RNTL)](https://testing-library.com/docs/react-native-testing-library/intro)
-  is a very lightweight solution for testing React Native components, similarly to RTL, but its
-  functions are built on top of `react-test-renderer`.
-- **Testing Implementation Details**: Blog post by Kent C. Dodds on why he recommends to avoid
-  [testing implementation details](https://kentcdodds.com/blog/testing-implementation-details).
+- **React 测试库**：[React 测试库 (RTL)](https://testing-library.com/docs/react-testing-library/intro) 是一个用于测试 React 组件的非常轻量级的解决方案。它在 `react-dom` 和 `react-dom/test-utils` 的基础上提供了实用函数，以鼓励更好的测试实践。它的主要指导原则是："你的测试越像你的软件被使用的方式，它们就能给你带来更多的信心。"
+- **原生测试库**：[原生测试库 (RNTL)](https://testing-library.com/docs/react-native-testing-library/intro) 是一个用于测试 React Native 组件的非常轻量级的解决方案，类似于 RTL，但它的函数是基于 `react-test-renderer` 构建的。
+- **测试实现细节**：Kent C. Dodds 的博客文章，他建议避免 [测试实现细节](https://kentcdodds.com/blog/testing-implementation-details)。

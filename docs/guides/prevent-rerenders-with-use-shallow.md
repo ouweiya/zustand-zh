@@ -1,63 +1,61 @@
 ---
-title: Prevent rerenders with useShallow
+title: 使用 useShallow 防止重新渲染
 nav: 16
 ---
 
-When you need to subscribe to a computed state from a store, the recommended way is to
-use a selector.
+当你需要从存储中订阅一个计算状态时，推荐的方式是使用选择器。
 
-The computed selector will cause a rererender if the output has changed according to [Object.is](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is?retiredLocale=it).
+计算选择器将在输出根据 [Object.is](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/is) 改变时导致重新渲染。
 
-In this case you might want to use `useShallow` to avoid a rerender if the computed value is always shallow
-equal the previous one.
+在这种情况下，你可能希望使用 `useShallow` 来避免如果计算值总是浅相等于前一个值时的重新渲染。
 
-## Example {#example}
+## 示例 {#example}
 
-We have a store that associates to each bear a meal and we want to render their names.
+我们有一个存储，它将每只熊与一顿饭关联起来，我们想要渲染他们的名字。
 
 ```js
 import { create } from 'zustand'
 
 const useMeals = create(() => ({
-  papaBear: 'large porridge-pot',
-  mamaBear: 'middle-size porridge pot',
-  littleBear: 'A little, small, wee pot',
+    papaBear: 'large porridge-pot',
+    mamaBear: 'middle-size porridge pot',
+    littleBear: 'A little, small, wee pot',
 }))
 
 export const BearNames = () => {
-  const names = useMeals((state) => Object.keys(state))
+    const names = useMeals((state) => Object.keys(state))
 
-  return <div>{names.join(', ')}</div>
+    return <div>{names.join(', ')}</div>
 }
 ```
 
-Now papa bear wants a pizza instead:
+现在爸爸熊想要一块披萨：
 
 ```js
 useMeals.setState({
-  papaBear: 'a large pizza',
+    papaBear: 'a large pizza',
 })
 ```
 
-This change causes `BearNames` rerenders even though the actual output of `names` has not changed according to shallow equal.
+这个改变导致 `BearNames` 重新渲染，尽管 `names` 的实际输出根据浅相等并没有改变。
 
-We can fix that using `useShallow`!
+我们可以使用 `useShallow` 来修复这个问题！
 
 ```js
 import { create } from 'zustand'
 import { useShallow } from 'zustand/react/shallow'
 
 const useMeals = create(() => ({
-  papaBear: 'large porridge-pot',
-  mamaBear: 'middle-size porridge pot',
-  littleBear: 'A little, small, wee pot',
+    papaBear: 'large porridge-pot',
+    mamaBear: 'middle-size porridge pot',
+    littleBear: 'A little, small, wee pot',
 }))
 
 export const BearNames = () => {
-  const names = useMeals(useShallow((state) => Object.keys(state)))
+    const names = useMeals(useShallow((state) => Object.keys(state)))
 
-  return <div>{names.join(', ')}</div>
+    return <div>{names.join(', ')}</div>
 }
 ```
 
-Now they can all order other meals without causing unnecessary rerenders of our `BearNames` component.
+现在他们都可以点其他的餐，而不会导致我们的 `BearNames` 组件不必要的重新渲染。
