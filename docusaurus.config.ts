@@ -37,13 +37,8 @@ const config: Config = {
                     sidebarPath: './sidebars.ts',
                     // Please change this to your repo.
                     // Remove this to remove the "edit this page" links.
-                    editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-                },
-                blog: {
-                    showReadingTime: true,
-                    // Please change this to your repo.
-                    // Remove this to remove the "edit this page" links.
-                    editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+                    // editUrl: 'https://github.com/ouweiya/zustand-zh/edit/main/',
+                    editUrl: 'https://github.com/ouweiya/zustand-zh',
                 },
                 theme: {
                     customCss: './src/css/custom.css',
@@ -54,7 +49,7 @@ const config: Config = {
 
     themeConfig: {
         // Replace with your project's social card
-        image: 'img/docusaurus-social-card.jpg',
+        // image: 'img/docusaurus-social-card.jpg',
         navbar: {
             title: 'Zustand',
             logo: {
@@ -66,11 +61,10 @@ const config: Config = {
                     type: 'docSidebar',
                     sidebarId: 'tutorialSidebar',
                     position: 'left',
-                    label: 'Tutorial',
+                    label: '文档',
                 },
-                // { to: '/blog', label: 'Blog', position: 'left' },
                 {
-                    href: 'https://github.com/facebook/docusaurus',
+                    href: 'https://github.com/ouweiya/zustand-zh',
                     label: 'GitHub',
                     position: 'right',
                 },
