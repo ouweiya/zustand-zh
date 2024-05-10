@@ -1,7 +1,26 @@
-// import clsx from 'clsx';
-// import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
+import MDXContent from '@theme/MDXContent';
+import IndexHome from '../../README.md';
+import Demo from './Demo';
+
+export default function Home(): JSX.Element {
+    const { siteConfig } = useDocusaurusContext();
+    return (
+        <Layout>
+            <main className="container">
+                <Demo />
+                <MDXContent>
+                    <IndexHome />
+                </MDXContent>
+            </main>
+        </Layout>
+    );
+}
+
+// import clsx from 'clsx';
+// import Link from '@docusaurus/Link';
+
 // import HomepageFeatures from '@site/src/components/HomepageFeatures';
 // import Heading from '@theme/Heading';
 
@@ -23,15 +42,3 @@ import Layout from '@theme/Layout';
 //         </header>
 //     );
 // }
-
-export default function Home(): JSX.Element {
-    const { siteConfig } = useDocusaurusContext();
-    return (
-        <Layout title={`Hello from ${siteConfig.title}`} description="Description will go into a meta tag in <head />">
-            {/* <HomepageHeader /> */}
-            <main>
-                {/* <HomepageFeatures /> */}
-            </main>
-        </Layout>
-    );
-}
