@@ -1,20 +1,16 @@
 import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
 
 const sidebars: SidebarsConfig = {
-    // label: 'GETTING STARTED'
-    // Introduction
-    // Comparison
-
     tutorialSidebar: [
         {
             type: 'category',
-            label: 'GETTING STARTED',
+            label: '入门指南',
             collapsed: false,
             items: ['getting-started/introduction', 'getting-started/comparison'],
         },
         {
             type: 'category',
-            label: 'GUIDES',
+            label: '指南',
             collapsed: false,
             items: [
                 'guides/updating-state',
@@ -37,18 +33,18 @@ const sidebars: SidebarsConfig = {
         },
         {
             type: 'category',
-            label: 'INTEGRATIONS',
+            label: '集成',
             collapsed: false,
             items: ['integrations/immer-middleware', 'integrations/third-party-libraries', 'integrations/persisting-store-data'],
         },
         {
             type: 'category',
-            label: 'PREVIOUS VERSIONS',
+            label: '以前的版本',
             items: ['previous-versions/zustand-v3-create-context'],
         },
         {
             type: 'category',
-            label: 'MIGRATIONS',
+            label: '迁移',
             items: ['migrations/migrating-to-v4'],
         },
     ],

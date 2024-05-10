@@ -4,7 +4,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
     title: 'Zustand',
-    tagline: '🐻 Bear necessities for state management in React',
+    tagline: '🐻 React状态管理的基本必需品',
     favicon: 'img/zustand.ico',
 
     // Set the production url of your site here
@@ -49,8 +49,6 @@ const config: Config = {
     ],
 
     themeConfig: {
-        // Replace with your project's social card
-        // image: 'img/docusaurus-social-card.jpg',
         navbar: {
             title: 'Zustand',
             logo: {
@@ -75,6 +73,7 @@ const config: Config = {
         prism: {
             theme: prismThemes.github,
             darkTheme: prismThemes.dracula,
+            // darkTheme: prismThemes.vsDark,
         },
     } satisfies Preset.ThemeConfig,
 };
