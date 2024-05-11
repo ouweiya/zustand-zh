@@ -53,7 +53,7 @@ function Controls() {
 -   简单且无观点
 -   将 hooks 作为消费状态的主要手段
 -   不会在你的应用中包装上下文提供者
--   [可以临时通知组件（不会导致渲染）](#transient-updates-for-often-occurring-state-changes)
+-   [可以瞬态地通知组件（不会导致渲染）](#瞬态更新用于经常发生的状态变化)
 
 ### 为什么选择 zustand 而不是 context？
 
