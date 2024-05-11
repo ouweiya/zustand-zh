@@ -16,7 +16,7 @@
 npm install zustand # 或者 yarn add zustand 或者 pnpm add zustand
 ```
 
-:warning: 这个 readme 是为 JavaScript 用户编写的。如果你是 TypeScript 用户，一定要查看我们的 [TypeScript 使用部分](#typescript-usage)。
+:warning: 这个 readme 是为 JavaScript 用户编写的。如果你是 TypeScript 用户，一定要查看我们的 [TypeScript 使用部分](#typescript-使用)。
 
 ## 首先创建一个存储
 
