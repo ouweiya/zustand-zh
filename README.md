@@ -314,7 +314,7 @@ const useBeeStore = create(
 );
 ```
 
-## 不能没有类似 redux 的 reducers 和 action types？
+## 离不开类似Redux的reducers和action类型吗？
 
 ```jsx
 const types = { increase: 'INCREASE', decrease: 'DECREASE' };
