@@ -3,7 +3,7 @@ title: 更新状态
 nav: 3
 ---
 
-## 平面更新 {#flat-updates}
+## 扁平化更新 {#flat-updates}
 
 使用 Zustand 更新状态非常简单！调用提供的 `set` 函数并传入新的状态，它将与存储中的现有状态浅层合并。**注意** 有关嵌套状态，请参阅下一节。
 
@@ -93,7 +93,7 @@ type State = {
 
 ### 使用 Immer {#with-immer}
 
-许多人使用 [Immer](https://github.com/immerjs/immer) 来更新嵌套值。你可以在任何需要更新嵌套状态的地方使用 Immer，如 React，Redux 和当然，Zustand！
+许多人使用 [Immer](https://github.com/immerjs/immer) 来更新嵌套值。你可以在任何需要更新嵌套状态的地方使用 Immer，如 React、Redux，当然还有 Zustand ！
 
 你可以使用 Immer 来缩短你的深度嵌套对象的状态更新。让我们看一个例子：
 
@@ -106,7 +106,7 @@ type State = {
 
 ### 使用 optics-ts {#with-optics-ts}
 
-还有另一个选项是 [optics-ts](https://github.com/akheron/optics-ts/)：
+还有另一个选项是 [optics-ts](https://github.com/ouweiya/optics-ts-zh)：
 
 ```ts
   opticsInc: () =>

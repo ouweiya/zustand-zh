@@ -1,6 +1,6 @@
-import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
+// import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
 
-const sidebars: SidebarsConfig = {
+const sidebars = {
     tutorialSidebar: [
         {
             type: 'category',
@@ -13,6 +13,7 @@ const sidebars: SidebarsConfig = {
             label: '指南',
             collapsed: false,
             items: [
+                'guides/tutorial-tic-tac-toe',
                 'guides/updating-state',
                 'guides/immutable-state-and-merging',
                 'guides/flux-inspired-practice',
@@ -45,7 +46,29 @@ const sidebars: SidebarsConfig = {
         {
             type: 'category',
             label: '迁移',
-            items: ['migrations/migrating-to-v4'],
+            items: ['migrations/migrating-to-v4', 'migrations/migrating-to-v5'],
+        },
+        {
+            type: 'category',
+            label: 'Apis',
+            items: ['apis/create-store', 'apis/create-with-equality-fn', 'apis/create', 'apis/shallow'],
+        },
+        {
+            type: 'category',
+            label: 'Hooks',
+            items: ['hooks/use-shallow', 'hooks/use-store-with-equality-fn', 'hooks/use-store'],
+        },
+        {
+            type: 'category',
+            label: '中间件',
+            items: [
+                'middlewares/combine',
+                'middlewares/devtools',
+                'middlewares/immer',
+                'middlewares/persist',
+                'middlewares/redux',
+                'middlewares/subscribe-with-selector',
+            ],
         },
     ],
 };

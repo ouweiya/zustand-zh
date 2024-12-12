@@ -41,9 +41,9 @@ const useBoundStore = create((set) => ({
 }))
 ```
 
-## 类 Redux 模式 {#redux-like-patterns}
+## 类似 Redux 模式 {#redux-like-patterns}
 
-如果你不能没有类 Redux 的 reducer，你可以在存储的根级别定义一个 `dispatch` 函数：
+如果你不能没有类似 Redux 的 reducer，你可以在存储的根级别定义一个 `dispatch` 函数：
 
 ```typescript
 const types = { increase: 'INCREASE', decrease: 'DECREASE' }

@@ -36,7 +36,7 @@ npm install zustand
 
 你的存储是一个钩子！
 你可以在其中放置任何东西：原始值，对象，函数。
-`set`函数会_合并_状态。
+`set`函数会合并状态。
 
 ```js
 import { create } from 'zustand'
