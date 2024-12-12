@@ -1,33 +1,33 @@
 ---
 title: immer
-description: How to perform immutable updates in a store without boilerplate code
+description: 如何在不使用样板代码的情况下在存储中执行不可变更新
 nav: 206
 ---
 
 # immer
 
-`immer` middleware lets you perform immutable updates.
+`immer` 中间件让你可以执行不可变更新。
 
 ```js
 const nextStateCreatorFn = immer(stateCreatorFn)
 ```
 
-- [Types](#types)
-  - [Signature](#signature)
-  - [Mutator](#mutator)
-- [Reference](#reference)
-- [Usage](#usage)
-- [Troubleshooting](#troubleshooting)
+- [类型](#类型)
+  - [签名](#签名)
+  - [变换器](#变换器)
+- [参考](#参考)
+- [用法](#用法)
+- [故障排除](#故障排除)
 
-## Types
+## 类型
 
-### Signature
+### 签名
 
 ```ts
 immer<T>(stateCreatorFn: StateCreator<T, [], []>): StateCreator<T, [['zustand/immer', never]], []>
 ```
 
-### Mutator
+### 变换器
 
 <!-- prettier-ignore-start -->
 ```ts
@@ -35,25 +35,24 @@ immer<T>(stateCreatorFn: StateCreator<T, [], []>): StateCreator<T, [['zustand/im
 ```
 <!-- prettier-ignore-end -->
 
-## Reference
+## 参考
 
 ### `immer(stateCreatorFn)`
 
-#### Parameters
+#### 参数
 
-- `stateCreatorFn`: A function that takes `set` function, `get` function and `store` as arguments.
-  Usually, you will return an object with the methods you want to expose.
+- `stateCreatorFn`: 一个函数，接受 `set` 函数、`get` 函数和 `store` 作为参数。
+  通常，你会返回一个包含你想要暴露的方法的对象。
 
-#### Returns
+#### 返回值
 
-`immer` returns a state creator function.
+`immer` 返回一个状态创建函数。
 
-## Usage
+## 用法
 
-### Updating state without boilerplate code
+### 在不使用样板代码的情况下更新状态
 
-In the next example, we're going to update the `person` object. Since it's a nested object, we need
-to create a copy of the entire object before making the update.
+在下一个示例中，我们将更新 `person` 对象。由于它是一个嵌套对象，我们需要在进行更新之前创建整个对象的副本。
 
 ```ts
 import { createStore } from 'zustand/vanilla'
@@ -132,26 +131,25 @@ render(personStore.getInitialState(), personStore.getInitialState())
 personStore.subscribe(render)
 ```
 
-Here's the `html` code
+这是 `html` 代码
 
 ```html
 <label style="display: block">
-  First name:
+  名字:
   <input id="first-name" />
 </label>
 <label style="display: block">
-  Last name:
+  姓氏:
   <input id="last-name" />
 </label>
 <label style="display: block">
-  Email:
+  邮箱:
   <input id="email" />
 </label>
 <p id="result"></p>
 ```
 
-To avoid manually copying the entire object before making updates, we'll use the `immer`
-middleware.
+为了避免在进行更新之前手动复制整个对象，我们将使用 `immer` 中间件。
 
 ```ts
 import { createStore } from 'zustand/vanilla'
@@ -227,6 +225,6 @@ render(personStore.getInitialState(), personStore.getInitialState())
 personStore.subscribe(render)
 ```
 
-## Troubleshooting
+## 故障排除
 
-TBD
+待定

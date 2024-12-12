@@ -1,34 +1,34 @@
 ---
 title: redux
-description: How to use actions and reducers in a store
+description: 如何在 store 中使用 actions 和 reducers
 nav: 208
 ---
 
 # redux
 
-`redux` middleware lets you update a store through actions and reducers just like redux.
+`redux` 中间件允许你像 redux 一样通过 actions 和 reducers 更新 store。
 
 ```js
 const nextStateCreatorFn = redux(reducerFn, initialState)
 ```
 
-- [Types](#types)
-  - [Signature](#signature)
-  - [Mutator](#mutator)
-- [Reference](#reference)
-- [Usage](#usage)
-  - [Updating state through actions and reducers](#updating-state-through-actions-and-reducers)
-- [Troubleshooting](#troubleshooting)
+- [类型](#类型)
+  - [签名](#签名)
+  - [变异器](#变异器)
+- [参考](#参考)
+- [用法](#用法)
+  - [通过 actions 和 reducers 更新状态](#通过-actions-和-reducers-更新状态)
+- [故障排除](#故障排除)
 
-## Types
+## 类型
 
-### Signature
+### 签名
 
 ```ts
 redux<T, A>(reducerFn: (state: T, action: A) => T, initialState: T): StateCreator<T & { dispatch: (action: A) => A }, [['zustand/redux', A]], []>
 ```
 
-### Mutator
+### 变异器
 
 <!-- prettier-ignore-start -->
 ```ts
@@ -36,24 +36,22 @@ redux<T, A>(reducerFn: (state: T, action: A) => T, initialState: T): StateCreato
 ```
 <!-- prettier-ignore-end -->
 
-## Reference
+## 参考
 
 ### `redux(reducerFn, initialState)`
 
-#### Parameters
+#### 参数
 
-- `reducerFn`: It should be pure and should take the current state of your application and an action
-  object as arguments, and returns the new state resulting from applying the action.
-- `initialState`: The value you want the state to be initially. It can be a value of any type,
-  except a function.
+- `reducerFn`: 它应该是纯函数，应该接受应用程序的当前状态和一个 action 对象作为参数，并返回应用 action 后的新状态。
+- `initialState`: 你希望状态最初的值。它可以是任何类型的值，除了函数。
 
-#### Returns
+#### 返回值
 
-`redux` returns a state creator function.
+`redux` 返回一个状态创建函数。
 
-## Usage
+## 用法
 
-### Updating state through actions and reducers
+### 通过 actions 和 reducers 更新状态
 
 ```ts
 import { createStore } from 'zustand/vanilla'
@@ -147,24 +145,24 @@ render(personStore.getInitialState(), personStore.getInitialState())
 personStore.subscribe(render)
 ```
 
-Here's the `html` code
+这是 `html` 代码
 
 ```html
 <label style="display: block">
-  First name:
+  名字:
   <input id="first-name" />
 </label>
 <label style="display: block">
-  Last name:
+  姓氏:
   <input id="last-name" />
 </label>
 <label style="display: block">
-  Email:
+  邮箱:
   <input id="email" />
 </label>
 <p id="result"></p>
 ```
 
-## Troubleshooting
+## 故障排除
 
-TBD
+待定

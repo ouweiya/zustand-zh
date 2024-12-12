@@ -1,33 +1,30 @@
 ---
-title: 'Tutorial: Tic-Tac-Toe'
-description: Building a game
+title: '教程：井字棋'
+description: 构建一个游戏
 nav: 0
 ---
 
-# Tutorial: Tic-Tac-Toe
+# 教程：井字棋
 
-## Building a game
+## 构建一个游戏
 
-You will build a small tic-tac-toe game during this tutorial. This tutorial does assume existing
-React knowledge. The techniques you'll learn in the tutorial are fundamental to building any React
-app, and fully understanding it will give you a deep understanding of React and Zustand.
+在本教程中，您将构建一个小型的井字棋游戏。本教程假设您已有 React 知识。您将在教程中学习到的技术是构建任何 React 应用的基础，完全理解它将使您对 React 和 Zustand 有深入的了解。
 
 > [!NOTE]
-> This tutorial is crafted for those who learn best through hands-on experience and want to swiftly
-> create something tangible. It draws inspiration from React's tic-tac-toe tutorial.
+> 本教程专为那些通过动手实践学习效果最好并希望快速创建一些具体内容的人设计。它借鉴了 React 的井字棋教程。
 
-The tutorial is divided into several sections:
+本教程分为几个部分：
 
-- Setup for the tutorial will give you a starting point to follow the tutorial.
-- Overview will teach you the fundamentals of React: components, props, and state.
-- Completing the game will teach you the most common techniques in React development.
-- Adding time travel will give you a deeper insight into the unique strengths of React.
+- 教程设置将为您提供一个开始点，以便您可以跟随教程。
+- 概述将教您 React 的基础知识：组件、props 和状态。
+- 完成游戏将教您 React 开发中最常见的技术。
+- 添加时间旅行将使您深入了解 React 的独特优势。
 
-### What are you building?
+### 您将构建什么？
 
-In this tutorial, you'll build an interactive tic-tac-toe game with React and Zustand.
+在本教程中，您将使用 React 和 Zustand 构建一个交互式的井字棋游戏。
 
-You can see what it will look like when you're finished here:
+您可以在这里看到完成后的样子：
 
 ```jsx
 import { create } from 'zustand'
@@ -203,17 +200,13 @@ function calculateStatus(winner, turns, player) {
 }
 ```
 
-### Building the board
+### 构建棋盘
 
-Let's start by creating the `Square` component, which will be a building block for our `Board`
-component. This component will represent each square in our game.
+让我们从创建 `Square` 组件开始，它将是我们 `Board` 组件的构建块。这个组件将代表我们游戏中的每个方格。
 
-The `Square` component should take `value` and `onSquareClick` as props. It should return a
-`<button>` element, styled to look like a square. The button displays the value prop, which can be
-`'X'`, `'O'`, or `null`, depending on the game's state. When the button is clicked, it triggers the
-`onSquareClick` function passed in as a prop, allowing the game to respond to user input.
+`Square` 组件应该接受 `value` 和 `onSquareClick` 作为 props。它应该返回一个 `<button>` 元素，样式看起来像一个方格。按钮显示 value prop，根据游戏状态可以是 `'X'`、`'O'` 或 `null`。当按钮被点击时，它会触发传入的 `onSquareClick` 函数，使游戏能够响应用户输入。
 
-Here's the code for the `Square` component:
+以下是 `Square` 组件的代码：
 
 ```tsx
 function Square({ value, onSquareClick }) {
@@ -239,19 +232,13 @@ function Square({ value, onSquareClick }) {
 }
 ```
 
-Let's move on to creating the Board component, which will consist of 9 squares arranged in a grid.
-This component will serve as the main playing area for our game.
+接下来，让我们创建 `Board` 组件，它将由 9 个方格组成，排列成一个网格。这个组件将作为我们游戏的主要游戏区。
 
-The `Board` component should return a `<div>` element styled as a grid. The grid layout is achieved
-using CSS Grid, with three columns and three rows, each taking up an equal fraction of the available
-space. The overall size of the grid is determined by the width and height properties, ensuring that
-it is square-shaped and appropriately sized.
+`Board` 组件应该返回一个样式为网格的 `<div>` 元素。网格布局是使用 CSS Grid 实现的，有三列和三行，每列和每行占用相等的空间。网格的整体大小由宽度和高度属性决定，确保它是正方形且大小合适。
 
-Inside the grid, we place nine Square components, each with a value prop representing its position.
-These Square components will eventually hold the game symbols (`'X'` or `'O'`) and handle user
-interactions.
+在网格内，我们放置了九个 `Square` 组件，每个组件都有一个表示其位置的 value prop。这些 `Square` 组件最终将包含游戏符号（`'X'` 或 `'O'`）并处理用户交互。
 
-Here's the code for the `Board` component:
+以下是 `Board` 组件的代码：
 
 ```tsx
 export default function Board() {
@@ -280,32 +267,18 @@ export default function Board() {
 }
 ```
 
-This Board component sets up the basic structure for our game board by arranging nine squares in a
-3x3 grid. It positions the squares neatly, providing a foundation for adding more features and
-handling player interactions in the future.
+这个 `Board` 组件通过将九个方格排列成 3x3 的网格来设置我们的游戏棋盘的基本结构。它将方格整齐地排列，为添加更多功能和处理玩家交互提供了基础。
 
-### Lifting state up
+### 状态提升
 
-Each `Square` component could maintain a part of the game's state. To check for a winner in a
-tic-tac-toe game, the `Board` component would need to somehow know the state of each of the 9
-`Square` components.
+每个 `Square` 组件可以维护游戏状态的一部分。要检查井字棋游戏中的赢家，`Board` 组件需要以某种方式知道 9 个 `Square` 组件的状态。
 
-How would you approach that? At first, you might guess that the `Board` component needs to ask each
-`Square` component for that `Square`'s component state. Although this approach is technically
-possible in React, we discourage it because the code becomes difficult to understand, susceptible
-to bugs, and hard to refactor. Instead, the best approach is to store the game's state in the
-parent `Board` component instead of in each `Square` component. The `Board` component can tell each
-`Square` component what to display by passing a prop, like you did when you passed a number to each
-`Square` component.
+您会如何处理这个问题？起初，您可能会猜测 `Board` 组件需要向每个 `Square` 组件询问该 `Square` 的组件状态。虽然这种方法在 React 中是技术上可行的，但我们不鼓励这样做，因为代码会变得难以理解，容易出错，并且难以重构。相反，最好的方法是将游戏状态存储在父 `Board` 组件中，而不是在每个 `Square` 组件中。`Board` 组件可以通过传递一个 prop 告诉每个 `Square` 组件显示什么，就像您传递一个数字给每个 `Square` 组件一样。
 
 > [!IMPORTANT]
-> To collect data from multiple children, or to have two or more child components
-> communicate with each other, declare the shared state in their parent component instead. The
-> parent component can pass that state back down to the children via props. This keeps the child
-> components in sync with each other and with their parent.
+> 要从多个子组件收集数据，或者让两个或多个子组件相互通信，请在它们的父组件中声明共享状态。父组件可以通过 props 将该状态传递回子组件。这使得子组件与彼此以及它们的父组件保持同步。
 
-Let's take this opportunity to try it out. Edit the `Board` component so that it declares a state
-variable named squares that defaults to an array of 9 nulls corresponding to the 9 squares:
+让我们借此机会试一试。编辑 `Board` 组件，使其声明一个名为 squares 的状态变量，默认值为一个包含 9 个 null 的数组：
 
 ```tsx
 import { create } from 'zustand'
@@ -351,41 +324,27 @@ export default function Board() {
 }
 ```
 
-`Array(9).fill(null)` creates an array with nine elements and sets each of them to `null`. The
-`useGameStore` declares a `squares` state that's initially set to that array. Each entry in the
-array corresponds to the value of a square. When you fill the board in later, the squares array
-will look like this:
+`Array(9).fill(null)` 创建一个包含九个元素的数组，并将每个元素设置为 `null`。`useGameStore` 声明一个初始设置为该数组的 `squares` 状态。数组中的每个条目对应一个方格的值。当您稍后填充棋盘时，squares 数组将如下所示：
 
 ```ts
 const squares = ['O', null, 'X', 'X', 'X', 'O', 'O', null, null]
 ```
 
-Each Square will now receive a `value` prop that will either be `'X'`, `'O'`, or `null` for empty
-squares.
+每个 `Square` 现在将接收一个 `value` prop，该 prop 将是 `'X'`、`'O'` 或 `null`（表示空方格）。
 
-Next, you need to change what happens when a `Square` component is clicked. The `Board` component
-now maintains which squares are filled. You'll need to create a way for the `Square` component to
-update the `Board`'s component state. Since state is private to a component that defines it, you
-cannot update the `Board`'s component state directly from `Square` component.
+接下来，您需要更改当 `Square` 组件被点击时发生的事情。`Board` 组件现在维护哪些方格已被填充。您需要创建一种方法，使 `Square` 组件能够更新 `Board` 的组件状态。由于状态是定义它的组件的私有属性，您不能直接从 `Square` 组件更新 `Board` 的组件状态。
 
-Instead, you'll pass down a function from the Board component to the `Square` component, and you'll
-have `Square` component call that function when a square is clicked. You'll start with the function
-that the `Square` component will call when it is clicked. You'll call that function `onSquareClick`:
+相反，您将从 `Board` 组件向 `Square` 组件传递一个函数，并让 `Square` 组件在方格被点击时调用该函数。您将从 `Square` 组件在被点击时调用的函数开始。您将调用该函数 `onSquareClick`：
 
-Now you'll connect the `onSquareClick` prop to a function in the `Board` component that you'll name
-`handleClick`. To connect `onSquareClick` to `handleClick` you'll pass an inline function to the
-`onSquareClick` prop of the first Square component:
+现在，您将 `onSquareClick` prop 连接到 `Board` 组件中的一个名为 `handleClick` 的函数。要将 `onSquareClick` 连接到 `handleClick`，您将向第一个 `Square` 组件的 `onSquareClick` prop 传递一个内联函数：
 
 ```tsx
 <Square key={squareIndex} value={square} onSquareClick={() => handleClick(i)} />
 ```
 
-Lastly, you will define the `handleClick` function inside the `Board` component to update the
-squares array holding your board's state.
+最后，您将在 `Board` 组件中定义 `handleClick` 函数，以更新保存棋盘状态的 squares 数组。
 
-The `handleClick` function should take the index of the square to update and create a copy of the
-`squares` array (`nextSquares`). Then, `handleClick` updates the `nextSquares` array by adding `X`
-to the square at the specified index (`i`) if is not already filled.
+`handleClick` 函数应接受要更新的方格的索引，并创建 squares 数组的副本（`nextSquares`）。然后，`handleClick` 更新 `nextSquares` 数组，在指定索引（`i`）处添加 `X`，如果该方格尚未填充。
 
 ```tsx {7-12,29}
 export default function Board() {
@@ -425,16 +384,13 @@ export default function Board() {
 ```
 
 > [!IMPORTANT]
-> Note how in `handleClick` function, you call `.slice()` to create a copy of the squares array
-> instead of modifying the existing array.
+> 注意在 `handleClick` 函数中，您调用 `.slice()` 来创建 squares 数组的副本，而不是修改现有数组。
 
-### Taking turns
+### 轮流
 
-It's now time to fix a major defect in this tic-tac-toe game: the `'O'`s cannot be used on the
-board.
+现在是时候修复这个井字棋游戏中的一个主要缺陷了：`'O'` 不能在棋盘上使用。
 
-You'll set the first move to be `'X'` by default. Let's keep track of this by adding another piece
-of state to the `useGameStore` hook:
+您将默认设置第一步为 `'X'`。让我们通过向 `useGameStore` 钩子添加另一个状态来跟踪这一点：
 
 ```tsx {2,12-18}
 const useGameStore = create(
@@ -461,9 +417,7 @@ const useGameStore = create(
 )
 ```
 
-Each time a player moves, `xIsNext` (a boolean) will be flipped to determine which player goes next
-and the game's state will be saved. You'll update the Board's `handleClick` function to flip the
-value of `xIsNext`:
+每次玩家移动时，`xIsNext`（一个布尔值）将被翻转，以确定下一个玩家是谁，并保存游戏状态。您将更新 `Board` 的 `handleClick` 函数以翻转 `xIsNext` 的值：
 
 ```tsx {2-5,10,15}
 export default function Board() {
@@ -508,15 +462,9 @@ export default function Board() {
 }
 ```
 
-### Declaring a winner or draw
+### 宣布赢家或平局
 
-Now that the players can take turns, you'll want to show when the game is won or drawn and there
-are no more turns to make. To do this you'll add three helper functions. The first helper function
-called `calculateWinner` that takes an array of 9 squares, checks for a winner and returns `'X'`,
-`'O'`, or `null` as appropriate. The second helper function called `calculateTurns` that takes the
-same array, checks for remaining turns by filtering out only `null` items, and returns the count of
-them. The last helper called `calculateStatus` that takes the remaining turns, the winner, and the
-current player (`'X' or 'O'`):
+现在玩家可以轮流了，您将希望在游戏获胜或平局且没有更多回合时显示结果。为此，您将添加三个辅助函数。第一个辅助函数名为 `calculateWinner`，它接受一个包含 9 个方格的数组，检查是否有赢家，并返回 `'X'`、`'O'` 或 `null`。第二个辅助函数名为 `calculateTurns`，它接受相同的数组，通过过滤出仅 `null` 项来检查剩余回合，并返回它们的数量。最后一个辅助函数名为 `calculateStatus`，它接受剩余回合、赢家和当前玩家（`'X'` 或 `'O'`）：
 
 ```ts
 function calculateWinner(squares) {
@@ -552,10 +500,7 @@ function calculateStatus(winner, turns, player) {
 }
 ```
 
-You will use the result of `calculateWinner(squares)` in the Board component's `handleClick`
-function to check if a player has won. You can perform this check at the same time you check if a
-user has clicked a square that already has a `'X'` or and `'O'`. We'd like to return early in
-both cases:
+您将在 `Board` 组件的 `handleClick` 函数中使用 `calculateWinner(squares)` 的结果来检查是否有玩家获胜。您可以在检查用户是否点击了已经有 `'X'` 或 `'O'` 的方格时同时进行此检查。我们希望在这两种情况下尽早返回：
 
 ```ts {2}
 function handleClick(i) {
@@ -567,10 +512,7 @@ function handleClick(i) {
 }
 ```
 
-To let the players know when the game is over, you can display text such as `'Winner: X'` or
-`'Winner: O'`. To do that you'll add a `status` section to the `Board` component. The status will
-display the winner or draw if the game is over and if the game is ongoing you'll display which
-player's turn is next:
+为了让玩家知道游戏何时结束，您可以显示诸如 `'Winner: X'` 或 `'Winner: O'` 的文本。为此，您将向 `Board` 组件添加一个 `status` 部分。状态将显示赢家或平局，如果游戏正在进行中，您将显示下一个玩家的回合：
 
 ```tsx {10-11,13,25}
 export default function Board() {
@@ -621,8 +563,7 @@ export default function Board() {
 }
 ```
 
-Congratulations! You now have a working tic-tac-toe game. And you've just learned the basics of
-React and Zustand too. So you are the real winner here. Here is what the code should look like:
+恭喜！您现在有一个可以正常工作的井字棋游戏。您还学习了 React 和 Zustand 的基础知识。所以您才是真正的赢家。以下是代码应有的样子：
 
 ```tsx
 import { create } from 'zustand'
@@ -753,47 +694,35 @@ function calculateStatus(winner, turns, player) {
 }
 ```
 
-### Adding time travel
+### 添加时间旅行
 
-As a final exercise, let's make it possible to “go back in time” and revisit previous moves in the
-game.
+作为最后一个练习，让我们使其能够“回到过去”并重新查看游戏中的先前步骤。
 
-If you had directly modified the squares array, implementing this time-travel feature would be very
-difficult. However, since you used `slice()` to create a new copy of the squares array after every
-move, treating it as immutable, you can store every past version of the squares array and navigate
-between them.
+如果您直接修改了 squares 数组，实现这个时间旅行功能将非常困难。然而，由于您使用 `slice()` 在每次移动后创建 squares 数组的新副本，将其视为不可变的，您可以存储 squares 数组的每个过去版本并在它们之间导航。
 
-You'll keep track of these past squares arrays in a new state variable called `history`. This
-`history` array will store all board states, from the first move to the latest one, and will look
-something like this:
+您将通过一个名为 `history` 的新状态变量来跟踪这些过去的 squares 数组。这个 `history` 数组将存储所有棋盘状态，从第一步到最新的一步，看起来像这样：
 
 ```ts
 const history = [
-  // First move
+  // 第一步
   [null, null, null, null, null, null, null, null, null],
-  // Second move
+  // 第二步
   ['X', null, null, null, null, null, null, null, null],
-  // Third move
+  // 第三步
   ['X', 'O', null, null, null, null, null, null, null],
-  // and so on...
+  // 依此类推...
 ]
 ```
 
-This approach allows you to easily navigate between different game states and implement the
-time-travel feature.
+这种方法使您可以轻松地在不同的游戏状态之间导航并实现时间旅行功能。
 
-### Lifting state up, again
+### 再次提升状态
 
-Next, you will create a new top-level component called `Game` to display a list of past moves. This
-is where you will store the `history` state that contains the entire game history.
+接下来，您将创建一个名为 `Game` 的新顶级组件，以显示过去的移动列表。这是您将存储包含整个游戏历史的 `history` 状态的地方。
 
-By placing the `history` state in the `Game` component, you can remove the `squares` state from the
-`Board` component. You will now lift the state up from the `Board` component to the top-level `Game`
-component. This change allows the `Game` component to have full control over the `Board`'s
-component data and instruct the `Board` component to render previous turns from the `history`.
+通过将 `history` 状态放在 `Game` 组件中，您可以从 `Board` 组件中删除 `squares` 状态。您现在将状态从 `Board` 组件提升到顶级的 `Game` 组件。这一变化使 `Game` 组件能够完全控制 `Board` 的组件数据，并指示 `Board` 组件渲染 `history` 中的先前回合。
 
-First, add a `Game` component with `export default` and remove it from `Board` component. Here is
-what the code should look like:
+首先，添加一个带有 `export default` 的 `Game` 组件，并从 `Board` 组件中删除它。以下是代码应有的样子：
 
 ```tsx {1,48-65}
 function Board() {
@@ -863,7 +792,7 @@ export default function Game() {
 }
 ```
 
-Add some state to the `useGameStore` hook to track the history of moves:
+向 `useGameStore` 钩子添加一些状态以跟踪移动的历史记录：
 
 ```ts {2,4-11}
 const useGameStore = create(
@@ -890,12 +819,9 @@ const useGameStore = create(
 )
 ```
 
-Notice how `[Array(9).fill(null)]` creates an array with a single item, which is itself an array of
-9 null values.
+注意 `[Array(9).fill(null)]` 如何创建一个包含单个项目的数组，该项目本身是一个包含 9 个 null 值的数组。
 
-To render the squares for the current move, you'll need to read the most recent squares array from
-the `history` state. You don't need an extra state for this because you already have enough
-information to calculate it during rendering:
+要渲染当前移动的方格，您需要从 `history` 状态中读取最新的方格数组。您不需要为此额外的状态，因为您已经有足够的信息在渲染期间计算它：
 
 ```tsx {2-3}
 export default function Game() {
@@ -921,9 +847,7 @@ export default function Game() {
 }
 ```
 
-Next, create a `handlePlay` function inside the `Game` component that will be called by the `Board`
-component to update the game. Pass `xIsNext`, `currentSquares` and `handlePlay` as props to the
-`Board` component:
+接下来，在 `Game` 组件中创建一个 `handlePlay` 函数，该函数将由 `Board` 组件调用以更新游戏。将 `xIsNext`、`currentSquares` 和 `handlePlay` 作为 props 传递给 `Board` 组件：
 
 ```tsx {5-7,18}
 export default function Game() {
@@ -953,9 +877,7 @@ export default function Game() {
 }
 ```
 
-Let's make the `Board` component fully controlled by the props it receives. To do this, we'll modify
-the `Board` component to accept three props: `xIsNext`, `squares`, and a new `onPlay` function that
-the `Board` component can call with the updated squares array when a player makes a move.
+让我们使 `Board` 组件完全由其接收的 props 控制。为此，我们将修改 `Board` 组件以接受三个 props：`xIsNext`、`squares` 和一个新的 `onPlay` 函数，当玩家进行移动时，`Board` 组件可以调用该函数并传递更新后的方格数组。
 
 ```tsx {1}
 function Board({ xIsNext, squares, onPlay }) {
@@ -997,18 +919,11 @@ function Board({ xIsNext, squares, onPlay }) {
 }
 ```
 
-The `Board` component is now fully controlled by the props passed to it by the `Game` component. To
-get the game working again, you need to implement the `handlePlay` function in the `Game`
-component.
+`Board` 组件现在完全由 `Game` 组件传递给它的 props 控制。要使游戏再次正常工作，您需要在 `Game` 组件中实现 `handlePlay` 函数。
 
-What should `handlePlay` do when called? Previously, the `Board` component called `setSquares` with
-an updated array; now it passes the updated squares array to `onPlay`.
+当 `handlePlay` 被调用时，它应该做什么？以前，`Board` 组件使用更新后的数组调用 `setSquares`；现在它将更新后的方格数组传递给 `onPlay`。
 
-The `handlePlay` function needs to update the `Game` component's state to trigger a re-render.
-Instead of using `setSquares`, you'll update the `history` state variable by appending the updated
-squares array as a new `history` entry. You also need to toggle `xIsNext`, just as the `Board`
-component used
-to do.
+`handlePlay` 函数需要更新 `Game` 组件的状态以触发重新渲染。您将更新 `history` 状态变量，通过将更新后的方格数组作为新的 `history` 条目附加，而不是使用 `setSquares`。您还需要像 `Board` 组件以前那样切换 `xIsNext`。
 
 ```ts {2-3}
 function handlePlay(nextSquares) {
@@ -1017,8 +932,7 @@ function handlePlay(nextSquares) {
 }
 ```
 
-At this point, you've moved the state to live in the `Game` component, and the UI should be fully
-working, just as it was before the refactor. Here is what the code should look like at this point:
+此时，您已将状态移至 `Game` 组件，并且 UI 应该完全正常工作，就像重构之前一样。以下是此时代码应有的样子：
 
 ```tsx
 import { create } from 'zustand'
@@ -1167,18 +1081,13 @@ function calculateStatus(winner, turns, player) {
 }
 ```
 
-### Showing the past moves
+### 显示过去的移动
 
-Since you are recording the tic-tac-toe game's history, you can now display a list of past moves to
-the player.
+由于您正在记录井字棋游戏的历史记录，您现在可以向玩家显示过去移动的列表。
 
-You already have an array of `history` moves in store, so now you need to transform it to an array
-of React elements. In JavaScript, to transform one array into another, you can use the Array
-`.map()` method:
+您已经在存储中有一个 `history` 移动数组，因此现在您需要将其转换为 React 元素数组。在 JavaScript 中，要将一个数组转换为另一个数组，您可以使用 Array `.map()` 方法：
 
-You'll use `map` to transform your `history` of moves into React elements representing buttons on the
-screen, and display a list of buttons to **jump** to past moves. Let's `map` over the `history` in
-the `Game` component:
+您将使用 `map` 将您的 `history` 移动转换为表示屏幕上按钮的 React 元素，并显示一个按钮列表以**跳转**到过去的移动。让我们在 `Game` 组件中 `map` 遍历 `history`：
 
 ```tsx {26-41}
 export default function Game() {
@@ -1228,9 +1137,7 @@ export default function Game() {
 }
 ```
 
-Before you can implement the `jumpTo` function, you need the `Game` component to keep track of which
-step the user is currently viewing. To do this, define a new state variable called `currentMove`,
-which will start at `0`:
+在实现 `jumpTo` 函数之前，您需要 `Game` 组件跟踪用户当前正在查看的步骤。为此，定义一个名为 `currentMove` 的新状态变量，该变量将从 `0` 开始：
 
 ```ts {3,14-21}
 const useGameStore = create(
@@ -1268,8 +1175,7 @@ const useGameStore = create(
 )
 ```
 
-Next, update the `jumpTo` function inside `Game` component to update that `currentMove`. You’ll
-also set `xIsNext` to `true` if the number that you’re changing `currentMove` to is even.
+接下来，更新 `Game` 组件中的 `jumpTo` 函数以更新 `currentMove`。如果您要更改 `currentMove` 的数字是偶数，您还需要将 `xIsNext` 设置为 `true`。
 
 ```ts {2-3}
 function jumpTo(nextMove) {
@@ -1278,14 +1184,10 @@ function jumpTo(nextMove) {
 }
 ```
 
-You will now make two changes to the `handlePlay` function in the `Game` component, which is called
-when you click on a square.
+您现在将对 `Game` 组件中的 `handlePlay` 函数进行两项更改，当您点击一个方格时会调用该函数。
 
-- If you "go back in time" and then make a new move from that point, you only want to keep the
-  history up to that point. Instead of adding `nextSquares` after all items in the history (using
-  the Array `.concat()` method), you'll add it after all items in
-  `history.slice(0, currentMove + 1)` to keep only that portion of the old history.
-- Each time a move is made, you need to update `currentMove` to point to the latest history entry.
+- 如果您“回到过去”然后从该点进行新的移动，您只希望保留历史记录到该点。您将 `nextSquares` 添加到 `history.slice(0, currentMove + 1)` 之后的所有项目中，而不是使用 Array `.concat()` 方法将其添加到所有历史记录项目之后。
+- 每次进行移动时，您需要更新 `currentMove` 以指向最新的历史记录条目。
 
 ```ts {2-4}
 function handlePlay(nextSquares) {
@@ -1296,8 +1198,7 @@ function handlePlay(nextSquares) {
 }
 ```
 
-Finally, you will modify the `Game` component to render the currently selected move, instead of
-always rendering the final move:
+最后，您将修改 `Game` 组件以渲染当前选择的移动，而不是始终渲染最终移动：
 
 ```tsx {2-10}
 export default function Game() {
@@ -1357,15 +1258,11 @@ export default function Game() {
 }
 ```
 
-### Final cleanup
+### 最后的清理
 
-If you look closely at the code, you'll see that `xIsNext` is `true` when `currentMove` is even and
-`false` when `currentMove` is odd. This means that if you know the value of `currentMove`, you can
-always determine what `xIsNext` should be.
+如果您仔细查看代码，您会发现 `xIsNext` 在 `currentMove` 为偶数时为 `true`，在 `currentMove` 为奇数时为 `false`。这意味着如果您知道 `currentMove` 的值，您总是可以确定 `xIsNext` 应该是什么。
 
-There's no need to store `xIsNext` separately in the state. It’s better to avoid redundant state
-because it can reduce bugs and make your code easier to understand. Instead, you can calculate
-`xIsNext` based on `currentMove`:
+没有必要在状态中单独存储 `xIsNext`。最好避免冗余状态，因为它可以减少错误并使代码更易于理解。相反，您可以根据 `currentMove` 计算 `xIsNext`：
 
 ```tsx {2,10,14}
 export default function Game() {
@@ -1417,17 +1314,15 @@ export default function Game() {
 }
 ```
 
-You no longer need the `xIsNext` state declaration or the calls to `setXIsNext`. Now, there’s no
-chance for `xIsNext` to get out of sync with `currentMove`, even if you make a mistake while coding
-the components.
+您不再需要 `xIsNext` 状态声明或对 `setXIsNext` 的调用。现在，即使您在编写组件时出错，`xIsNext` 也不会与 `currentMove` 同步。
 
-### Wrapping up
+### 总结
 
-Congratulations! You’ve created a tic-tac-toe game that:
+恭喜！您已经创建了一个井字棋游戏，该游戏：
 
-- Lets you play tic-tac-toe,
-- Indicates when a player has won the game or when is drawn,
-- Stores a game’s history as a game progresses,
-- Allows players to review a game’s history and see previous versions of a game’s board.
+- 允许您玩井字棋，
+- 指示玩家何时赢得游戏或平局，
+- 随着游戏的进行存储游戏的历史记录，
+- 允许玩家查看游戏的历史记录并查看游戏棋盘的先前版本。
 
-Nice work! We hope you now feel like you have a decent grasp of how React and Zustand works.
+干得好！我们希望您现在对 React 和 Zustand 的工作原理有了一个不错的理解。

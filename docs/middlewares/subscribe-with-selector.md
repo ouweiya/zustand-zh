@@ -1,33 +1,33 @@
 ---
 title: subscribeWithSelector
-description: How to subscribe to granular store updates in a store
+description: 如何在 store 中订阅细粒度的 store 更新
 nav: 210
 ---
 
 # subscribeWithSelector
 
-`subscribeWithSelector` middleware lets you subscribe to specific data based on current state.
+`subscribeWithSelector` 中间件允许你根据当前状态订阅特定数据。
 
 ```js
 const nextStateCreatorFn = subscribeWithSelector(stateCreatorFn)
 ```
 
-- [Types](#types)
-  - [Signature](#signature)
-  - [Mutator](#mutator)
-- [Reference](#reference)
-- [Usage](#usage)
-- [Troubleshooting](#troubleshooting)
+- [类型](#类型)
+  - [签名](#签名)
+  - [变换器](#变换器)
+- [参考](#参考)
+- [用法](#用法)
+- [故障排除](#故障排除)
 
-## Types
+## 类型
 
-### Signature
+### 签名
 
 ```ts
 subscribeWithSelector<T>(stateCreatorFn: StateCreator<T, [], []>): StateCreator<T, [['zustand/subscribeWithSelector', never]], []>
 ```
 
-### Mutator
+### 变换器
 
 <!-- prettier-ignore-start -->
 ```ts
@@ -35,25 +35,24 @@ subscribeWithSelector<T>(stateCreatorFn: StateCreator<T, [], []>): StateCreator<
 ```
 <!-- prettier-ignore-end -->
 
-## Reference
+## 参考
 
 ### `subscribeWithSelector(stateCreatorFn)`
 
-#### Parameters
+#### 参数
 
-- `stateCreatorFn`: A function that takes `set` function, `get` function and `store` as arguments.
-  Usually, you will return an object with the methods you want to expose.
+- `stateCreatorFn`: 一个函数，接受 `set` 函数、`get` 函数和 `store` 作为参数。
+  通常，你会返回一个包含你想要暴露的方法的对象。
 
-#### Returns
+#### 返回值
 
-`subscribeWithSelector` returns a state creator function.
+`subscribeWithSelector` 返回一个状态创建函数。
 
-## Usage
+## 用法
 
-### Subscribing partial state updates
+### 订阅部分状态更新
 
-By subscribing to partial state updates, you register a callback that fires whenever the store's
-partial state updates. We can use `subscribe` for external state management.
+通过订阅部分状态更新，你可以注册一个回调函数，每当 store 的部分状态更新时触发。我们可以使用 `subscribe` 进行外部状态管理。
 
 ```ts
 import { createStore } from 'zustand/vanilla'
@@ -102,7 +101,7 @@ const logger: Parameters<typeof positionStore.subscribe>[0] = (x) => {
 positionStore.subscribe((state) => state.position.x, logger)
 ```
 
-Here's the `html` code
+以下是 `html` 代码
 
 ```html
 <div
@@ -116,6 +115,6 @@ Here's the `html` code
 </div>
 ```
 
-## Troubleshooting
+## 故障排除
 
-TBD
+待定

@@ -1,53 +1,51 @@
 ---
 title: useStore ⚛️
-description: How to use vanilla stores in React
+description: 如何在 React 中使用 vanilla stores
 nav: 30
 ---
 
-`useStore` is a React Hook that lets you use a vanilla store in React.
+`useStore` 是一个 React Hook，允许你在 React 中使用 vanilla store。
 
 ```js
 const someState = useStore(store, selectorFn)
 ```
 
-- [Types](#types)
-  - [Signature](#signature)
-- [Reference](#reference)
-- [Usage](#usage)
-  - [Use a vanilla store in React](#use-a-vanilla-store-in-react)
-  - [Using dynamic vanilla stores in React](#using-dynamic-global-vanilla-stores-in-react)
-  - [Using scoped (non-global) vanilla store in React](#using-scoped-non-global-vanilla-store-in-react)
-  - [Using dynamic scoped (non-global) vanilla stores in React](#using-dynamic-scoped-non-global-vanilla-stores-in-react)
-- [Troubleshooting](#troubleshooting)
+- [类型](#类型)
+  - [签名](#签名)
+- [参考](#参考)
+- [用法](#用法)
+  - [在 React 中使用全局 vanilla store](#在-react-中使用全局-vanilla-store)
+  - [在 React 中使用动态全局 vanilla store](#在-react-中使用动态全局-vanilla-store)
+  - [在 React 中使用作用域（非全局）vanilla store](#在-react-中使用作用域非全局vanilla-store)
+  - [在 React 中使用动态作用域（非全局）vanilla store](#在-react-中使用动态作用域非全局vanilla-store)
+- [故障排除](#故障排除)
 
-## Types
+## 类型
 
-### Signature
+### 签名
 
 ```ts
 useStore<StoreApi<T>, U = T>(store: StoreApi<T>, selectorFn?: (state: T) => U) => UseBoundStore<StoreApi<T>>
 ```
 
-## Reference
+## 参考
 
 ### `useStore(store, selectorFn)`
 
-#### Parameters
+#### 参数
 
-- `storeApi`: The instance that lets you access to store API utilities.
-- `selectorFn`: A function that lets you return data that is based on current state.
+- `storeApi`: 允许你访问 store API 工具的实例。
+- `selectorFn`: 一个函数，允许你根据当前状态返回数据。
 
-#### Returns
+#### 返回值
 
-`useStore` returns any data based on current state depending on the selector function. It should
-take a store, and a selector function as arguments.
+`useStore` 根据选择器函数返回基于当前状态的任何数据。它应该接受一个 store 和一个选择器函数作为参数。
 
-## Usage
+## 用法
 
-### Using a global vanilla store in React
+### 在 React 中使用全局 vanilla store
 
-First, let's set up a store that will hold the position of the dot on the screen. We'll define the
-store to manage `x` and `y` coordinates and provide an action to update these coordinates.
+首先，我们设置一个 store 来保存屏幕上点的位置。我们将定义 store 来管理 `x` 和 `y` 坐标，并提供一个操作来更新这些坐标。
 
 ```tsx
 type PositionStoreState = { position: { x: number; y: number } }
@@ -64,8 +62,7 @@ const positionStore = createStore<PositionStore>()((set) => ({
 }))
 ```
 
-Next, we'll create a `MovingDot` component that renders a div representing the dot. This component
-will use the store to track and update the dot's position.
+接下来，我们将创建一个 `MovingDot` 组件，该组件渲染一个表示点的 div。该组件将使用 store 来跟踪和更新点的位置。
 
 ```tsx
 function MovingDot() {
@@ -103,7 +100,7 @@ function MovingDot() {
 }
 ```
 
-Finally, we’ll render the `MovingDot` component in our `App` component.
+最后，我们将在 `App` 组件中渲染 `MovingDot` 组件。
 
 ```tsx
 export default function App() {
@@ -111,7 +108,7 @@ export default function App() {
 }
 ```
 
-Here is what the code should look like:
+代码如下所示：
 
 ```tsx
 import { createStore, useStore } from 'zustand'
@@ -168,10 +165,9 @@ export default function App() {
 }
 ```
 
-### Using dynamic global vanilla stores in React
+### 在 React 中使用动态全局 vanilla store
 
-First, we'll create a factory function that generates a store for managing the counter state.
-Each tab will have its own instance of this store.
+首先，我们将创建一个工厂函数，用于生成管理计数器状态的 store。每个标签页将有自己的 store 实例。
 
 ```ts
 type CounterState = {
@@ -192,8 +188,7 @@ const createCounterStore = () => {
 }
 ```
 
-Next, we'll create a factory function that manages the creation and retrieval of counter stores.
-This allows each tab to have its own independent counter.
+接下来，我们将创建一个工厂函数来管理计数器 stores 的创建和检索。这允许每个标签页都有自己的独立计数器。
 
 ```ts
 const defaultCounterStores = new Map<
@@ -216,8 +211,7 @@ const getOrCreateCounterStoreByKey =
   createCounterStoreFactory(defaultCounterStores)
 ```
 
-Now, let’s build the Tabs component, where users can switch between tabs and increment each tab’s
-counter.
+现在，让我们构建 Tabs 组件，用户可以在其中切换标签页并增加每个标签页的计数器。
 
 ```tsx
 const [currentTabIndex, setCurrentTabIndex] = useState(0)
@@ -280,8 +274,7 @@ return (
 )
 ```
 
-Finally, we'll create the `App` component, which renders the tabs and their respective counters.
-The counter state is managed independently for each tab.
+最后，我们将创建 `App` 组件，该组件渲染标签页及其各自的计数器。计数器状态独立管理每个标签页。
 
 ```tsx
 export default function App() {
@@ -289,7 +282,7 @@ export default function App() {
 }
 ```
 
-Here is what the code should look like:
+代码如下所示：
 
 ```tsx
 import { useState } from 'react'
@@ -393,10 +386,9 @@ export default function App() {
 }
 ```
 
-### Using scoped (non-global) vanilla store in React
+### 在 React 中使用作用域（非全局）vanilla store
 
-First, let's set up a store that will hold the position of the dot on the screen. We'll define the
-store to manage `x` and `y` coordinates and provide an action to update these coordinates.
+首先，我们设置一个 store 来保存屏幕上点的位置。我们将定义 store 来管理 `x` 和 `y` 坐标，并提供一个操作来更新这些坐标。
 
 ```tsx
 type PositionStoreState = { position: { x: number; y: number } }
@@ -415,8 +407,7 @@ const createPositionStore = () => {
 }
 ```
 
-Next, we'll create a context and a provider component to pass down the store through the React
-component tree. This allows each `MovingDot` component to have its own independent state.
+接下来，我们将创建一个上下文和一个提供者组件，通过 React 组件树传递 store。这允许每个 `MovingDot` 组件有自己的独立状态。
 
 ```tsx
 const PositionStoreContext = createContext<ReturnType<
@@ -434,8 +425,7 @@ function PositionStoreProvider({ children }: { children: ReactNode }) {
 }
 ```
 
-To simplify accessing the store, we’ll create a React custom hook, `usePositionStore`. This hook
-will read the store from the context and allow us to select specific parts of the state.
+为了简化访问 store，我们将创建一个 React 自定义 Hook，`usePositionStore`。这个 Hook 将从上下文中读取 store，并允许我们选择状态的特定部分。
 
 ```ts
 function usePositionStore<U>(selector: (state: PositionStore) => U) {
@@ -443,7 +433,7 @@ function usePositionStore<U>(selector: (state: PositionStore) => U) {
 
   if (store === null) {
     throw new Error(
-      'usePositionStore must be used within PositionStoreProvider',
+      'usePositionStore 必须在 PositionStoreProvider 内使用',
     )
   }
 
@@ -451,8 +441,7 @@ function usePositionStore<U>(selector: (state: PositionStore) => U) {
 }
 ```
 
-Now, let's create the `MovingDot` component, which will render a dot that follows the mouse cursor
-within its container.
+现在，让我们创建 `MovingDot` 组件，该组件将在其容器内渲染一个跟随鼠标光标的点。
 
 ```tsx
 function MovingDot({ color }: { color: string }) {
@@ -493,8 +482,7 @@ function MovingDot({ color }: { color: string }) {
 }
 ```
 
-Finally, we'll bring everything together in the `App` component, where we render two `MovingDot`
-components, each with its own independent state.
+最后，我们将在 `App` 组件中将所有内容结合起来，在其中渲染两个 `MovingDot` 组件，每个组件都有自己的独立状态。
 
 ```tsx
 export default function App() {
@@ -511,7 +499,7 @@ export default function App() {
 }
 ```
 
-Here is what the code should look like:
+代码如下所示：
 
 ```tsx
 import { type ReactNode, useState, createContext, useContext } from 'react'
@@ -551,7 +539,7 @@ function usePositionStore<U>(selector: (state: PositionStore) => U) {
 
   if (store === null) {
     throw new Error(
-      'usePositionStore must be used within PositionStoreProvider',
+      'usePositionStore 必须在 PositionStoreProvider 内使用',
     )
   }
 
@@ -609,10 +597,9 @@ export default function App() {
 }
 ```
 
-### Using dynamic scoped (non-global) vanilla stores in React
+### 在 React 中使用动态作用域（非全局）vanilla store
 
-First, we'll create a factory function that generates a store for managing the counter state.
-Each tab will have its own instance of this store.
+首先，我们将创建一个工厂函数，用于生成管理计数器状态的 store。每个标签页将有自己的 store 实例。
 
 ```ts
 import { createStore } from 'zustand'
@@ -635,8 +622,7 @@ const createCounterStore = () => {
 }
 ```
 
-Next, we'll create a factory function that manages the creation and retrieval of counter stores.
-This allows each tab to have its own independent counter.
+接下来，我们将创建一个工厂函数来管理计数器 stores 的创建和检索。这允许每个标签页都有自己的独立计数器。
 
 ```ts
 const createCounterStoreFactory = (
@@ -651,8 +637,7 @@ const createCounterStoreFactory = (
 }
 ```
 
-Next, we need a way to manage and access these stores throughout our app. We’ll use React’s context
-for this.
+接下来，我们需要一种方法来管理和访问整个应用程序中的这些 stores。我们将使用 React 的上下文来实现这一点。
 
 ```tsx
 const CounterStoresContext = createContext(null)
@@ -670,8 +655,7 @@ const CounterStoresProvider = ({ children }) => {
 }
 ```
 
-Now, we’ll create a custom hook, `useCounterStore`, that lets us access the correct store for a
-given tab.
+现在，我们将创建一个自定义 Hook，`useCounterStore`，它允许我们访问给定标签页的正确 store。
 
 ```tsx
 const useCounterStore = <U>(
@@ -681,7 +665,7 @@ const useCounterStore = <U>(
   const stores = useContext(CounterStoresContext)
 
   if (stores === undefined) {
-    throw new Error('useCounterStore must be used within CounterStoresProvider')
+    throw new Error('useCounterStore 必须在 CounterStoresProvider 内使用')
   }
 
   const getOrCreateCounterStoreByKey = useCallback(
@@ -693,8 +677,7 @@ const useCounterStore = <U>(
 }
 ```
 
-Now, let’s build the Tabs component, where users can switch between tabs and increment each tab’s
-counter.
+现在，让我们构建 Tabs 组件，用户可以在其中切换标签页并增加每个标签页的计数器。
 
 ```tsx
 function Tabs() {
@@ -760,8 +743,7 @@ function Tabs() {
 }
 ```
 
-Finally, we'll create the `App` component, which renders the tabs and their respective counters.
-The counter state is managed independently for each tab.
+最后，我们将创建 `App` 组件，该组件渲染标签页及其各自的计数器。计数器状态独立管理每个标签页。
 
 ```tsx
 export default function App() {
@@ -773,7 +755,7 @@ export default function App() {
 }
 ```
 
-Here is what the code should look like:
+代码如下所示：
 
 ```tsx
 import {
@@ -837,7 +819,7 @@ const useCounterStore = <U,>(
   const stores = useContext(CounterStoresContext)
 
   if (stores === undefined) {
-    throw new Error('useCounterStore must be used within CounterStoresProvider')
+    throw new Error('useCounterStore 必须在 CounterStoresProvider 内使用')
   }
 
   const getOrCreateCounterStoreByKey = useCallback(
@@ -919,6 +901,6 @@ export default function App() {
 }
 ```
 
-## Troubleshooting
+## 故障排除
 
 TBD

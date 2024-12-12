@@ -1,63 +1,57 @@
 ---
 title: createWithEqualityFn ⚛️
-description: How to create efficient stores
+description: 如何创建高效的 stores
 nav: 25
 ---
 
-`createWithEqualityFn` lets you create a React Hook with API utilities attached, just like `create`.
-However, it offers a way to define a custom equality check. This allows for more granular control
-over when components re-render, improving performance and responsiveness.
+`createWithEqualityFn` 让你可以创建一个带有 API 工具的 React Hook，就像 `create` 一样。
+然而，它提供了一种定义自定义相等性检查的方法。这允许更细粒度地控制组件何时重新渲染，从而提高性能和响应速度。
 
 ```js
 const useSomeStore = createWithEqualityFn(stateCreatorFn, equalityFn)
 ```
 
-- [Types](#types)
-  - [Signature](#createwithequalityfn-signature)
-- [Reference](#reference)
-- [Usage](#usage)
-  - [Updating state based on previous state](#updating-state-based-on-previous-state)
-  - [Updating Primitives in State](#updating-primitives-in-state)
-  - [Updating Objects in State](#updating-objects-in-state)
-  - [Updating Arrays in State](#updating-arrays-in-state)
-  - [Updating state with no store actions](#updating-state-with-no-store-actions)
-  - [Subscribing to state updates](#subscribing-to-state-updates)
-- [Troubleshooting](#troubleshooting)
-  - [I’ve updated the state, but the screen doesn’t update](#ive-updated-the-state-but-the-screen-doesnt-update)
+- [类型](#types)
+  - [签名](#createwithequalityfn-signature)
+- [参考](#reference)
+- [用法](#usage)
+  - [基于先前状态更新状态](#updating-state-based-on-previous-state)
+  - [更新状态中的基本类型](#updating-primitives-in-state)
+  - [更新状态中的对象](#updating-objects-in-state)
+  - [更新状态中的数组](#updating-arrays-in-state)
+  - [在没有 store actions 的情况下更新状态](#updating-state-with-no-store-actions)
+  - [订阅状态更新](#subscribing-to-state-updates)
+- [故障排除](#troubleshooting)
+  - [我更新了状态，但屏幕没有更新](#ive-updated-the-state-but-the-screen-doesnt-update)
 
-## Types
+## 类型
 
-### Signature
+### 签名
 
 ```ts
 createWithEqualityFn<T>()(stateCreatorFn: StateCreator<T, [], []>, equalityFn?: (a: T, b: T) => boolean): UseBoundStore<StoreApi<T>>
 ```
 
-## Reference
+## 参考
 
 ### `createWithEqualityFn(stateCreatorFn)`
 
-#### Parameters
+#### 参数
 
-- `stateCreatorFn`: A function that takes `set` function, `get` function and `store` as arguments.
-  Usually, you will return an object with the methods you want to expose.
-- **optional** `equalityFn`: Defaults to `Object.is`. A function that lets you skip re-renders.
+- `stateCreatorFn`: 一个函数，接收 `set` 函数、`get` 函数和 `store` 作为参数。通常，你会返回一个包含你想要暴露的方法的对象。
+- **可选** `equalityFn`: 默认为 `Object.is`。一个函数，允许你跳过重新渲染。
 
-#### Returns
+#### 返回值
 
-`createWithEqualityFn` returns a React Hook with API utilities attached, just like `create`. It
-lets you return data that is based on current state, using a selector function, and lets you skip
-re-renders using an equality function. It should take a selector function, and an equality function
-as arguments.
+`createWithEqualityFn` 返回一个带有 API 工具的 React Hook，就像 `create` 一样。它允许你使用选择器函数返回基于当前状态的数据，并允许你使用相等性函数跳过重新渲染。它应该接收一个选择器函数和一个相等性函数作为参数。
 
-## Usage
+## 用法
 
-### Updating state based on previous state
+### 基于先前状态更新状态
 
-To update a state based on previous state we should use **updater functions**. Read more
-about that [here](https://react.dev/learn/queueing-a-series-of-state-updates).
+要基于先前状态更新状态，我们应该使用 **更新函数**。阅读更多关于此的信息 [这里](https://react.dev/learn/queueing-a-series-of-state-updates)。
 
-This example shows how you can support **updater functions** within **actions**.
+此示例展示了如何在 **actions** 中支持 **更新函数**。
 
 ```tsx
 import { createWithEqualityFn } from 'zustand/traditional'
@@ -96,7 +90,7 @@ export default function App() {
 
   return (
     <>
-      <h1>Your age: {age}</h1>
+      <h1>你的年龄: {age}</h1>
       <button
         type="button"
         onClick={() => {
@@ -120,15 +114,12 @@ export default function App() {
 }
 ```
 
-### Updating Primitives in State
+### 更新状态中的基本类型
 
-State can hold any kind of JavaScript value. When you want to update built-in primitive values like
-numbers, strings, booleans, etc. you should directly assign new values to ensure updates are applied
-correctly, and avoid unexpected behaviors.
+状态可以保存任何类型的 JavaScript 值。当你想要更新内置的基本类型值（如数字、字符串、布尔值等）时，你应该直接分配新值以确保更新正确应用，并避免意外行为。
 
 > [!NOTE]
-> By default, `set` function performs a shallow merge. If you need to completely replace
-> the state with a new one, use the `replace` parameter set to `true`
+> 默认情况下，`set` 函数执行浅合并。如果你需要用一个新状态完全替换当前状态，请将 `replace` 参数设置为 `true`
 
 ```tsx
 import { createWithEqualityFn } from 'zustand/traditional'
@@ -173,16 +164,11 @@ export default function MovingDot() {
 }
 ```
 
-### Updating Objects in State
+### 更新状态中的对象
 
-Objects are **mutable** in JavaScript, but you should treat them as **immutable** when you store
-them in state. Instead, when you want to update an object, you need to create a new one (or make a
-copy of an existing one), and then set the state to use the new object.
+对象在 JavaScript 中是 **可变的**，但当你将它们存储在状态中时，你应该将它们视为 **不可变的**。相反，当你想要更新一个对象时，你需要创建一个新的对象（或复制一个现有的对象），然后将状态设置为使用新对象。
 
-By default, `set` function performs a shallow merge. For most updates where you only need to modify
-specific properties, the default shallow merge is preferred as it's more efficient. To completely
-replace the state with a new one, use the `replace` parameter set to `true` with caution, as it
-discards any existing nested data within the state.
+默认情况下，`set` 函数执行浅合并。对于大多数只需要修改特定属性的更新，默认的浅合并是首选，因为它更高效。要完全用一个新状态替换当前状态，请谨慎使用 `replace` 参数设置为 `true`，因为它会丢弃状态中的任何现有嵌套数据。
 
 ```tsx
 import { createWithEqualityFn } from 'zustand/traditional'
@@ -239,21 +225,14 @@ export default function MovingDot() {
 }
 ```
 
-### Updating Arrays in State
+### 更新状态中的数组
 
-Arrays are mutable in JavaScript, but you should treat them as immutable when you store them in
-state. Just like with objects, when you want to update an array stored in state, you need to create
-a new one (or make a copy of an existing one), and then set state to use the new array.
+数组在 JavaScript 中是可变的，但当你将它们存储在状态中时，你应该将它们视为不可变的。就像对象一样，当你想要更新存储在状态中的数组时，你需要创建一个新的数组（或复制一个现有的数组），然后将状态设置为使用新数组。
 
-By default, `set` function performs a shallow merge. To update array values we should assign new
-values to ensure updates are applied correctly, and avoid unexpected behaviors. To completely
-replace the state with a new one, use the `replace` parameter set to `true`.
+默认情况下，`set` 函数执行浅合并。要更新数组值，我们应该分配新值以确保更新正确应用，并避免意外行为。要完全用一个新状态替换当前状态，请将 `replace` 参数设置为 `true`。
 
 > [!IMPORTANT]
-> We should prefer immutable operations like: `[...array]`, `concat(...)`, `filter(...)`,
-> `slice(...)`, `map(...)`, `toSpliced(...)`, `toSorted(...)`, and `toReversed(...)`, and avoid
-> mutable operations like `array[arrayIndex] = ...`, `push(...)`, `unshift(...)`, `pop(...)`,
-> `shift(...)`, `splice(...)`, `reverse(...)`, and `sort(...)`.
+> 我们应该优先使用不可变操作，如：`[...array]`、`concat(...)`、`filter(...)`、`slice(...)`、`map(...)`、`toSpliced(...)`、`toSorted(...)` 和 `toReversed(...)`，并避免使用可变操作，如 `array[arrayIndex] = ...`、`push(...)`、`unshift(...)`、`pop(...)`、`shift(...)、`splice(...)`、`reverse(...)` 和 `sort(...)`。
 
 ```tsx
 import { createWithEqualityFn } from 'zustand/traditional'
@@ -301,14 +280,12 @@ export default function MovingDot() {
 }
 ```
 
-### Updating state with no store actions
+### 在没有 store actions 的情况下更新状态
 
-Defining actions at module level, external to the store have a few advantages like: it doesn't
-require a hook to call an action, and it facilitates code splitting.
+在模块级别定义 actions，外部于 store 有一些优势，比如：它不需要一个 hook 来调用 action，并且它有助于代码拆分。
 
 > [!NOTE]
-> The recommended way is to colocate actions and states within the store (let your actions be
-> located together with your state).
+> 推荐的方法是将 actions 和状态放在 store 内部（让你的 actions 与状态放在一起）。
 
 ```tsx
 import { createWithEqualityFn } from 'zustand/traditional'
@@ -361,10 +338,9 @@ export default function MovingDot() {
 }
 ```
 
-### Subscribing to state updates
+### 订阅状态更新
 
-By subscribing to state updates, you register a callback that fires whenever the store's state
-updates. We can use `subscribe` for external state management.
+通过订阅状态更新，你可以注册一个回调函数，每当 store 的状态更新时，该回调函数就会触发。我们可以使用 `subscribe` 进行外部状态管理。
 
 ```tsx
 import { useEffect } from 'react'
@@ -438,16 +414,13 @@ export default function MovingDot() {
 }
 ```
 
-## Troubleshooting
+## 故障排除
 
-### I’ve updated the state, but the screen doesn’t update
+### 我更新了状态，但屏幕没有更新
 
-In the previous example, the `position` object is always created fresh from the current cursor
-position. But often, you will want to include existing data as a part of the new object you’re
-creating. For example, you may want to update only one field in a form, but keep the previous
-values for all other fields.
+在前面的示例中，`position` 对象总是从当前光标位置创建。但是通常，你会希望在创建新对象时包含现有数据。例如，你可能只想更新表单中的一个字段，但保留所有其他字段的先前值。
 
-These input fields don’t work because the `onChange` handlers mutate the state:
+这些输入字段不起作用，因为 `onChange` 处理程序会改变状态：
 
 ```tsx
 import { createWithEqualityFn } from 'zustand/traditional'
@@ -494,15 +467,15 @@ export default function Form() {
   return (
     <>
       <label style={{ display: 'block' }}>
-        First name:
+        名字:
         <input value={person.firstName} onChange={handleFirstNameChange} />
       </label>
       <label style={{ display: 'block' }}>
-        Last name:
+        姓氏:
         <input value={person.lastName} onChange={handleLastNameChange} />
       </label>
       <label style={{ display: 'block' }}>
-        Email:
+        邮箱:
         <input value={person.email} onChange={handleEmailChange} />
       </label>
       <p>
@@ -513,28 +486,24 @@ export default function Form() {
 }
 ```
 
-For example, this line mutates the state from a past render:
+例如，这一行改变了过去渲染的状态：
 
 ```tsx
 person.firstName = e.target.value
 ```
 
-The reliable way to get the behavior you’re looking for is to create a new object and pass it to
-`setPerson`. But here you want to also copy the existing data into it because only one of the
-fields has changed:
+获得你想要的行为的可靠方法是创建一个新对象并将其传递给 `setPerson`。但在这里你还想将现有数据复制到其中，因为只有一个字段发生了变化：
 
 ```ts
-setPerson({ ...person, firstName: e.target.value }) // New first name from the input
+setPerson({ ...person, firstName: e.target.value }) // 从输入中获取的新名字
 ```
 
 > [!NOTE]
-> We don’t need to copy every property separately due to `set` function performing shallow merge by
-> default.
+> 由于 `set` 函数默认执行浅合并，我们不需要单独复制每个属性。
 
-Now the form works!
+现在表单可以正常工作了！
 
-Notice how you didn’t declare a separate state variable for each input field. For large forms,
-keeping all data grouped in an object is very convenient—as long as you update it correctly!
+注意你没有为每个输入字段声明一个单独的状态变量。对于大型表单，将所有数据分组在一个对象中非常方便——只要你正确更新它！
 
 ```tsx {32,36,40}
 import { type ChangeEvent } from 'react'
@@ -582,15 +551,15 @@ export default function Form() {
   return (
     <>
       <label style={{ display: 'block' }}>
-        First name:
+        名字:
         <input value={person.firstName} onChange={handleFirstNameChange} />
       </label>
       <label style={{ display: 'block' }}>
-        Last name:
+        姓氏:
         <input value={person.lastName} onChange={handleLastNameChange} />
       </label>
       <label style={{ display: 'block' }}>
-        Email:
+        邮箱:
         <input value={person.email} onChange={handleEmailChange} />
       </label>
       <p>

@@ -1,34 +1,33 @@
 ---
-title: How to Migrate to v5 from v4
+title: 如何从 v4 迁移到 v5
 nav: 23
 ---
 
-# How to Migrate to v5 from v4
+# 如何从 v4 迁移到 v5
 
-We highly recommend to update to the latest version of v4, before migrating to v5. It will show all deprecation warnings without breaking your app.
+我们强烈建议在迁移到 v5 之前更新到 v4 的最新版本。它会显示所有弃用警告，而不会破坏您的应用程序。
 
-## Changes in v5
+## v5 的变化
 
-- Drop default exports
-- Drop deprecated features
-- Make React 18 the minimum required version
-- Make use-sync-external-store a peer dependency (required for `createWithEqualityFn` and `useStoreWithEqualityFn` in `zustand/traditional`)
-- Make TypeScript 4.5 the minimum required version
-- Drop UMD/SystemJS support
-- Organize entry points in the package.json
-- Drop ES5 support
-- Stricter types when setState's replace flag is set
-- Persist middleware behavioral change
-- Other small improvements (technically breaking changes)
+- 删除默认导出
+- 删除弃用功能
+- 将 React 18 设为最低要求版本
+- 将 use-sync-external-store 设为对等依赖项（在 `zustand/traditional` 中用于 `createWithEqualityFn` 和 `useStoreWithEqualityFn`）
+- 将 TypeScript 4.5 设为最低要求版本
+- 删除 UMD/SystemJS 支持
+- 在 package.json 中组织入口点
+- 删除 ES5 支持
+- 当 setState 的 replace 标志设置时，更严格的类型
+- 持久化中间件行为变化
+- 其他小改进（技术上是重大变化）
 
-## Migration Guide
+## 迁移指南
 
-### Using custom equality functions such as `shallow`
+### 使用自定义相等函数如 `shallow`
 
-The `create` function in v5 does not support customizing equality function.
+v5 中的 `create` 函数不支持自定义相等函数。
 
-If you use custom equality function such as `shallow`,
-the easiest migration is to use `createWithEqualityFn`.
+如果您使用自定义相等函数如 `shallow`，最简单的迁移方法是使用 `createWithEqualityFn`。
 
 ```js
 // v4
@@ -38,7 +37,7 @@ import { shallow } from 'zustand/shallow'
 const useCountStore = create((set) => ({
   count: 0,
   text: 'hello',
-  // ...
+  // ...existing code...
 }))
 
 const Component = () => {
@@ -49,11 +48,11 @@ const Component = () => {
     }),
     shallow,
   )
-  // ...
+  // ...existing code...
 }
 ```
 
-That can be done with `createWithEqualityFn` in v5:
+这可以在 v5 中使用 `createWithEqualityFn` 完成：
 
 ```bash
 npm install use-sync-external-store
@@ -63,10 +62,10 @@ npm install use-sync-external-store
 // v5
 import { createWithEqualityFn as create } from 'zustand/traditional'
 
-// The rest is the same as v4
+// 其余部分与 v4 相同
 ```
 
-Alternatively, for the `shallow` use case, you can use `useShallow` hook:
+或者，对于 `shallow` 用例，您可以使用 `useShallow` 钩子：
 
 ```js
 // v5
@@ -76,7 +75,7 @@ import { useShallow } from 'zustand/shallow'
 const useCountStore = create((set) => ({
   count: 0,
   text: 'hello',
-  // ...
+  // ...existing code...
 }))
 
 const Component = () => {
@@ -86,16 +85,15 @@ const Component = () => {
       text: state.text,
     })),
   )
-  // ...
+  // ...existing code...
 }
 ```
 
-### Requiring stable selector outputs
+### 需要稳定的选择器输出
 
-There is a behavioral change in v5 to match React default behavior.
-If a selector returns a new reference, it may cause infinite loops.
+v5 中有一个行为变化，以匹配 React 的默认行为。如果选择器返回一个新引用，它可能会导致无限循环。
 
-For example, this may cause infinite loops.
+例如，这可能会导致无限循环。
 
 ```js
 // v4
@@ -105,13 +103,13 @@ const [searchValue, setSearchValue] = useStore((state) => [
 ])
 ```
 
-The error message will be something like this:
+错误消息将类似于：
 
 ```plaintext
 Uncaught Error: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
 ```
 
-To fix it, use the `useShallow` hook, which will return a stable reference.
+要修复它，请使用 `useShallow` 钩子，它将返回一个稳定的引用。
 
 ```js
 // v5
@@ -122,7 +120,7 @@ const [searchValue, setSearchValue] = useStore(
 )
 ```
 
-Here's another example that may cause infinite loops.
+这是另一个可能导致无限循环的示例。
 
 ```js
 // v4
@@ -131,7 +129,7 @@ const action = useMainStore((state) => {
 })
 ```
 
-To fix it, make sure the selector function returns a stable reference.
+要修复它，请确保选择器函数返回一个稳定的引用。
 
 ```js
 // v5
@@ -143,14 +141,14 @@ const action = useMainStore((state) => {
 })
 ```
 
-Alternatively, if you need v4 behavior, `createWithEqualityFn` will do.
+或者，如果您需要 v4 行为，`createWithEqualityFn` 可以做到。
 
 ```js
 // v5
 import { createWithEqualityFn as create } from 'zustand/traditional'
 ```
 
-### Stricter types when setState's replace flag is set (Typescript only)
+### 当 setState 的 replace 标志设置时，更严格的类型（仅限 Typescript）
 
 ```diff
 - setState:
@@ -160,27 +158,26 @@ import { createWithEqualityFn as create } from 'zustand/traditional'
 +   (state: T | ((state: T) => T), replace: true) => void;
 ```
 
-If you are not using the `replace` flag, no migration is required.
+如果您不使用 `replace` 标志，则不需要迁移。
 
-If you are using the `replace` flag and it's set to `true`, you must provide a complete state object.
-This change ensures that `store.setState({}, true)` (which results in an invalid state) is no longer considered valid.
+如果您使用 `replace` 标志并将其设置为 `true`，则必须提供完整的状态对象。此更改确保 `store.setState({}, true)`（导致无效状态）不再被视为有效。
 
-**Examples:**
+**示例：**
 
 ```ts
-// Partial state update (valid)
+// 部分状态更新（有效）
 store.setState({ key: 'value' })
 
-// Complete state replacement (valid)
+// 完整状态替换（有效）
 store.setState({ key: 'value' }, true)
 
-// Incomplete state replacement (invalid)
-store.setState({}, true) // Error
+// 不完整状态替换（无效）
+store.setState({}, true) // 错误
 ```
 
-#### Handling Dynamic `replace` Flag
+#### 处理动态 `replace` 标志
 
-If the value of the `replace` flag is dynamic and determined at runtime, you might face issues. To handle this, you can use a workaround by annotating the `replace` parameter with the parameters of the `setState` function:
+如果 `replace` 标志的值是动态的并在运行时确定，您可能会遇到问题。要处理此问题，您可以通过使用 `setState` 函数的参数注释 `replace` 参数来使用变通方法：
 
 ```ts
 const replaceFlag = Math.random() > 0.5
@@ -190,11 +187,11 @@ const args = [{ bears: 5 }, replaceFlag] as Parameters<
 store.setState(...args)
 ```
 
-#### Persist middleware no longer stores item at store creation
+#### 持久化中间件不再在存储创建时存储项目
 
-Previously, the `persist` middleware stored the initial state during store creation. This behavior has been removed in v5 (and v4.5.5).
+以前，`persist` 中间件在存储创建期间存储初始状态。此行为在 v5（和 v4.5.5）中已被删除。
 
-For example, in the following code, the initial state is stored in the storage.
+例如，在以下代码中，初始状态存储在存储中。
 
 ```js
 // v4
@@ -213,7 +210,7 @@ const useCountStore = create(
 )
 ```
 
-In v5, this is no longer the case, and you need to explicitly set the state after store creation.
+在 v5 中，不再是这种情况，您需要在存储创建后显式设置状态。
 
 ```js
 // v5
@@ -235,7 +232,7 @@ useCountStore.setState({
 })
 ```
 
-## Links
+## 链接
 
 - https://github.com/pmndrs/zustand/pull/2138
 - https://github.com/pmndrs/zustand/pull/2580
