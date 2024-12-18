@@ -31,7 +31,7 @@ const nextStateCreatorFn = devtools(stateCreatorFn, devtoolsOptions)
 devtools<T>(stateCreatorFn: StateCreator<T, [], []>, devtoolsOptions?: DevtoolsOptions): StateCreator<T, [['zustand/devtools', never]], []>
 ```
 
-### 变异器
+### 变换器
 
 <!-- prettier-ignore-start -->
 ```ts

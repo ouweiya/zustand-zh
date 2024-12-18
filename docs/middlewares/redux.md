@@ -28,7 +28,7 @@ const nextStateCreatorFn = redux(reducerFn, initialState)
 redux<T, A>(reducerFn: (state: T, action: A) => T, initialState: T): StateCreator<T & { dispatch: (action: A) => A }, [['zustand/redux', A]], []>
 ```
 
-### 变异器
+### 变换器
 
 <!-- prettier-ignore-start -->
 ```ts
