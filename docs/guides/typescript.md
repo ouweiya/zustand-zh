@@ -3,39 +3,39 @@ title: TypeScript 指南
 nav: 8
 ---
 
-## 基本用法 {#basic-usage}
+## 基础用法
 
-使用 TypeScript 的区别在于，你需要写 `create<T>()(...)` 而不是 `create(...)`（注意额外的括号 `()` 和类型参数），其中 `T` 是用来注解状态的类型。例如：
+使用 TypeScript 时的区别在于,你需要写成 `create<T>()(...)`(注意额外的括号 `()` 和类型参数)而不是 `create(...)`,其中 `T` 是要标注的状态类型。例如:
 
 ```ts
 import { create } from 'zustand'
 
 interface BearState {
-    bears: number
-    increase: (by: number) => void
+  bears: number
+  increase: (by: number) => void
 }
 
 const useBearStore = create<BearState>()((set) => ({
-    bears: 0,
-    increase: (by) => set((state) => ({ bears: state.bears + by })),
+  bears: 0,
+  increase: (by) => set((state) => ({ bears: state.bears + by })),
 }))
 ```
 
 <details>
-    <summary>为什么我们不能简单地从初始状态推断类型？</summary>
+  <summary>为什么我们不能简单地从初始状态推断类型?</summary>
 
-    <br/>
+  <br/>
 
-**简而言之**：因为状态泛型 `T` 是不变的。
+**简而言之**: 因为状态泛型 `T` 是不变的。
 
-考虑这个最小版本的 `create`：
+考虑这个最小版本的 `create`:
 
 ```ts
 declare const create: <T>(f: (get: () => T) => T) => T
 
 const x = create((get) => ({
-    foo: 0,
-    bar: () => get(),
+  foo: 0,
+  bar: () => get(),
 }))
 // `x` 被推断为 `unknown` 而不是
 // interface X {
@@ -44,150 +44,150 @@ const x = create((get) => ({
 // }
 ```
 
-在这里，如果你看 `create` 中 `f` 的类型，即 `(get: () => T) => T`，它通过返回 "给出" `T`（使其协变），但它也通过 `get` "接收" `T`（使其逆变）。"那么 `T` 从哪里来呢？" TypeScript 感到困惑。这就像鸡和蛋的问题。最后 TypeScript 放弃了，推断 `T` 为 `unknown`。
+在这里,如果你观察 `create` 中 `f` 的类型,即 `(get: () => T) => T`,它通过返回"给出" `T`(使其协变),但也通过 `get` "接受" `T`(使其逆变)。TypeScript 会想"那么 `T` 从何而来?"。这就像先有鸡还是先有蛋的问题。最后 TypeScript 放弃了,将 `T` 推断为 `unknown`。
 
-所以，只要要推断的泛型是不变的（即既是协变的又是逆变的），TypeScript 就无法推断它。另一个简单的例子是这样的：
+因此,只要要推断的泛型是不变的(即既是协变又是逆变),TypeScript 就无法推断它。另一个简单的例子是:
 
 ```ts
 const createFoo = {} as <T>(f: (t: T) => T) => T
 const x = createFoo((_) => 'hello')
 ```
 
-在这里，`x` 又是 `unknown` 而不是 `string`。
+这里 `x` 同样是 `unknown` 而不是 `string`。
 
-    <details>
-        <summary>关于推断的更多信息（仅供对 TypeScript 感兴趣的人）</summary>
+  <details>
+    <summary>更多关于类型推断的内容(仅供对 TypeScript 感兴趣的人参考)</summary>
 
-在某种意义上，这种推断失败并不是问题，因为不能写出类型为 `<T>(f: (t: T) => T) => T` 的值。也就是说，你不能写出 `createFoo` 的真实运行时实现。我们试试看：
+从某种意义上说,这种推断失败并不是问题,因为类型为 `<T>(f: (t: T) => T) => T` 的值是不可能写出的。换句话说,你无法编写 `createFoo` 的真正运行时实现。让我们试一试:
 
 ```js
 const createFoo = (f) => f(/* ? */)
 ```
 
-`createFoo` 需要返回 `f` 的返回值。为了做到这一点，我们首先必须调用 `f`。为了调用它，我们必须传递一个类型为 `T` 的值。为了传递一个类型为 `T` 的值，我们首先必须产生它。但是，当我们甚至不知道 `T` 是什么时，我们如何产生一个类型为 `T` 的值呢？产生类型为 `T` 的值的唯一方法是调用 `f`，但是，为了调用 `f` 本身，我们需要一个类型为 `T` 的值。所以你看，实际上是无法写出 `createFoo` 的。
+`createFoo` 需要返回 `f` 的返回值。为此我们必须首先调用 `f`。要调用它我们必须传递一个类型为 `T` 的值。要传递类型为 `T` 的值我们必须首先生成它。但是当我们甚至不知道 `T` 是什么时,如何生成类型为 `T` 的值呢?生成类型为 `T` 的值的唯一方法是调用 `f`,但要调用 `f` 本身我们需要一个类型为 `T` 的值。所以你看这是不可能的。
 
-所以我们在说，`createFoo` 的推断失败实际上并不是问题，因为无法实现 `createFoo`。但是 `create` 的推断失败又怎么样呢？那也并不真正是问题，因为 `create` 也无法实现。等一下，如果无法实现 `create`，那么 Zustand 是如何实现它的呢？答案是，它没有。
+所以我们说,`createFoo` 的推断失败不是真正的问题,因为实现 `createFoo` 是不可能的。但 `create` 的推断失败又如何呢?这也不是真正的问题,因为实现 `create` 也是不可能的。等一下,如果实现 `create` 是不可能的,那么 Zustand 是如何实现它的呢?答案是,它没有。
 
-Zustand 假装实现了 `create` 的类型，它只实现了大部分。下面是一个通过显示不合理性来证明的简单例子：
+Zustand 说谎说它实现了 `create` 的类型,它只实现了大部分。这里有一个简单的证明,展示不完整性。考虑以下代码:
 
 ```ts
 import { create } from 'zustand'
 
 const useBoundStore = create<{ foo: number }>()((_, get) => ({
-    foo: get().foo,
+  foo: get().foo,
 }))
 ```
 
-这段代码可以编译。但如果我们运行它，我们会得到一个异常："Uncaught TypeError: Cannot read properties of undefined (reading 'foo')"。这是因为在创建初始状态之前，`get` 会返回 `undefined`（因此你在创建初始状态时不应该调用 `get`）。类型承诺 `get` 永远不会返回 `undefined`，但它最初确实是这样，这意味着 Zustand 没有实现它。
+这段代码能编译。但如果我们运行它,会得到一个异常:"Uncaught TypeError: Cannot read properties of undefined (reading 'foo')"。这是因为在创建初始状态之前 `get` 会返回 `undefined`(因此你不应该在创建初始状态时调用 `get`)。类型承诺 `get` 永远不会返回 `undefined`,但它最初确实返回了,这意味着 Zustand 未能实现它。
 
-当然 Zustand 失败了，因为无法按照类型的承诺实现 `create`（就像无法实现 `createFoo` 一样）。换句话说，我们没有一个类型来表达我们实际实现的 `create`。我们不能把 `get` 类型化为 `() => T | undefined`，因为这会导致不便，而且它仍然不正确，因为 `get` 最终确实是 `() => T`，只是如果同步调用，它会是 `() => undefined`。我们需要的是一种 TypeScript 功能，允许我们把 `get` 类型化为 `(() => T) & WhenSync<() => undefined>`，这当然是极其遥不可及的。
+当然 Zustand 失败了,因为按照类型承诺的方式实现 `create` 是不可能的(就像实现 `createFoo` 是不可能的一样)。换句话说,我们没有类型来表达我们实际实现的 `create`。我们不能将 `get` 类型化为 `() => T | undefined`,因为这会造成不便,而且仍然不正确,因为 `get` 确实最终是 `() => T`,只是如果同步调用它就会是 `() => undefined`。我们需要的是某种 TypeScript 功能,允许我们将 `get` 类型化为 `(() => T) & WhenSync<() => undefined>`,这当然是非常牵强的。
 
-所以我们有两个问题：缺乏推断和不合理性。如果 TypeScript 可以改进对不变量的推断，就可以解决缺乏推断的问题。如果 TypeScript 引入了类似 `WhenSync` 的东西，就可以解决不合理性问题。为了解决缺乏推断，我们手动注解状态类型。我们无法解决不合理性，但这没关系，因为它不大，反正同步调用 `get` 没有意义。
+所以我们有两个问题:缺乏推断和不完整性。如果 TypeScript 可以改进其对不变量的推断,就可以解决缺乏推断的问题。如果 TypeScript 引入类似 `WhenSync` 的东西,就可以解决不完整性问题。为了解决缺乏推断的问题,我们手动标注状态类型。而且我们无法解决不完整性问题,但这不是什么大问题,因为问题不大,反正同步调用 `get` 也没有意义。
 
 </details>
 
 </details>
 
 <details>
-    <summary>为什么要使用柯里化 `()(...)`？</summary>
+  <summary>为什么要使用柯里化的 `()(...)`?</summary>
 
-    <br/>
+  <br/>
 
-**简而言之**：这是对 [microsoft/TypeScript#10571](https://github.com/microsoft/TypeScript/issues/10571) 的一种解决方法。
+**简而言之**: 这是 [microsoft/TypeScript#10571](https://github.com/microsoft/TypeScript/issues/10571) 的一个解决方案。
 
-假设你有这样一个场景：
+想象一个这样的场景:
 
 ```ts
 declare const withError: <T, E>(
-    p: Promise<T>,
+  p: Promise<T>,
 ) => Promise<[error: undefined, value: T] | [error: E, value: undefined]>
 declare const doSomething: () => Promise<string>
 
 const main = async () => {
-    let [error, value] = await withError(doSomething())
+  let [error, value] = await withError(doSomething())
 }
 ```
 
-在这里，`T` 被推断为 `string`，`E` 被推断为 `unknown`。你可能想将 `E` 注解为 `Foo`，因为你确定 `doSomething()` 抛出的错误的形状。然而，你不能这样做。你只能传递所有的泛型或者不传。除了将 `E` 注解为 `Foo`，你还必须将 `T` 注解为 `string`，尽管它已经被推断出来了。解决方案是制作一个在运行时不做任何事情的柯里化版本的 `withError`。它的目的就是允许你注解 `E`。
+这里,`T` 被推断为 `string`,`E` 被推断为 `unknown`。你可能想将 `E` 标注为 `Foo`,因为你确定 `doSomething()` 会抛出什么样的错误。但是你不能这样做。你要么传递所有泛型,要么一个都不传。除了将 `E` 标注为 `Foo`,你还必须将 `T` 标注为 `string`,即使它本来就可以推断出来。解决方案是制作一个柯里化版本的 `withError`,它在运行时什么都不做。它的目的只是允许你标注 `E`。
 
 ```ts
 declare const withError: {
-    <E>(): <T>(
-        p: Promise<T>,
-    ) => Promise<[error: undefined, value: T] | [error: E, value: undefined]>
-    <T, E>(
-        p: Promise<T>,
-    ): Promise<[error: undefined, value: T] | [error: E, value: undefined]>
+  <E>(): <T>(
+    p: Promise<T>,
+  ) => Promise<[error: undefined, value: T] | [error: E, value: undefined]>
+  <T, E>(
+    p: Promise<T>,
+  ): Promise<[error: undefined, value: T] | [error: E, value: undefined]>
 }
 declare const doSomething: () => Promise<string>
 interface Foo {
-    bar: string
+  bar: string
 }
 
 const main = async () => {
-    let [error, value] = await withError<Foo>()(doSomething())
+  let [error, value] = await withError<Foo>()(doSomething())
 }
 ```
 
-这样，`T` 被推断出来，你可以注解 `E`。Zustand 在我们想要注解状态（第一个类型参数）但允许其他参数被推断时有相同的用例。
+这样,`T` 得到推断而你可以标注 `E`。Zustand 有相同的用例,当我们想要标注状态(第一个类型参数)但允许其他参数被推断时。
 
 </details>
 
-另外，你也可以使用 `combine`，它推断出状态，所以你不需要类型化它。
+或者,你也可以使用 `combine`,它会推断状态,因此你不需要为其编写类型。
 
 ```ts
 import { create } from 'zustand'
 import { combine } from 'zustand/middleware'
 
 const useBearStore = create(
-    combine({ bears: 0 }, (set) => ({
-        increase: (by: number) => set((state) => ({ bears: state.bears + by })),
-    })),
+  combine({ bears: 0 }, (set) => ({
+    increase: (by: number) => set((state) => ({ bears: state.bears + by })),
+  })),
 )
 ```
 
 <details>
-    <summary>要小心一点</summary>
+  <summary>请稍加注意</summary>
 
-    <br/>
+  <br/>
 
-我们通过在你接收的 `set`、`get` 和 `store` 的类型中稍微撒个小谎来实现推断。这个谎言是，它们被类型化为状态是第一个参数，实际上状态是第一个参数和第二个参数返回的浅合并（`{ ...a, ...b }`）。例如，第二个参数的 `get` 类型为 `() => { bears: number }`，这是一个谎言，因为它应该是 `() => { bears: number, increase: (by: number) => void }`。而 `useBearStore` 仍然有正确的类型；例如，`useBearStore.getState` 被类型化为 `() => { bears: number, increase: (by: number) => void }`。
+我们通过在 `set`、`get` 和 `store` 的类型上稍微撒谎来实现推断。谎言是它们被类型化为状态是第一个参数,而实际上状态是第一个参数和第二个参数返回的浅合并(`{ ...a, ...b }`)。例如,第二个参数的 `get` 类型为 `() => { bears: number }`,这是一个谎言,因为它应该是 `() => { bears: number, increase: (by: number) => void }`。而 `useBearStore` 仍然具有正确的类型;例如,`useBearStore.getState` 类型为 `() => { bears: number, increase: (by: number) => void }`。
 
-这其实并不真的是一个谎言，因为 `{ bears: number }` 仍然是 `{ bears: number, increase: (by: number) => void }` 的子类型。因此，在大多数情况下不会有问题。你只需要在使用替换时小心。例如，`set({ bears: 0 }, true)` 会编译，但会不安全，因为它会删除 `increase` 函数。另一个你需要小心的地方是如果你使用 `Object.keys`。`Object.keys(get())` 将返回 `["bears", "increase"]` 而不是 `["bears"]`。`get` 的返回类型可能会让你犯这些错误。
+这并不是真正的谎言,因为 `{ bears: number }` 仍然是 `{ bears: number, increase: (by: number) => void }` 的子类型。因此,在大多数情况下不会有问题。你只需在使用替换时小心。例如,`set({ bears: 0 }, true)` 会编译,但会不完整,因为它会删除 `increase` 函数。另一个需要小心的实例是如果你使用 `Object.keys`。`Object.keys(get())` 将返回 `["bears", "increase"]` 而不是 `["bears"]`。`get` 的返回类型可能会让你犯这些错误。
 
-`combine` 为了不用为状态写类型的便利性，牺牲了一点类型安全性。因此，你应该相应地使用 `combine`。在大多数情况下都没问题，你可以方便地使用它。
+`combine` 以牺牲一些类型安全性为代价,换取不必编写状态类型的便利。因此,你应该根据需要使用 `combine`。在大多数情况下是可以的,你可以方便地使用它。
 
 </details>
 
-注意，当使用 `combine` 时，我们不使用柯里化版本，因为 `combine` "创建"了状态。当使用创建状态的中间件时，不需要使用柯里化版本，因为现在可以推断出状态。另一个创建状态的中间件是 `redux`。所以，当使用 `combine`、`redux` 或任何其他自定义中间件创建状态时，我们不推荐使用柯里化版本。
+请注意,在使用 `combine` 时我们不使用柯里化版本,因为 `combine` "创建" 状态。当使用创建状态的中间件时,不需要使用柯里化版本,因为状态现在可以被推断。另一个创建状态的中间件是 `redux`。因此,当使用 `combine`、`redux` 或任何其他创建状态的自定义中间件时,我们不建议使用柯里化版本。
 
-## 使用中间件 {#using-middlewares}
+## 使用中间件
 
-在 TypeScript 中使用中间件，你不需要做任何特殊的事情。
+在 TypeScript 中使用中间件不需要做任何特殊处理。
 
 ```ts
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 
 interface BearState {
-    bears: number
-    increase: (by: number) => void
+  bears: number
+  increase: (by: number) => void
 }
 
 const useBearStore = create<BearState>()(
-    devtools(
-        persist(
-            (set) => ({
-                bears: 0,
-                increase: (by) => set((state) => ({ bears: state.bears + by })),
-            }),
-            { name: 'bearStore' },
-        ),
+  devtools(
+    persist(
+      (set) => ({
+        bears: 0,
+        increase: (by) => set((state) => ({ bears: state.bears + by })),
+      }),
+      { name: 'bearStore' },
     ),
+  ),
 )
 ```
 
-只需确保你在 `create` 内部立即使用它们，以使上下文推断工作。做一些稍微复杂的事情，比如下面的 `myMiddlewares`，可能需要更高级的类型。
+只需确保你立即在 `create` 内部使用它们,以使上下文推断工作。做一些即使是稍微复杂的事情,比如以下 `myMiddlewares`,将需要更高级的类型。
 
 ```ts
 import { create } from 'zustand'
@@ -196,51 +196,87 @@ import { devtools, persist } from 'zustand/middleware'
 const myMiddlewares = (f) => devtools(persist(f, { name: 'bearStore' }))
 
 interface BearState {
-    bears: number
-    increase: (by: number) => void
+  bears: number
+  increase: (by: number) => void
 }
 
 const useBearStore = create<BearState>()(
-    myMiddlewares((set) => ({
-        bears: 0,
-        increase: (by) => set((state) => ({ bears: state.bears + by })),
-    })),
+  myMiddlewares((set) => ({
+    bears: 0,
+    increase: (by) => set((state) => ({ bears: state.bears + by })),
+  })),
 )
 ```
 
-此外，我们建议尽可能在最后使用 `devtools` 中间件。例如，当你将 `immer` 作为中间件使用时，它应该是 `immer(devtools(...))` 而不是 `devtools(immer(...))`。这是因为 `devtools` 改变了 `setState` 并在其上添加了一个类型参数，如果其他中间件（如 `immer`）在 `devtools` 之前也改变了 `setState`，这个类型参数可能会丢失。因此，最后使用 `devtools` 可以确保没有中间件在它之前改变 `setState`。
+此外,我们建议尽可能将 `devtools` 中间件放在最后。例如,当你将它与 `immer` 作为中间件一起使用时,应该是 `devtools(immer(...))` 而不是 `immer(devtools(...))`。这是因为 `devtools` 会修改 `setState` 并在其上添加一个类型参数,如果其他中间件(如 `immer`)在 `devtools` 之前也修改了 `setState`,则可能会丢失。因此,将 `devtools` 放在最后可以确保在它之前没有中间件修改 `setState`。
 
-## 编写中间件和高级使用 {#authoring-middlewares-and-advanced-usage}
+## 编写中间件和高级用法
 
-假设你需要编写这个假设的中间件。
+假设你必须编写这个假设的中间件。
 
 ```ts
 import { create } from 'zustand'
 
 const foo = (f, bar) => (set, get, store) => {
-    store.foo = bar
-    return f(set, get, store)
+  store.foo = bar
+  return f(set, get, store)
 }
 
 const useBearStore = create(foo(() => ({ bears: 0 }), 'hello'))
 console.log(useBearStore.foo.toUpperCase())
 ```
 
-Zustand 中间件可以改变存储。但是我们如何在类型级别编码这种变化呢？也就是说，我们如何类型化 `foo` 以使这段代码编译？
+Zustand 中间件可以修改存储。但是我们如何在类型级别上编码这种修改呢?也就是说,我们如何类型化 `foo` 以使这段代码编译?
 
-对于一个通常的静态类型语言，这是不可能的。但是，由于 TypeScript，Zustand 有一个叫做 "高阶变异器" 的东西，使得这成为可能。如果你正在处理复杂的类型问题，比如类型化一个中间件或使用 `StateCreator` 类型，你将需要理解这个实现细节。为此，你可以[查看 #710](https://github.com/pmndrs/zustand/issues/710)。
+对于通常的静态类型语言,这是不可能的。但感谢 TypeScript,Zustand 有一种称为"高阶变换器"的东西,使这成为可能。如果你正在处理复杂的类型问题,如类型化中间件或使用 `StateCreator` 类型,你将不得不理解这个实现细节。为此,你可以[查看 #710](https://github.com/pmndrs/zustand/issues/710)。
 
-如果你急于知道这个特定问题的答案，那么你可以[在这里看到](#middleware-that-changes-the-store-type)。
+如果你急于知道这个特定问题的答案,你可以[在这里看到](#middleware-that-changes-the-store-type)。
 
-## 常见配方 {#common-recipes}
+### 处理动态 `replace` 标志
 
-### 不改变存储类型的中间件 {#middleware-that-doesn't-change-the-store-type}
+如果 `replace` 标志的值在编译时未知并且是动态确定的,你可能会遇到问题。为了解决这个问题,你可以通过将 `replace` 参数注释为 `setState` 函数的参数来使用一种解决方法:
 
 ```ts
-import { create, State, StateCreator, StoreMutatorIdentifier } from 'zustand'
+const replaceFlag = Math.random() > 0.5
+const args = [{ bears: 5 }, replaceFlag] as Parameters<
+  typeof useBearStore.setState
+>
+store.setState(...args)
+```
+
+#### 使用 `as Parameters` 解决方法的示例
+
+```ts
+import { create } from 'zustand'
+
+interface BearState {
+  bears: number
+  increase: (by: number) => void
+}
+
+const useBearStore = create<BearState>()((set) => ({
+  bears: 0,
+  increase: (by) => set((state) => ({ bears: state.bears + by })),
+}))
+
+const replaceFlag = Math.random() > 0.5
+const args = [{ bears: 5 }, replaceFlag] as Parameters<
+  typeof useBearStore.setState
+>
+useBearStore.setState(...args) // 使用解决方法
+```
+
+通过遵循这种方法,你可以确保代码在处理动态 `replace` 标志时不会遇到类型问题。
+
+## 常见配方
+
+### 不改变存储类型的中间件
+
+```ts
+import { create, StateCreator, StoreMutatorIdentifier } from 'zustand'
 
 type Logger = <
-  T extends State,
+  T,
   Mps extends [StoreMutatorIdentifier, unknown][] = [],
   Mcs extends [StoreMutatorIdentifier, unknown][] = [],
 >(
@@ -248,20 +284,19 @@ type Logger = <
   name?: string,
 ) => StateCreator<T, Mps, Mcs>
 
-type LoggerImpl = <T extends State>(
+type LoggerImpl = <T>(
   f: StateCreator<T, [], []>,
   name?: string,
 ) => StateCreator<T, [], []>
 
 const loggerImpl: LoggerImpl = (f, name) => (set, get, store) => {
-  type T = ReturnType<typeof f>
   const loggedSet: typeof set = (...a) => {
-    set(...a)
+    set(...(a as Parameters<typeof set>))
     console.log(...(name ? [`${name}:`] : []), get())
   }
   const setState = store.setState
   store.setState = (...a) => {
-    setState(...a)
+    setState(...(a as Parameters<typeof setState>))
     console.log(...(name ? [`${name}:`] : []), store.getState())
   }
 
@@ -283,12 +318,11 @@ const useBearStore = create<BearState>()(
 )
 ```
 
-### 改变存储类型的中间件 {#middleware-that-changes-the-store-type}
+### 改变存储类型的中间件
 
 ```ts
 import {
   create,
-  State,
   StateCreator,
   StoreMutatorIdentifier,
   Mutate,
@@ -296,7 +330,7 @@ import {
 } from 'zustand'
 
 type Foo = <
-  T extends State,
+  T,
   A,
   Mps extends [StoreMutatorIdentifier, unknown][] = [],
   Mcs extends [StoreMutatorIdentifier, unknown][] = [],
@@ -311,7 +345,7 @@ declare module 'zustand' {
   }
 }
 
-type FooImpl = <T extends State, A>(
+type FooImpl = <T, A>(
   f: StateCreator<T, [], []>,
   bar: A,
 ) => StateCreator<T, [], []>
@@ -329,7 +363,7 @@ export const foo = fooImpl as unknown as Foo
 
 type Write<T extends object, U extends object> = Omit<T, keyof U> & U
 
-type Cast<T, U> = T extends U ? T : U
+type Cast<T, U> = T extends U ? T : never
 
 // ---
 
@@ -337,9 +371,9 @@ const useBearStore = create(foo(() => ({ bears: 0 }), 'hello'))
 console.log(useBearStore.foo.toUpperCase())
 ```
 
-### 不使用柯里化解决方案的 `create` {#create-without-curried-workaround}
+### 没有柯里化解决方法的 `create`
 
-推荐的使用 `create` 的方式是使用柯里化解决方案，如：`create<T>()(...)`。这是因为它可以推断出存储类型。但是，如果出于某种原因你不想使用这种解决方案，你可以像下面这样传递类型参数。请注意，在某些情况下，这作为断言而不是注解，所以我们不推荐这种方式。
+推荐的使用 `create` 的方式是使用柯里化解决方法,如: `create<T>()(...)`。这是因为它允许你推断存储类型。但如果出于某种原因你不想使用解决方法,你可以像下面这样传递类型参数。请注意,在某些情况下,这会作为断言而不是注释,因此我们不推荐这样做。
 
 ```ts
 import { create } from "zustand"
@@ -361,7 +395,7 @@ const useBearStore = create<
 }), { name: 'bearStore' }))
 ```
 
-### 切片模式 {#slices-pattern}
+### 切片模式
 
 ```ts
 import { create, StateCreator } from 'zustand'
@@ -410,7 +444,7 @@ const createSharedSlice: StateCreator<
   SharedSlice
 > = (set, get) => ({
   addBoth: () => {
-    // 你可以复用之前的方法
+    // 你可以重用以前的方法
     get().addBear()
     get().addFish()
     // 或者从头开始
@@ -428,9 +462,9 @@ const useBoundStore = create<BearSlice & FishSlice & SharedSlice>()((...a) => ({
 
 关于切片模式的详细解释可以在[这里](./slices-pattern.md)找到。
 
-如果你有一些中间件，那么用 `StateCreator<MyState, Mutators, [], MySlice>` 替换 `StateCreator<MyState, [], [], MySlice>`。例如，如果你正在使用 `devtools`，那么它将是 `StateCreator<MyState, [["zustand/devtools", never]], [], MySlice>`。请参阅["中间件及其变异器引用"](#middlewares-and-their-mutators-reference)部分，查看所有变异器的列表。
+如果你有一些中间件,那么将 `StateCreator<MyState, [], [], MySlice>` 替换为 `StateCreator<MyState, Mutators, [], MySlice>`。例如,如果你正在使用 `devtools`,那么它将是 `StateCreator<MyState, [["zustand/devtools", never]], [], MySlice>`。请参阅["中间件及其变换器参考"](#middlewares-and-their-mutators-reference)部分以获取所有变换器的列表。
 
-### 为 vanilla 存储限定 `useStore` 钩子 {#bounded-usestore-hook-for-vanilla-stores}
+### 适用于原生存储的有界 `useStore` 钩子
 
 ```ts
 import { useStore } from 'zustand'
@@ -453,7 +487,7 @@ function useBearStore<T>(selector?: (state: BearState) => T) {
 }
 ```
 
-如果你需要经常创建有界的 `useStore` 钩子并希望避免重复，你也可以创建一个抽象的 `createBoundedUseStore` 函数...
+如果你经常需要创建有界 `useStore` 钩子并且想要 DRY 代码,你也可以制作一个抽象的 `createBoundedUseStore` 函数...
 
 ```ts
 import { useStore, StoreApi } from 'zustand'
@@ -469,9 +503,8 @@ const bearStore = createStore<BearState>()((set) => ({
   increase: (by) => set((state) => ({ bears: state.bears + by })),
 }))
 
-const createBoundedUseStore = ((store) => (selector) => useStore(store)) as <
-  S extends StoreApi<unknown>,
->(
+const createBoundedUseStore = ((store) => (selector) =>
+  useStore(store, selector)) as <S extends StoreApi<unknown>>(
   store: S,
 ) => {
   (): ExtractState<S>
@@ -483,12 +516,12 @@ type ExtractState<S> = S extends { getState: () => infer X } ? X : never
 const useBearStore = createBoundedUseStore(bearStore)
 ```
 
-## 中间件及其变异器引用 {#middlewares-and-their-mutators-reference}
+## 中间件及其变换器参考
 
 - `devtools` — `["zustand/devtools", never]`
 - `persist` — `["zustand/persist", YourPersistedState]`<br/>
-  `YourPersistedState` 是你打算持久化的状态类型，即 `options.partialize` 的返回类型，如果你没有传递 `partialize` 选项，那么 `YourPersistedState` 变为 `Partial<YourState>`。另外，[有时](https://github.com/pmndrs/zustand/issues/980#issuecomment-1162289836) 传递实际的 `PersistedState` 不会起作用。在这些情况下，尝试传递 `unknown`。
+  `YourPersistedState` 是你要持久化的状态类型,即 `options.partialize` 的返回类型,如果你没有传递 `partialize` 选项,则 `YourPersistedState` 变为 `Partial<YourState>`。此外,在某些情况下,传递实际的 `PersistedState` 不会起作用。在这些情况下,尝试传递 `unknown`。
 - `immer` — `["zustand/immer", never]`
 - `subscribeWithSelector` — `["zustand/subscribeWithSelector", never]`
 - `redux` — `["zustand/redux", YourAction]`
-- `combine` — 没有变异器，因为 `combine` 不会改变存储
+- `combine` — 没有变换器,因为 `combine` 不会修改存储
